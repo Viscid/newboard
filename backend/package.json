@@ -1,0 +1,11 @@
+{
+  "name": "newboard-backend",
+  "version": "0.0.1",
+  "description": "Express REST API in Node for NewBoard",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Viscid & Needles",
+  "license": "ISC"
+}
