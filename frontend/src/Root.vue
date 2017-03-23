@@ -1,5 +1,10 @@
 <template>
   <div id="root">
+    <div id="menuBar"> 
+      <a href="/login"> Login </a>
+      <a href="/registration"> Register </a>
+      <a href="/"> Home </a>
+    </div>
     <router-view></router-view>
   </div>
 </template>
