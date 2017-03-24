@@ -1,19 +1,66 @@
 var express = require('express')
+var mongoose = require('mongoose')
 var router = express.Router()
 
-var somePosts = [
-    {id: 1, user: 'Viscid', message: 'Hello!'},
-    {id: 2, user: 'Needles', message: 'Hallo!'},
-    {id: 3, user: 'Viscid', message: 'Salut!'},
-    {id: 4, user: 'Deevee', message: 'Ahoj!'},
-    {id: 5, user: 'Needles', message: 'Hej!'},
-    {id: 6, user: 'Needles', message: 'Shalom!'},
-    {id: 7, user: 'Viscid', message: 'Sawadee!'},
-    {id: 8, user: 'Deevee', message: 'Konichiwa!'},
-]
+var postSchema = mongoose.Schema({
+  username: String,
+  datetime: Date,
+  message: String
+})
 
-router.use('/', function(req, res) {
-    res.json(somePosts)
+var Post = mongoose.model('Post', postSchema)
+
+router.post('/', function(req, res) {
+  console.log('hello')
+  if (req.session.hasOwnProperty('user')) {
+    var newPost = new Post({
+      username: req.session.user.username,
+      datetime: new Date(),
+      message: req.body.message
+    })
+    newPost.save(function (err) {
+      if (err) res.sendStatus(500)
+      res.sendStatus(200)
+    })
+  } else {
+    res.sendStatus(500)
+  } 
+})
+
+router.get('/', function(req, res) {
+  Post.find({}).exec(function(err, results) {
+    if (err) res.send(500)
+    res.json(results)
+  })
 })
 
 module.exports = router
+
+
+
+
+
+
+/*
+
+var express = require('express')
+var router = express.Router()
+var mongoose = require('mongoose')
+var config = require('../../config')
+
+mongoose.connect(config.database)
+
+var userSchema = mongoose.Schema({
+  username: String,
+  password: String
+})
+
+var User = mongoose.model('User', userSchema)
+
+var someUsers = [
+    {name: 'Viscid', password: 'woobie'},
+    {name: 'Needles', password: 'scoobie'},
+    {name: 'Deevee', password: 'sh00bie'},
+]
+
+*/

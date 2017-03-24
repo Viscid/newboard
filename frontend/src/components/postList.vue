@@ -17,14 +17,13 @@ export default {
 </script>
 
 <style scoped>
-li {
-  list-style: none;
-  padding: 1em;
-  margin-bottom: 0.5em;
-}
+  li {
+    list-style: none;
+    padding: 1em;
+    margin-bottom: 0.5em;
+  }
 
-.postUsername {
-  font-weight: bold;
-}
-
+  .postUsername {
+    font-weight: bold;
+  }
 </style>

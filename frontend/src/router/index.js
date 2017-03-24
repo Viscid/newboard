@@ -4,6 +4,7 @@ import HomeContainer from '@/containers/HomeContainer'
 import RegistrationContainer from '@/containers/RegistrationContainer'
 import LoginContainer from '@/containers/LoginContainer'
 import ProfileContainer from '@/containers/ProfileContainer'
+import ComposerContainer from '@/containers/ComposerContainer'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: ProfileContainer
+    },
+    {
+      path: '/compose',
+      name: 'Compose',
+      component: ComposerContainer
     }
   ]
 })

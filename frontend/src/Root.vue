@@ -20,6 +20,9 @@ export default {
     status () {
       return this.$store.state.status
     }
+  },
+  created () {
+    this.$store.dispatch('loginUser', {})
   }
 }
 </script>

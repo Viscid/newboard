@@ -27,6 +27,8 @@ export default {
 }
 
 h2 {
-  text-align: center;
+  text-align: left;
+  margin: 15px;
+  padding: 0;
 }
 </style>

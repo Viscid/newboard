@@ -1,6 +1,6 @@
 <template>
-  <div v-if="visible" id="statusBar">
-   {{ message }}
+  <div v-show="visible" id="statusBar">
+    {{ message }}
   </div>
 </template>
 
@@ -14,9 +14,8 @@ export default {
 <style>
 #statusBar {
   position: absolute;
-  background-color: #F3F3F3;
-  width: 100%;
-  bottom: 0;
+  padding: 0.25em;
+  bottom: 0px;
   left: 0;
   font-size: 10px;
   font-weight: bold;

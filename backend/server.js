@@ -2,16 +2,32 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 var morgan = require('morgan')
+var session = require('express-session')
+
+var config = require('./config')
+
+var mongoose = require('mongoose')
+mongoose.connect(config.database)
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
+app.set('trust proxy', 1)
+app.use(session({
+  secret: config.sessionSecret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
+
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+  res.header('Access-Control-Allow-Origin', 'http://localhost:1111')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
+  res.header('Access-Control-Allow-Credentials', 'true')
+  next()
+})
 
 var models = require('./models')
 

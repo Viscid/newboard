@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submitRegistration" id="registrationForm">
+    <form @submit.prevent="submitRegistration" id="loginForm">
       <h3> Username </h3>
         <input id="formUsername" class="field" v-model="username" />
       <h3> Password </h3>
@@ -15,8 +15,8 @@
     methods: {
       submitRegistration () {
         var user = { username: this.username, password: this.password }
-        this.$store.dispatch('submitRegistration', user)
-        this.$store.dispatch('setStatus', 'Registering User')
+        this.$store.dispatch('loginUser', user)
+        this.$store.dispatch('setStatus', 'Logging in...')
       }
     },
     data () {
@@ -30,7 +30,7 @@
 
 <style scoped>
 
-#registrationForm {
+#loginForm {
   margin: 15px;
 }
 
@@ -56,5 +56,6 @@ h3 {
 .submitButton {
   font-size: 18px;
 }
+
 
 </style>

@@ -1,17 +1,22 @@
 import axios from 'axios'
 
+const API_URL = 'http://localhost:2222'
+
 export default {
   state: {
-    user: 'Viscid',
+    user: {},
     posts: [],
     status: {
-      visible: true,
-      message: 'This is a status bar message.'
+      visible: false,
+      message: undefined
     }
   },
   mutations: {
     setPosts (state, posts) {
       state.posts = posts
+    },
+    setUser (state, user) {
+      state.user = user
     },
     changeStatusMessage (state, message) {
       state.status.message = message
@@ -23,8 +28,7 @@ export default {
   },
   actions: {
     getPosts (context) {
-      axios.get('http://localhost:2222/post').then((res) => {
-        console.log(res)
+      axios.get(API_URL + '/post', { withCredentials: true }).then((res) => {
         context.commit('setPosts', res.data)
       })
     },
@@ -33,6 +37,21 @@ export default {
       setTimeout(() => {
         context.commit('changeStatusVisibility')
       }, 1000)
+    },
+    submitRegistration (context, user) {
+      axios.post(API_URL + '/user/register', {user}, { withCredentials: true }).then((res) => {
+        context.commit('setUser', res.data)
+      })
+    },
+    loginUser (context, user) {
+      axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
+        context.commit('setUser', res.data)
+      })
+    },
+    submitPost ({dispatch, commit}, message) {
+      axios.post(API_URL + '/post', {message}, { withCredentials: true }).then((res) => {
+        dispatch('getPosts')
+      })
     }
   }
 }

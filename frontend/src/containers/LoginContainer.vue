@@ -1,12 +1,12 @@
 <template>
     <div id="LoginContainer">
         <h2> Login </h2>
-        <registrationForm></registrationForm>
+        <loginForm></loginForm>
     </div>
 </template>
 
 <script>
-import registrationForm from '../components/registrationForm'
+import loginForm from '../components/loginForm'
 
 export default {
   name: 'LoginContainer',
@@ -16,7 +16,7 @@ export default {
     }
   },
   components: {
-    'registrationForm': registrationForm
+    loginForm
   }
 }
 </script>
@@ -27,6 +27,9 @@ export default {
 }
 
 h2 {
-  text-align: center;
+  text-align: left;
+  margin: 15px;
 }
+
+
 </style>
