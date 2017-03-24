@@ -1,27 +1,38 @@
 <template>
   <div id="root">
-    <div id="menuBar"> 
-      <a href="/login"> Login </a>
-      <a href="/registration"> Register </a>
-      <a href="/"> Home </a>
-    </div>
+    <menuBar></menuBar>
     <router-view></router-view>
+    <statusBar :message="status.message" :visible="status.visible"></statusBar>
   </div>
 </template>
 
 <script>
+import menuBar from './components/menuBar'
+import statusBar from './components/statusBar'
+
 export default {
-  name: 'root'
+  name: 'root',
+  components: {
+    menuBar,
+    statusBar
+  },
+  computed: {
+    status () {
+      return this.$store.state.status
+    }
+  }
 }
 </script>
 
 <style>
-#app {
+#root {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+body {
+  margin: 0;
 }
 </style>

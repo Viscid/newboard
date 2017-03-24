@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Test from '@/components/Test'
+import HomeContainer from '@/containers/HomeContainer'
 import RegistrationContainer from '@/containers/RegistrationContainer'
 import LoginContainer from '@/containers/LoginContainer'
+import ProfileContainer from '@/containers/ProfileContainer'
 
 Vue.use(Router)
 
@@ -11,8 +12,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Test',
-      component: Test
+      name: 'Home',
+      component: HomeContainer
     },
     {
       path: '/registration',
@@ -23,6 +24,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: LoginContainer
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: ProfileContainer
     }
   ]
 })
