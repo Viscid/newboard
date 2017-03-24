@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h1> Login </h1>
+    <div id="LoginContainer">
+        <h2> Login </h2>
         <registrationForm></registrationForm>
     </div>
 </template>
@@ -20,3 +20,13 @@ export default {
   }
 }
 </script>
+
+<style>
+#LoginContainer {
+  margin: 2em 0;
+}
+
+h2 {
+  text-align: center;
+}
+</style>

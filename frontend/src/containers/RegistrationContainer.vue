@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h1> Registration </h1>
+    <div id="registrationContainer">
+        <h2> Registration </h2>
         <registrationForm></registrationForm>
     </div>
 </template>
@@ -20,3 +20,13 @@ export default {
   }
 }
 </script>
+
+<style scoped> 
+#registrationContainer {
+  margin: 2em 0;
+}
+
+h2 {
+  text-align: center;
+}
+</style>
