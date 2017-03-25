@@ -2,8 +2,8 @@
     <div id="menuBar"> 
       <router-link to="/"> Home </router-link>
       <router-link to="compose"> Compose </router-link>         
-      <router-link to="login"> Login </router-link>
-      <router-link to="registration"> Register </router-link>
+      <router-link v-show="!isLoggedIn" to="login"> Login </router-link>
+      <router-link v-show="!isLoggedIn" to="registration"> Register </router-link>
       <router-link to="profile"> {{ getUser.username }}  </router-link>
     </div>
 </template>
@@ -13,6 +13,9 @@ export default {
   computed: {
     getUser () {
       return this.$store.state.user
+    },
+    isLoggedIn () {
+      return 'username' in this.$store.state.user
     }
   }
 }
@@ -31,7 +34,6 @@ export default {
     text-decoration: none;
     margin-right: 1em;
     color: #FFF;
-    font-weight: bold;
   }
 
   a:hover {

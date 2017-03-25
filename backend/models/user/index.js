@@ -9,16 +9,6 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema)
 
-var someUsers = [
-    {name: 'Viscid', password: 'woobie'},
-    {name: 'Needles', password: 'scoobie'},
-    {name: 'Deevee', password: 'sh00bie'},
-]
-
-router.get('/', function (req, res) {
-  res.json(someUsers)
-})
-
 router.post('/register', function(req, res) {
   console.log(req.body)
   if (req.body.hasOwnProperty('user')) {

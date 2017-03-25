@@ -1,6 +1,5 @@
 <template>
     <div id="homeContainer">
-        <h2> Home </h2>
         <postList :posts="posts"> </postList>
     </div>
 </template>

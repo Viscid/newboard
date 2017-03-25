@@ -1,7 +1,7 @@
 <template>
-  <form @submit.prevent="submitPost">
-    <textarea v-model="postMessage" rows="10" cols="50"> </textarea> <br />
-    <input type="submit" />
+  <form id="composerForm" @submit.prevent="submitPost">
+    <textarea class="postTextarea" v-model="postMessage"> </textarea> <br />
+    <input class="postButton" type="submit" />
   </form>
 </template>
 
@@ -14,13 +14,35 @@ export default {
   },
   methods: {
     submitPost () {
-      this.$store.dispatch('submitPost', this.postMessage)
+      this.$store.dispatch('submitPost', this.postMessage).then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }
 
 </script>
 
-<style>
+<style scoped>
+  textarea {
+    width: 80%;
+    height: 300px;
+    margin-bottom: 1em;
+  }
+
+  #composerForm {
+    margin: 1em auto;
+    text-align: center;
+  }
+
+  .postButton {
+    background-color: #4f8ef2;
+    cursor: pointer;
+    color: white;
+    border: 0;
+    font-weight: bold;
+    padding: 0.5em;
+    width: 80%;
+  }
 
 </style>

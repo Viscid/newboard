@@ -11,8 +11,8 @@ var postSchema = mongoose.Schema({
 var Post = mongoose.model('Post', postSchema)
 
 router.post('/', function(req, res) {
-  console.log('hello')
-  if (req.session.hasOwnProperty('user')) {
+  console.log(req.session)
+  if ('username' in req.session.user) {
     var newPost = new Post({
       username: req.session.user.username,
       datetime: new Date(),
@@ -22,9 +22,7 @@ router.post('/', function(req, res) {
       if (err) res.sendStatus(500)
       res.sendStatus(200)
     })
-  } else {
-    res.sendStatus(500)
-  } 
+  } else res.sendStatus(500) 
 })
 
 router.get('/', function(req, res) {

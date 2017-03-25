@@ -49,8 +49,11 @@ export default {
       })
     },
     submitPost ({dispatch, commit}, message) {
-      axios.post(API_URL + '/post', {message}, { withCredentials: true }).then((res) => {
-        dispatch('getPosts')
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/post', {message}, { withCredentials: true }).then((res) => {
+          dispatch('getPosts')
+          resolve()
+        })
       })
     }
   }
