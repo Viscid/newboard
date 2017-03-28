@@ -12,8 +12,14 @@ export default {
       postMessage: undefined
     }
   },
+  created () {
+    this.postMessage = this.$store.state.postMessage
+  },
   mounted () {
     this.$refs.postTextarea.focus()
+  },
+  beforeDestroy () {
+    this.$store.dispatch('stashPostMessage', this.postMessage)
   },
   methods: {
     submitPost () {

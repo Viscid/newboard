@@ -4,7 +4,8 @@
   <li v-for="post in posts">
     <div class="postHeader">
       <span class="postUsername"> {{ post.username }} </span> -
-      <span class="postDatetime"> {{ getDate(post.datetime, 'medium') }} </span>
+      <span class="postDatetime"> {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </span>
+      <a class="replyButton"> reply </a>
     </div>
     <div class="postBody">
       <span class="postMessage"> {{ post.message }} </span>
@@ -27,7 +28,7 @@ export default {
   },
   methods: {
     getDate (date, style) {
-      return fecha.format(new Date(date))
+      return fecha.format(new Date(date), style)
     }
   }
 }
@@ -43,19 +44,19 @@ export default {
     margin: 1em;
     margin-bottom: 0.5em;
     background-color: white;
-    border-bottom: 2px solid #CCC;
   }
 
   .postUsername {
     font-weight: bold;
+    color: #aa4439;
   }
 
   .postHeader {
-    background-color: #8D2F5D;
+    background-color: white;
     font-weight: bold;
     padding: 0.5em 1em;
-    color: white;
-    border-bottom: 2px solid #8D2F5D;
+    color: black;
+    border-bottom: 1px solid #AAA;
   }
 
   .postBody {
@@ -65,7 +66,13 @@ export default {
 
   .postDatetime {
     font-weight: normal;
-    font-style: italic;
+    font-size: 0.8em;
+  }
+
+  .replyButton {
+    float: right;
+    display: block;
+    font-weight: normal;
   }
 
 </style>

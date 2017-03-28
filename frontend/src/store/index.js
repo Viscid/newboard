@@ -4,6 +4,7 @@ const API_URL = 'http://localhost:2222'
 
 export default {
   state: {
+    postMessage: undefined,
     user: {},
     posts: [],
     status: {
@@ -17,6 +18,9 @@ export default {
     },
     setUser (state, user) {
       state.user = user
+    },
+    stashPostMessage (state, message) {
+      state.postMessage = message
     },
     changeStatusMessage (state, message) {
       state.status.message = message
@@ -76,6 +80,10 @@ export default {
           reject(err)
         })
       })
+    },
+
+    stashPostMessage (context, message) {
+      context.commit('stashPostMessage', message)
     },
 
     logout (context) {

@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
   #menuBar {
-    background-color: #AA4439;
+    background: linear-gradient(to bottom, #ff5656 0%, #aa4439 100%);
     margin: 0;
     text-align: left;
     height: 50px;
@@ -42,11 +42,11 @@ export default {
     color: #FFF;
     padding: 0 1em;
     margin: 0;
-    transition: background-color 0.5s;
+    transition: color 0.25s;
     cursor: pointer;
   }
 
   a:hover {
-    background-color: #8c352b;
+    color: #CCC;
   }
 </style>
