@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h2> Compose a Post </h2>
-    <composerForm> </composerForm>
+    <composerForm></composerForm>
   </div>
 </template>
 
@@ -17,10 +16,4 @@
 </script>
 
 <style>
-
-h2 {
-  margin: 1em;
-  text-align: center;
-}
-
 </style>

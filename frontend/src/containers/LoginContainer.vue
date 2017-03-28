@@ -10,25 +10,20 @@ import loginForm from '../components/loginForm'
 
 export default {
   name: 'LoginContainer',
-  data () {
-    return {
-      message: 'hi'
-    }
-  },
   components: {
     loginForm
   }
 }
 </script>
 
-<style>
+<style scoped>
 #LoginContainer {
   margin: 2em 0;
 }
 
 h2 {
   text-align: left;
-  margin: 15px;
+  margin: 30px 15px;
 }
 
 

@@ -15,7 +15,9 @@
     methods: {
       submitRegistration () {
         var user = { username: this.username, password: this.password }
-        this.$store.dispatch('loginUser', user)
+        this.$store.dispatch('loginUser', user).then(() => {
+          this.$router.push('/')
+        })
         this.$store.dispatch('setStatus', 'Logging in...')
       }
     },
@@ -51,6 +53,7 @@ form {
 h3 {
   margin: 0;
   text-align: left;
+  font-size: 1em;
 }
 
 .submitButton {

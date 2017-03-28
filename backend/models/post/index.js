@@ -12,7 +12,7 @@ var Post = mongoose.model('Post', postSchema)
 
 router.post('/', function(req, res) {
   console.log(req.session)
-  if ('username' in req.session.user) {
+  if ('user' in req.session && 'username' in req.session.user) {
     var newPost = new Post({
       username: req.session.user.username,
       datetime: new Date(),
@@ -26,7 +26,7 @@ router.post('/', function(req, res) {
 })
 
 router.get('/', function(req, res) {
-  Post.find({}).exec(function(err, results) {
+  Post.find({}).sort({datetime: -1}).exec(function(err, results) {
     if (err) res.send(500)
     res.json(results)
   })

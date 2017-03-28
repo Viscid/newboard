@@ -1,6 +1,6 @@
 <template>
   <form id="composerForm" @submit.prevent="submitPost">
-    <textarea class="postTextarea" v-model="postMessage"> </textarea> <br />
+    <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
     <input class="postButton" type="submit" />
   </form>
 </template>
@@ -12,10 +12,15 @@ export default {
       postMessage: undefined
     }
   },
+  mounted () {
+    this.$refs.postTextarea.focus()
+  },
   methods: {
     submitPost () {
       this.$store.dispatch('submitPost', this.postMessage).then(() => {
         this.$router.push('/')
+      }).catch((error) => {
+        console.log(error)
       })
     }
   }
@@ -25,24 +30,37 @@ export default {
 
 <style scoped>
   textarea {
-    width: 80%;
-    height: 300px;
-    margin-bottom: 1em;
+    display: block;
+    height: calc(100vh - 150px);
+    width: 95%;
+    border: 0;
+    padding: 15px;
+    font-size: 1.25em;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    outline: none;
+    margin: 0 auto;
   }
 
   #composerForm {
-    margin: 1em auto;
     text-align: center;
   }
 
   .postButton {
-    background-color: #4f8ef2;
+    background-color: #AA4439;
     cursor: pointer;
     color: white;
     border: 0;
     font-weight: bold;
-    padding: 0.5em;
-    width: 80%;
+    height: 50px;
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+    width: 300px;
+  }
+
+    .postButton:hover {
+      background-color: #8c352b;
+
   }
 
 </style>

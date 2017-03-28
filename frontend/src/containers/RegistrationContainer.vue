@@ -10,11 +10,6 @@ import registrationForm from '../components/registrationForm'
 
 export default {
   name: 'RegistrationContainer',
-  data () {
-    return {
-      message: 'hi'
-    }
-  },
   components: {
     'registrationForm': registrationForm
   }

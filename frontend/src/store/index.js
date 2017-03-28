@@ -24,37 +24,63 @@ export default {
     },
     changeStatusVisibility (state) {
       state.status.visible = false
+    },
+    logout (state) {
+      state.user = {}
     }
   },
   actions: {
+
     getPosts (context) {
       axios.get(API_URL + '/post', { withCredentials: true }).then((res) => {
         context.commit('setPosts', res.data)
       })
     },
+
     setStatus (context, message) {
       context.commit('changeStatusMessage', message)
       setTimeout(() => {
         context.commit('changeStatusVisibility')
       }, 1000)
     },
+
     submitRegistration (context, user) {
-      axios.post(API_URL + '/user/register', {user}, { withCredentials: true }).then((res) => {
-        context.commit('setUser', res.data)
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/user/register', {user}, { withCredentials: true }).then((res) => {
+          resolve()
+          context.commit('setUser', res.data)
+        }).catch((err) => {
+          reject(err)
+        })
       })
     },
+
     loginUser (context, user) {
-      axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
-        context.commit('setUser', res.data)
+      return new Promise((resolve, reject) => {
+        axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
+          context.commit('setUser', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
       })
     },
+
     submitPost ({dispatch, commit}, message) {
       return new Promise((resolve, reject) => {
         axios.post(API_URL + '/post', {message}, { withCredentials: true }).then((res) => {
           dispatch('getPosts')
           resolve()
+        }).catch((err) => {
+          console.log(err)
+          reject(err)
         })
       })
+    },
+
+    logout (context) {
+      context.commit('logout')
     }
+
   }
 }

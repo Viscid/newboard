@@ -3,34 +3,47 @@
 <ul>
   <li v-for="post in posts">
     <div class="postHeader">
-      <span class="postUsername"> {{ post.username }} </span> @ <span class="postDatetime"> {{ post.datetime }} </span>
+      <span class="postUsername"> {{ post.username }} </span> -
+      <span class="postDatetime"> {{ getDate(post.datetime, 'medium') }} </span>
     </div>
     <div class="postBody">
       <span class="postMessage"> {{ post.message }} </span>
     </div>
+    <replyList post="post"></replyList>
   </li>
 </ul>
 
 </template>
 
 <script>
+import replyList from './replyList'
+import fecha from 'fecha'
+
 export default {
   name: 'postList',
-  props: ['posts']
+  props: ['posts'],
+  components: {
+    replyList
+  },
+  methods: {
+    getDate (date, style) {
+      return fecha.format(new Date(date))
+    }
+  }
 }
 </script>
 
 <style scoped>
-ul {
-  padding: 0;
-}
+  ul {
+    padding: 0;
+  }
 
   li {
     list-style: none;
     margin: 1em;
     margin-bottom: 0.5em;
-    border: 1px solid #BBB;
-    box-shadow: 3px 3px 5px 0px #AAA;
+    background-color: white;
+    border-bottom: 2px solid #CCC;
   }
 
   .postUsername {
@@ -38,17 +51,21 @@ ul {
   }
 
   .postHeader {
-    background-color: #4f8ef2;
+    background-color: #8D2F5D;
     font-weight: bold;
+    padding: 0.5em 1em;
     color: white;
-    padding: 0.25em 1em;
+    border-bottom: 2px solid #8D2F5D;
   }
 
   .postBody {
     padding: 1em;
+    border-bottom: 1px dotted #DDD;
   }
 
   .postDatetime {
     font-weight: normal;
+    font-style: italic;
   }
+
 </style>

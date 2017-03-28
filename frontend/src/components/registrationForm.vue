@@ -4,8 +4,10 @@
         <input id="formUsername" class="field" v-model="username" />
       <h3> Password </h3>
         <input id="formPassword" class="field" type="password" v-model="password">
+      <h3> E-mail </h3>
+        <input id="formEmail" class="field" v-model="email">        
       <br />
-        <input class="submitButton" value="Submit" type="submit" />
+        <input class="submitButton" value="Register" type="submit" />
     </form>
 </template>
 
@@ -15,14 +17,17 @@
     methods: {
       submitRegistration () {
         var user = { username: this.username, password: this.password }
-        this.$store.dispatch('submitRegistration', user)
+        this.$store.dispatch('submitRegistration', user).then(() => {
+          this.$router.push('/')
+        })
         this.$store.dispatch('setStatus', 'Registering User')
       }
     },
     data () {
       return {
         username: undefined,
-        password: undefined
+        password: undefined,
+        email: undefined
       }
     }
   }
@@ -31,7 +36,7 @@
 <style scoped>
 
 #registrationForm {
-  margin: 15px;
+  margin: 30px 15px;
 }
 
 form {
@@ -51,6 +56,7 @@ form {
 h3 {
   margin: 0;
   text-align: left;
+  font-size: 1em;
 }
 
 .submitButton {
