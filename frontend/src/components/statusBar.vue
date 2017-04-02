@@ -13,13 +13,17 @@ export default {
 
 <style>
 #statusBar {
-  position: absolute;
-  padding: 0.25em;
-  bottom: 0px;
-  left: 0;
+  position: fixed;
+  box-sizing: border-box;
+  float: right;
+  background-color: white;
+  padding: 0 1em;
+  top: 0;
+  right: 0;
   font-size: 10px;
+  text-align: right;
   font-weight: bold;
-  height: 12px;
+
 }
 
 </style>

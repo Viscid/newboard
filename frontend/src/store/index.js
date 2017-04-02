@@ -1,12 +1,15 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 const API_URL = 'http://localhost:2222'
 
 export default {
   state: {
     postMessage: undefined,
+    replyPost: {},
     user: {},
-    posts: [],
+    threads: undefined,
+    replies: undefined,
     status: {
       visible: false,
       message: undefined
@@ -14,13 +17,17 @@ export default {
   },
   mutations: {
     setPosts (state, posts) {
-      state.posts = posts
+      state.replies = Vue.set(state, 'replies', posts.replies)
+      state.threads = Vue.set(state, 'threads', posts.threads)
+    },
+    setReplyPost (state, post) {
+      state.replyPost = post
     },
     setUser (state, user) {
       state.user = user
     },
-    stashPostMessage (state, message) {
-      state.postMessage = message
+    stashPostMessage (state, post) {
+      state.postMessage = post.message
     },
     changeStatusMessage (state, message) {
       state.status.message = message
@@ -35,34 +42,44 @@ export default {
   },
   actions: {
 
-    getPosts (context) {
+    getPosts ({dispatch, commit}) {
       axios.get(API_URL + '/post', { withCredentials: true }).then((res) => {
-        context.commit('setPosts', res.data)
+        commit('setPosts', res.data)
       })
+    },
+
+    getReplyPost ({dispatch, commit}, slug) {
+      axios.get(API_URL + '/post/' + slug, { withCredentials: true }).then((res) => {
+        commit('setReplyPost', res.data)
+      })
+    },
+
+    setReplyPost (context, post) {
+      context.commit('setReplyPost', post)
     },
 
     setStatus (context, message) {
       context.commit('changeStatusMessage', message)
       setTimeout(() => {
         context.commit('changeStatusVisibility')
-      }, 1000)
+      }, 2000)
     },
 
-    submitRegistration (context, user) {
+    submitRegistration ({dispatch, commit}, user) {
       return new Promise((resolve, reject) => {
         axios.post(API_URL + '/user/register', {user}, { withCredentials: true }).then((res) => {
           resolve()
-          context.commit('setUser', res.data)
+          commit('setUser', res.data)
         }).catch((err) => {
           reject(err)
         })
       })
     },
 
-    loginUser (context, user) {
+    loginUser ({dispatch, commit}, user) {
       return new Promise((resolve, reject) => {
         axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
-          context.commit('setUser', res.data)
+          commit('setUser', res.data)
           resolve()
         }).catch((err) => {
           reject(err)
@@ -70,10 +87,9 @@ export default {
       })
     },
 
-    submitPost ({dispatch, commit}, message) {
+    submitPost ({dispatch, commit}, post) {
       return new Promise((resolve, reject) => {
-        axios.post(API_URL + '/post', {message}, { withCredentials: true }).then((res) => {
-          dispatch('getPosts')
+        axios.post(API_URL + '/post', {post}, { withCredentials: true }).then((res) => {
           resolve()
         }).catch((err) => {
           console.log(err)
@@ -82,12 +98,12 @@ export default {
       })
     },
 
-    stashPostMessage (context, message) {
-      context.commit('stashPostMessage', message)
+    stashPostMessage ({dispatch, commit}, message) {
+      commit('stashPostMessage', message)
     },
 
-    logout (context) {
-      context.commit('logout')
+    logout ({dispatch, commit}) {
+      commit('logout')
     }
 
   }

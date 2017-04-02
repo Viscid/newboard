@@ -5,6 +5,7 @@ import RegistrationContainer from '@/containers/RegistrationContainer'
 import LoginContainer from '@/containers/LoginContainer'
 import ProfileContainer from '@/containers/ProfileContainer'
 import ComposerContainer from '@/containers/ComposerContainer'
+import ReplyContainer from '@/containers/ReplyContainer'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/compose',
       name: 'Compose',
       component: ComposerContainer
+    },
+    {
+      path: '/reply/:slug',
+      name: 'Reply',
+      component: ReplyContainer
     }
   ]
 })

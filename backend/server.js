@@ -3,6 +3,7 @@ var app = express()
 var bodyParser = require('body-parser')
 var morgan = require('morgan')
 var session = require('express-session')
+var MongoStore = require('connect-mongo')(session)
 
 var config = require('./config')
 
@@ -14,11 +15,13 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 app.set('trust proxy', 1)
+app.set('etag', false)
 app.use(session({
   secret: config.sessionSecret,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
 app.use(function(req, res, next) {

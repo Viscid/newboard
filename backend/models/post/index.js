@@ -2,33 +2,98 @@ var express = require('express')
 var mongoose = require('mongoose')
 var router = express.Router()
 
+mongoose.plugin(require('mongoose-slug-generator'), { 
+  truncate: 35
+})
+
 var postSchema = mongoose.Schema({
   username: String,
-  datetime: Date,
-  message: String
+  datetime: { type: Date, default: Date.now },
+  message: String,
+  parentId: mongoose.Schema.Types.ObjectId,
+  root: mongoose.Schema.Types.ObjectId,
+  slug: { type: String, slug: ['username', 'message'], unique: true }
 })
 
 var Post = mongoose.model('Post', postSchema)
 
 router.post('/', function(req, res) {
-  console.log(req.session)
-  if ('user' in req.session && 'username' in req.session.user) {
-    var newPost = new Post({
-      username: req.session.user.username,
-      datetime: new Date(),
-      message: req.body.message
-    })
-    newPost.save(function (err) {
-      if (err) res.sendStatus(500)
-      res.sendStatus(200)
-    })
-  } else res.sendStatus(500) 
+  console.log(req.body)
+  if ('user' in req.session && 'username' in req.session.user) { // Check if user is logged in.
+
+    if ('post' in req.body) {
+      
+      var sentPost = req.body.post
+
+      var newPost = {
+        username: req.session.user.username,
+        message: req.body.post.message
+      }
+
+      console.log(newPost)
+
+      if ('parentId' in sentPost) { // Post is a reply to another post.
+        Post.findById(sentPost.parentId, function(err, parentPost) { // Fetch the parent post
+          newPost.root = (parentPost.root) ? parentPost.root : parentPost._id
+          newPost.parentId = parentPost._id
+          
+          var reply = new Post(newPost)
+
+          reply.save(function (err) {
+            err ? res.sendStatus(500) : res.sendStatus(200)
+          })
+        })
+      } else {
+
+        var newThread = new Post(newPost)
+
+        newThread.save(function (err) {
+          err ? res.sendStatus(500) : res.sendStatus(200)
+        })
+      }
+    } else res.sendStatus(500)  // Body does not contain 'post' object.
+  } else res.sendStatus(500) // User is not logged in.
 })
 
 router.get('/', function(req, res) {
-  Post.find({}).sort({datetime: -1}).exec(function(err, results) {
+  Post.find({ root: { $exists: false } })
+    .sort( { datetime: -1 } )
+    .exec(function(err, threadResults) {
+      if (err) { 
+        res.send(500) // Some sort of DB error
+      } else {
+        var threadIdList = []
+
+        threadResults.forEach(function(thread) {
+          threadIdList.push(thread._id)
+        })
+
+        Post.find( {'root': { $in: threadIdList }}, function(err, replyResults) {
+          if (err) {
+            res.send(500) // Some sort of DB error with replies
+          } else {
+            var replyDict = {lastFetch: new Date()}
+
+            replyResults.forEach(function(replyResult) {
+              var replyParentId = replyResult.parentId
+
+              if (replyDict.hasOwnProperty(replyParentId)) {
+                replyDict[replyParentId].push(replyResult)
+              } else { replyDict[replyParentId] = [replyResult] }
+
+            })
+            res.json({threads: threadResults, replies: replyResults})
+          }
+        })
+      }
+    })
+})
+
+router.get('/:slug', function(req, res) {
+  console.log('Finding: ', req.params.slug)
+  Post.findOne({'slug': req.params.slug}, function(err, post) {
     if (err) res.send(500)
-    res.json(results)
+    res.json(post)
   })
 })
 

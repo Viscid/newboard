@@ -19,11 +19,16 @@ export default {
     this.$refs.postTextarea.focus()
   },
   beforeDestroy () {
-    this.$store.dispatch('stashPostMessage', this.postMessage)
+    this.$store.dispatch('stashPostMessage', {message: this.postMessage})
   },
   methods: {
     submitPost () {
-      this.$store.dispatch('submitPost', this.postMessage).then(() => {
+      const post = {
+        message: this.postMessage
+      }
+
+      this.$store.dispatch('submitPost', post).then(() => {
+        this.postMessage = ''
         this.$router.push('/')
       }).catch((error) => {
         console.log(error)
@@ -52,7 +57,7 @@ export default {
   }
 
   .postButton {
-    background-color: #AA4439;
+    background-color: #ff5656;
     cursor: pointer;
     color: white;
     border: 0;
@@ -64,9 +69,8 @@ export default {
     width: 300px;
   }
 
-    .postButton:hover {
-      background-color: #8c352b;
-
+  .postButton:hover {
+    background-color: #ff6666;
   }
 
 </style>

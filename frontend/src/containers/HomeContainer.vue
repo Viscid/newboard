@@ -1,6 +1,6 @@
 <template>
     <div id="homeContainer">
-        <postList :posts="posts"> </postList>
+        <postList :loggedIn="loggedIn" :threads="threads"> </postList>
     </div>
 </template>
 
@@ -12,13 +12,20 @@ export default {
   components: {
     postList
   },
+  data () {
+    return {
+      user: this.$store.state.user
+    }
+  },
   created () {
     this.$store.dispatch('getPosts')
-    this.$store.dispatch('setStatus', 'Getting posts.')
   },
   computed: {
-    posts () {
-      return this.$store.state.posts
+    loggedIn () {
+      return ('username' in this.$store.state.user)
+    },
+    threads () {
+      return this.$store.state.threads
     }
   }
 }

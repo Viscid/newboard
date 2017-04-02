@@ -1,11 +1,11 @@
 <template>
     <div id="menuBar"> 
       <router-link to="/"> Home </router-link><!--
-      --><router-link v-show="isLoggedIn" to="compose"> Compose </router-link><!--       
-      --><router-link v-show="!isLoggedIn" to="login"> Login </router-link><!--
-      --><router-link v-show="!isLoggedIn" to="registration"> Register </router-link><!--
-      --><router-link v-show="isLoggedIn" to="profile"> {{ getUser.username }}  </router-link><!--
-      --><a @click="logout" v-show="isLoggedIn" to="logout"> Logout </a>
+      --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--       
+      --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
+      --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
+      --><router-link v-show="isLoggedIn" :to="{ name: 'Profile' }"> {{ getUser.username }}  </router-link><!--
+      --><a @click="logout" v-show="isLoggedIn"> Logout </a>
     </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
   #menuBar {
-    background: linear-gradient(to bottom, #ff5656 0%, #aa4439 100%);
+    background: linear-gradient(to bottom, #ff5656 30%, #aa4439 100%);
     margin: 0;
     text-align: left;
     height: 50px;
@@ -39,7 +39,7 @@ export default {
   a {
     display: inline-block;
     text-decoration: none;
-    color: #FFF;
+    color: #DDD;
     padding: 0 1em;
     margin: 0;
     transition: color 0.25s;
@@ -47,6 +47,6 @@ export default {
   }
 
   a:hover {
-    color: #CCC;
+    color: #FFF;
   }
 </style>
