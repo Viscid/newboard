@@ -10,7 +10,9 @@
     <div class="postBody">
       <span class="postMessage"> {{ thread.message }} </span>
     </div>
-    <replyList v-if="hasReplies(thread)" :parent="thread"></replyList>
+    <div class="replyListWrapper">
+      <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :parent="thread"></replyList>
+    </div>
   </li>
 </ul>
 
@@ -31,9 +33,7 @@ export default {
       return fecha.format(new Date(date), style)
     },
     hasReplies (post) {
-      return (this.$store.state.replies.filter((reply) => {
-        return (reply.parentId === post._id)
-      }).length)
+      return (post._id in this.$store.state.posts.replies)
     }
   }
 }
@@ -51,6 +51,10 @@ export default {
     background-color: white;
   }
 
+  .replyListWrapper {
+    margin-left: 1em;
+  }
+
   .postUsername {
     font-weight: bold;
     color: #aa4439;
@@ -65,7 +69,6 @@ export default {
 
   .postBody {
     padding: 1em;
-    border-bottom: 2px solid #CCC;
   }
 
   .postDatetime {

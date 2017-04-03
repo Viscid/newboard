@@ -15,7 +15,6 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 app.set('trust proxy', 1)
-app.set('etag', false)
 app.use(session({
   secret: config.sessionSecret,
   resave: false,

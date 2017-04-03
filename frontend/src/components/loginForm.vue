@@ -18,7 +18,6 @@
         this.$store.dispatch('loginUser', user).then(() => {
           this.$router.push('/')
         })
-        this.$store.dispatch('setStatus', 'Logging in...')
       }
     },
     data () {

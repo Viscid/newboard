@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Vue from 'vue'
+// import Vue from 'vue'
 
 const API_URL = 'http://localhost:2222'
 
@@ -8,8 +8,10 @@ export default {
     postMessage: undefined,
     replyPost: {},
     user: {},
-    threads: undefined,
-    replies: undefined,
+    posts: {
+      threads: [],
+      replies: {}
+    },
     status: {
       visible: false,
       message: undefined
@@ -17,8 +19,9 @@ export default {
   },
   mutations: {
     setPosts (state, posts) {
-      state.replies = Vue.set(state, 'replies', posts.replies)
-      state.threads = Vue.set(state, 'threads', posts.threads)
+      /* state.replies = Vue.set(state, 'replies', posts.replies)
+      state.threads = Vue.set(state, 'threads', posts.threads) */
+      state.posts = posts
     },
     setReplyPost (state, post) {
       state.replyPost = post
