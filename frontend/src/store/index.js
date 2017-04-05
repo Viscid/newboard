@@ -6,6 +6,7 @@ const API_URL = 'http://localhost:2222'
 export default {
   state: {
     postMessage: undefined,
+    selectedReply: '',
     replyPost: {},
     user: {},
     posts: {
@@ -28,6 +29,9 @@ export default {
     },
     setUser (state, user) {
       state.user = user
+    },
+    setSelectedReply (state, replyId) {
+      state.selectedReply = replyId
     },
     stashPostMessage (state, post) {
       state.postMessage = post.message
@@ -99,6 +103,10 @@ export default {
           reject(err)
         })
       })
+    },
+
+    selectReply (context, replyId) {
+      context.commit('setSelectedReply', replyId)
     },
 
     stashPostMessage ({dispatch, commit}, message) {

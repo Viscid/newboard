@@ -4,7 +4,7 @@
       --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--       
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
-      --><router-link v-show="isLoggedIn" :to="{ name: 'Profile' }"> {{ getUser.username }}  </router-link><!--
+      --><router-link class="profileLink" v-show="isLoggedIn" :to="{ name: 'Profile' }"> {{ getUser.username }}  </router-link><!--
       --><a @click="logout" v-show="isLoggedIn"> Logout </a>
     </div>
 </template>
@@ -48,5 +48,10 @@ export default {
 
   a:hover {
     color: #FFF;
+  }
+
+  .profileLink {
+    float: right;
+    display: inline-block;
   }
 </style>

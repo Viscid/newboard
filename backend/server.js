@@ -19,7 +19,7 @@ app.use(session({
   secret: config.sessionSecret,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false },
+  cookie: { secure: false, name: 'poop.gobble.delight' },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 

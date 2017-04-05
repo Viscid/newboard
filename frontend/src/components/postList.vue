@@ -5,14 +5,12 @@
     <div class="postHeader">
       <span class="postUsername"> {{ thread.username }} </span> -
       <span class="postDatetime"> {{ getDate(thread.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </span>
-      <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: thread.slug, post: thread }}" class="replyButton"> reply </router-link>
+      <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: thread.slug, post: thread }}" class="threadReplyButton"> reply </router-link>
     </div>
     <div class="postBody">
       <span class="postMessage"> {{ thread.message }} </span>
     </div>
-    <div class="replyListWrapper">
-      <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :parent="thread"></replyList>
-    </div>
+    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :parent="thread"></replyList>
   </li>
 </ul>
 
@@ -39,7 +37,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   ul {
     padding: 0;
   }
@@ -49,10 +47,6 @@ export default {
     margin: 1em;
     margin-bottom: 3em;
     background-color: white;
-  }
-
-  .replyListWrapper {
-    margin-left: 1em;
   }
 
   .postUsername {
@@ -76,7 +70,7 @@ export default {
     font-size: 0.8em;
   }
 
-  .replyButton {
+  .threadReplyButton {
     float: right;
     display: block;
     font-weight: bold;
