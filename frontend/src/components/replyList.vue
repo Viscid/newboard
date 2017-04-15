@@ -2,17 +2,14 @@
   <ul class="replies">
     <li :key="reply._id" v-for="reply in replies" class="reply">
       <div class="expandedReply" v-if="selectedReply === reply._id">
-        <div class="postHeader">
-          <span class="postUsername"> {{ reply.username }} </span> -
-          <span class="postDatetime"> {{ getDate(reply.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </span>
-          <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}" class="threadReplyButton"> reply </router-link>
-        </div>
+        <postHeader :post="reply"> </postHeader>
         <div class="postBody">
           <span class="postMessage"> {{ reply.message }} </span>
         </div>
       </div>
       <div v-else>
-        <span class="replyUsername"> {{reply.username}} </span>: <span :class="replyOrderWeight(reply.replyOrder)"> <a class="replyMessageInline" @click="selectReply(reply._id)"> {{reply.message.slice(0, 50) + '...'}} </a> </span>
+        <span class="replyUsername"> {{reply.username}} </span>: <span :class="replyOrderWeight(reply.replyOrder)">
+        <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
         <router-link v-show="loggedIn" class="replyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> reply </router-link>
       </div>
      <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :parent="reply"> </replyList>
@@ -22,20 +19,19 @@
 
 <script>
 import replyList from './replyList'
-import fecha from 'fecha'
+
+import postHeader from './postHeader'
 
 export default {
   props: ['parent', 'replyCount'],
   name: 'replyList',
   components: {
-    replyList
+    replyList,
+    postHeader
   },
   methods: {
     hasReplies (parentId) {
       return (parentId in this.$store.state.posts.replies)
-    },
-    getDate (date, style) {
-      return fecha.format(new Date(date), style)
     },
     replyOrderWeight (replyOrder) {
       switch (this.replyCount - replyOrder) {
@@ -63,6 +59,11 @@ export default {
     },
     selectReply (replyId) {
       this.$store.dispatch('selectReply', replyId)
+    },
+    trimReply (message) {
+      let length = message.length
+      if (length > 50) return message.slice(0, 80) + '...'
+      else return message
     }
   },
 
@@ -98,7 +99,7 @@ export default {
     margin: 0;
     margin-left: 1em;
     padding-left: 0.5em;
-    border-left: 1px solid #EEE;
+    border-left: 1px solid #DADADA;
   }
 
   .reply {

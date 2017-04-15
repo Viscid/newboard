@@ -13,6 +13,7 @@ var postSchema = mongoose.Schema({
   parentId: mongoose.Schema.Types.ObjectId,
   replyCount: { type: Number },
   replyOrder: { type: Number },
+  lastReply: { type: Date },
   root: mongoose.Schema.Types.ObjectId,
   slug: { type: String, slug: ['username', 'message'], unique: true }
 })
@@ -32,8 +33,6 @@ router.post('/', function(req, res) {
         message: req.body.post.message
       }
 
-      console.log(newPost)
-
       if ('parentId' in sentPost) { // Post is a reply to another post.
         Post.findById(sentPost.parentId, function(err, parentPost) { // Fetch the parent post
           if (err) {
@@ -42,9 +41,9 @@ router.post('/', function(req, res) {
             newPost.root = (parentPost.root) ? parentPost.root : parentPost._id
             newPost.parentId = parentPost._id
 
-            Post.findOneAndUpdate({_id: newPost.root}, { $inc: {replyCount: 1}}).exec(function (err, rootThread) {
+            Post.findOneAndUpdate({_id: newPost.root}, { $inc: {replyCount: 1}, lastReply: new Date()}, { upsert: true }).exec(function (err, rootThread) {
               newPost.replyOrder = rootThread.replyCount ? rootThread.replyCount + 1 : 1
-              console.log(newPost)
+
               var reply = new Post(newPost)
 
               reply.save(function (err) {
@@ -65,9 +64,52 @@ router.post('/', function(req, res) {
   } else res.sendStatus(500) // User is not logged in.
 })
 
+router.get('/:slug', function(req, res) {
+  var slug = req.params.slug
+
+  Post.findOne({ slug: slug }, function(err, queriedPost) {
+    var activePost = queriedPost
+    var thread = {}
+    var replyDict = {}
+
+    if (queriedPost.get('root')) {
+      
+      Post.findOne({ _id: queriedPost.root }, function(err, queriedThread) {
+        thread = queriedThread.toObject()
+        
+        Post.find({ root: thread._id})
+          .exec(function(err, queriedReplies) {
+
+            replyDict = buildDictionaryFromReplyResults(queriedReplies)
+
+            res.json({
+              thread: thread,
+              replies: replyDict,
+              activePost: activePost
+            })
+
+          })
+      })
+    } else {
+      thread = queriedPost
+      
+      Post.find({ root: thread._id})
+        .exec(function(err, queriedReplies) {
+          replyDict = buildDictionaryFromReplyResults(queriedReplies)
+
+          res.json({
+            thread: thread,
+            replies: replyDict,
+            activePost: activePost
+          })
+        })        
+    }
+  })
+})
+
 router.get('/', function(req, res) {
   Post.find({ root: { $exists: false } })
-    .sort( { datetime: -1 } )
+    .sort( { lastReply: -1 } )
     .exec(function(err, threadResults) {
       if (err) { 
         res.send(500) // Some sort of DB error
@@ -80,13 +122,7 @@ router.get('/', function(req, res) {
           if (err) {
             res.send(500) // Some sort of DB error with replies
           } else {
-            var replyDict = {}
-            replyResults.forEach(function(replyResult) {
-              var replyParentId = replyResult.parentId
-              if (replyDict.hasOwnProperty(replyParentId)) {
-                replyDict[replyParentId].push(replyResult)
-              } else { replyDict[replyParentId] = [replyResult] }
-            })
+            var replyDict = buildDictionaryFromReplyResults(replyResults)
             res.json({threads: threadResults, replies: replyDict})
           }
         })
@@ -94,18 +130,22 @@ router.get('/', function(req, res) {
     })
 })
 
-router.get('/:slug', function(req, res) {
-  console.log('Finding: ', req.params.slug)
-  Post.findOne({'slug': req.params.slug}, function(err, post) {
-    if (err) res.send(500)
-    res.json(post)
-  })
-})
-
 module.exports = router
 
 
+function buildDictionaryFromReplyResults(results) {
+  var dict = {}
 
+  results.forEach(function(result) {
+    var parentId = result.parentId
+    if (dict.hasOwnProperty(parentId)) {
+      dict[parentId].push(result)
+    } else { dict[parentId] = [result] }
+  })
+
+  return dict
+}
+            
 
 
 

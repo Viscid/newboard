@@ -20,8 +20,6 @@ export default {
   },
   mutations: {
     setPosts (state, posts) {
-      /* state.replies = Vue.set(state, 'replies', posts.replies)
-      state.threads = Vue.set(state, 'threads', posts.threads) */
       state.posts = posts
     },
     setReplyPost (state, post) {
@@ -32,6 +30,10 @@ export default {
     },
     setSelectedReply (state, replyId) {
       state.selectedReply = replyId
+    },
+    setActiveThread (state, data) {
+      state.posts = { threads: [data.thread], replies: data.replies }
+      state.selectedReply = data.activePost._id
     },
     stashPostMessage (state, post) {
       state.postMessage = post.message
@@ -52,6 +54,12 @@ export default {
     getPosts ({dispatch, commit}) {
       axios.get(API_URL + '/post', { withCredentials: true }).then((res) => {
         commit('setPosts', res.data)
+      })
+    },
+
+    getThreadBySlug (context, slug) {
+      axios.get(API_URL + '/post/' + slug, { withCredentials: true }).then((res) => {
+        context.commit('setActiveThread', res.data)
       })
     },
 

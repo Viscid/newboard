@@ -6,6 +6,7 @@ import LoginContainer from '@/containers/LoginContainer'
 import ProfileContainer from '@/containers/ProfileContainer'
 import ComposerContainer from '@/containers/ComposerContainer'
 import ReplyContainer from '@/containers/ReplyContainer'
+import PostViewerContainer from '@/containers/PostViewerContainer'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/reply/:slug',
       name: 'Reply',
       component: ReplyContainer
+    },
+    {
+      path: '/p/:slug',
+      name: 'PostViewer',
+      component: PostViewerContainer
     }
   ]
 })

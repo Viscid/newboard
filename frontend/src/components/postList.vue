@@ -2,11 +2,7 @@
 
 <ul>
   <li :key="thread._id" v-for="thread in threads">
-    <div class="postHeader">
-      <span class="postUsername"> {{ thread.username }} </span> -
-      <span class="postDatetime"> {{ getDate(thread.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </span>
-      <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: thread.slug, post: thread }}" class="threadReplyButton"> reply </router-link>
-    </div>
+    <postHeader :post="thread"> </postHeader>
     <div class="postBody">
       <span class="postMessage"> {{ thread.message }} </span>
     </div>
@@ -18,18 +14,17 @@
 
 <script>
 import replyList from './replyList'
-import fecha from 'fecha'
+
+import postHeader from './postHeader'
 
 export default {
   name: 'postList',
-  props: ['loggedIn', 'threads', 'replies'],
+  props: ['loggedIn', 'threads'],
   components: {
-    replyList
+    replyList,
+    postHeader
   },
   methods: {
-    getDate (date, style) {
-      return fecha.format(new Date(date), style)
-    },
     hasReplies (post) {
       return (post._id in this.$store.state.posts.replies)
     }
@@ -61,8 +56,20 @@ export default {
     border-bottom: 1px solid #AAA;
   }
 
+
+  .postDatetime a {
+    text-decoration: none;
+    font-style: italic;
+    color: inherit;
+  }
+
+  .postDatetime a:hover {
+    text-decoration: underline;
+  }
+
   .postBody {
     padding: 1em;
+    word-wrap: break-word;
   }
 
   .postDatetime {
