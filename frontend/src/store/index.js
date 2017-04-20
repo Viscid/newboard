@@ -1,5 +1,4 @@
 import axios from 'axios'
-// import Vue from 'vue'
 
 const API_URL = 'http://localhost:2222'
 
@@ -9,6 +8,9 @@ export default {
     selectedReply: '',
     replyPost: {},
     user: {},
+    options: {
+      postLimit: 5
+    },
     posts: {
       threads: [],
       replies: {}
@@ -16,7 +18,8 @@ export default {
     status: {
       visible: false,
       message: undefined
-    }
+    },
+    page: 1
   },
   mutations: {
     setPosts (state, posts) {
@@ -27,6 +30,9 @@ export default {
     },
     setUser (state, user) {
       state.user = user
+    },
+    setPage (state, page) {
+      state.page = page
     },
     setSelectedReply (state, replyId) {
       state.selectedReply = replyId
@@ -51,8 +57,8 @@ export default {
   },
   actions: {
 
-    getPosts ({dispatch, commit}) {
-      axios.get(API_URL + '/post', { withCredentials: true }).then((res) => {
+    getPosts ({dispatch, commit}, page = 1, threadsPerPage = 15) {
+      axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true }).then((res) => {
         commit('setPosts', res.data)
       })
     },
@@ -115,6 +121,11 @@ export default {
 
     selectReply (context, replyId) {
       context.commit('setSelectedReply', replyId)
+    },
+
+    setPage ({dispatch, commit}, page) {
+      commit('setPage', page)
+      dispatch('getPosts', page)
     },
 
     stashPostMessage ({dispatch, commit}, message) {

@@ -35,11 +35,12 @@ export default {
 <style>
   ul {
     padding: 0;
+    margin: 0;
   }
 
   li {
     list-style: none;
-    margin: 1em;
+    margin: 0 1em;
     margin-bottom: 3em;
     background-color: white;
   }

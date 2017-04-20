@@ -1,15 +1,17 @@
 <template>
     <div id="homeContainer">
+        <paginator> </paginator>
         <postList :loggedIn="loggedIn" :threads="threads"> </postList>
     </div>
 </template>
 
 <script>
 import postList from '../components/postList'
+import paginator from '../components/paginator'
 
 export default {
   name: 'HomeContainer',
-  components: { postList },
+  components: { postList, paginator },
   beforeCreate () {
     this.$store.dispatch('getPosts')
   },

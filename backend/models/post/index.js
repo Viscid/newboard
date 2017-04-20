@@ -13,7 +13,7 @@ var postSchema = mongoose.Schema({
   parentId: mongoose.Schema.Types.ObjectId,
   replyCount: { type: Number },
   replyOrder: { type: Number },
-  lastReply: { type: Date },
+  lastReply: { type: Date, default: Date.now },
   root: mongoose.Schema.Types.ObjectId,
   slug: { type: String, slug: ['username', 'message'], unique: true }
 })
@@ -108,8 +108,14 @@ router.get('/:slug', function(req, res) {
 })
 
 router.get('/', function(req, res) {
+
+  var page = Number(req.query.page)
+  var threadsPerPage = Number(req.query.threadsPerPage)
+  console.log(typeof(threadsPerPage))
   Post.find({ root: { $exists: false } })
     .sort( { lastReply: -1 } )
+    .limit ( threadsPerPage )
+    .skip( (page - 1) * threadsPerPage )
     .exec(function(err, threadResults) {
       if (err) { 
         res.send(500) // Some sort of DB error
