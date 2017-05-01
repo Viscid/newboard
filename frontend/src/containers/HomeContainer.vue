@@ -1,6 +1,6 @@
 <template>
     <div id="homeContainer">
-        <paginator> </paginator>
+        <paginator :page="page" action="setPage"> </paginator>
         <postList :loggedIn="loggedIn" :threads="threads"> </postList>
     </div>
 </template>
@@ -18,7 +18,8 @@ export default {
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
     threads () { return this.$store.state.posts.threads },
-    replies () { return this.$store.state.posts.replies }
+    replies () { return this.$store.state.posts.replies },
+    page () { return this.$store.state.page }
   }
 }
 </script>

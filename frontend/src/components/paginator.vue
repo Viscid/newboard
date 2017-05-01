@@ -10,15 +10,10 @@
 
 <script>
 export default {
-  data () {
-    return {
-      page: 20
-    }
-  },
+  props: ['page', 'action'],
   methods: {
     setPage (n) {
-      this.page = n
-      this.$store.dispatch('setPage', this.page)
+      this.$store.dispatch(this.action, n)
     },
     pageShift (n) {
       return this.page - 5 + n
@@ -61,7 +56,6 @@ export default {
 
  .paginatorFirst, .paginatorLast {
    font-size: 0.9em;
-   font-weight: bold;
  }
 
  .paginatorPage {
@@ -69,7 +63,7 @@ export default {
  }
 
  .active {
-   text-decoration: underline;
+   font-size: 1.25em;
  }
 
 </style>

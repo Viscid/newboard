@@ -4,7 +4,7 @@
   <li :key="thread._id" v-for="thread in threads">
     <postHeader :post="thread"> </postHeader>
     <div class="postBody">
-      <span class="postMessage"> {{ thread.message }} </span>
+      <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage"> </formattedMessage>
     </div>
     <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :parent="thread"></replyList>
   </li>
@@ -16,13 +16,15 @@
 import replyList from './replyList'
 
 import postHeader from './postHeader'
+import formattedMessage from './formattedMessage'
 
 export default {
   name: 'postList',
   props: ['loggedIn', 'threads'],
   components: {
     replyList,
-    postHeader
+    postHeader,
+    formattedMessage
   },
   methods: {
     hasReplies (post) {
@@ -77,13 +79,4 @@ export default {
     font-weight: normal;
     font-size: 0.8em;
   }
-
-  .threadReplyButton {
-    float: right;
-    display: block;
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
-  }
-
 </style>

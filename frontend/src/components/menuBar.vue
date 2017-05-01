@@ -4,8 +4,9 @@
       --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--       
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
+      --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }"> Search </router-link><!--
       --><router-link class="profileLink" v-show="isLoggedIn" :to="{ name: 'Profile' }"> {{ getUser.username }}  </router-link><!--
-      --><a @click="logout" v-show="isLoggedIn"> Logout </a>
+      --><a @click="logout" v-show="isLoggedIn"> Sign out </a>
     </div>
 </template>
 
@@ -29,18 +30,20 @@ export default {
 
 <style scoped>
   #menuBar {
-    background: linear-gradient(to bottom, #ff5656 30%, #aa4439 100%);
+    background: #aa4439;
     margin: 0;
     text-align: left;
     height: 50px;
     line-height: 50px;
+    min-width: 300px;
+    padding: 0 1.25em;
   }
 
   a {
     display: inline-block;
     text-decoration: none;
     color: #DDD;
-    padding: 0 1em;
+    padding: 0 0.5em;
     margin: 0;
     transition: color 0.25s;
     cursor: pointer;
@@ -52,6 +55,7 @@ export default {
 
   .profileLink {
     float: right;
+    font-weight: bold;
     display: inline-block;
   }
 </style>

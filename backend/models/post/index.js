@@ -2,6 +2,9 @@ var express = require('express')
 var mongoose = require('mongoose')
 var router = express.Router()
 
+var formattedMessage = require('../../helpers/formattedMessage.js')
+var tags = require('../../../config/tags.js')
+
 mongoose.plugin(require('mongoose-slug-generator'), { 
   truncate: 35
 })
@@ -10,6 +13,7 @@ var postSchema = mongoose.Schema({
   username: String,
   datetime: { type: Date, default: Date.now },
   message: String,
+  formattedMessage: Array,
   parentId: mongoose.Schema.Types.ObjectId,
   replyCount: { type: Number },
   replyOrder: { type: Number },
@@ -21,16 +25,18 @@ var postSchema = mongoose.Schema({
 var Post = mongoose.model('Post', postSchema)
 
 router.post('/', function(req, res) {
-  console.log(req.body)
   if ('user' in req.session && 'username' in req.session.user) { // Check if user is logged in.
 
     if ('post' in req.body) {
       
       var sentPost = req.body.post
+    
+      var message = new formattedMessage(tags, sentPost.message)
 
       var newPost = {
         username: req.session.user.username,
-        message: req.body.post.message
+        message: message.unformattedMessage,
+        formattedMessage: message.formattedMessage,
       }
 
       if ('parentId' in sentPost) { // Post is a reply to another post.
@@ -111,7 +117,6 @@ router.get('/', function(req, res) {
 
   var page = Number(req.query.page)
   var threadsPerPage = Number(req.query.threadsPerPage)
-  console.log(typeof(threadsPerPage))
   Post.find({ root: { $exists: false } })
     .sort( { lastReply: -1 } )
     .limit ( threadsPerPage )
@@ -151,30 +156,3 @@ function buildDictionaryFromReplyResults(results) {
 
   return dict
 }
-            
-
-
-
-/*
-
-var express = require('express')
-var router = express.Router()
-var mongoose = require('mongoose')
-var config = require('../../config')
-
-mongoose.connect(config.database)
-
-var userSchema = mongoose.Schema({
-  username: String,
-  password: String
-})
-
-var User = mongoose.model('User', userSchema)
-
-var someUsers = [
-    {name: 'Viscid', password: 'woobie'},
-    {name: 'Needles', password: 'scoobie'},
-    {name: 'Deevee', password: 'sh00bie'},
-]
-
-*/

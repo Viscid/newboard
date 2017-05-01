@@ -7,6 +7,7 @@ import ProfileContainer from '@/containers/ProfileContainer'
 import ComposerContainer from '@/containers/ComposerContainer'
 import ReplyContainer from '@/containers/ReplyContainer'
 import PostViewerContainer from '@/containers/PostViewerContainer'
+import SearchContainer from '@/containers/SearchContainer'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/p/:slug',
       name: 'PostViewer',
       component: PostViewerContainer
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: SearchContainer
     }
   ]
 })

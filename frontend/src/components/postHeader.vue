@@ -16,10 +16,26 @@ export default {
   methods: {
     getDate (date, style) {
       return fecha.format(new Date(date), style)
-    },
+    }
+  },
+  computed: {
     loggedIn () {
       return ('username' in this.$store.state.user)
     }
   }
 }
 </script>
+
+<style>
+  .threadReplyButton {
+    float: right;
+    display: block;
+    font-weight: bold;
+    text-decoration: none;
+    color: #AAA;
+  }
+
+  .threadReplyButton:hover {
+    color: black;
+  }
+</style>

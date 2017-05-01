@@ -47,7 +47,7 @@ export default {
   .replyFormSubmit {
     max-width: 100%;
     width: 100vw;
-    background-color: #ff5656;
+    background-color: #aa4439;
     cursor: pointer;
     color: white;
     border: 0;

@@ -57,7 +57,7 @@ export default {
   }
 
   .postButton {
-    background-color: #ff5656;
+    background-color: #aa4439;
     cursor: pointer;
     color: white;
     border: 0;
@@ -70,7 +70,7 @@ export default {
   }
 
   .postButton:hover {
-    background-color: #ff6666;
+    background-color: #aa4439;
   }
 
 </style>
