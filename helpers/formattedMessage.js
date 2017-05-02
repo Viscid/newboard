@@ -15,6 +15,8 @@ module.exports = function (formattingTags, message) {
         var childElements = elementList.slice(i + 1, elementEnd)
         siblingNodes.push({class: element.class, content: this._getSiblings(childElements)})
         i = elementEnd
+      } else if (typeof(element) === 'object' && (element.type === 'link')) {
+        siblingNodes.push({class: 'link', href: element.href[0] })
       }
     }
     return siblingNodes
@@ -87,12 +89,15 @@ module.exports = function (formattingTags, message) {
     var nextTag
     var firstTagPos
     formattingTags.forEach(function(tag) {
-      var thisTagPos = message.indexOf(tag.match)
+      var thisTagPos = message.search(tag.match)
       if ((thisTagPos >= 0) && ((firstTagPos === undefined) || (thisTagPos < firstTagPos))) {
         nextTag = tag
         nextTag.position = thisTagPos
-        nextTag.length = tag.match.length
         firstTagPos = thisTagPos
+        if (nextTag.type === 'link') {
+           nextTag.href = message.match(tag.match)
+           nextTag.length = nextTag.href[0].length
+        }
       }
     })
     
