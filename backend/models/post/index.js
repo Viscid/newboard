@@ -2,7 +2,7 @@ var express = require('express')
 var mongoose = require('mongoose')
 var router = express.Router()
 
-var formattedMessage = require('../../helpers/formattedMessage.js')
+var formattedMessage = require('../../../helpers/formattedMessage.js')
 var tags = require('../../../config/tags.js')
 
 mongoose.plugin(require('mongoose-slug-generator'), { 

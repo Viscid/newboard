@@ -57,5 +57,6 @@ export default {
     float: right;
     font-weight: bold;
     display: inline-block;
+    color: white;
   }
 </style>

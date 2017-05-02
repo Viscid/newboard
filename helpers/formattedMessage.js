@@ -8,6 +8,7 @@ module.exports = function (formattingTags, message) {
     var siblingNodes = []
     for (var i = 0; i < elementList.length; i++) {
       var element = elementList[i]
+      
       if (typeof(element) === 'string') siblingNodes.push(element)
       else if (typeof(element) === 'object' && (element.type === 'open')) {
         var elementEnd = this._findElementEnd(i, elementList)
@@ -73,6 +74,7 @@ module.exports = function (formattingTags, message) {
       delete nextTag.position
       tagList.push(nextTag)
     }
+    if (message.length) tagList.push(message)
     return tagList
   }
 
@@ -100,5 +102,4 @@ module.exports = function (formattingTags, message) {
   this.elementList = this._getElementList(formattingTags, message)
   this.unformattedMessage = this._getUnformattedMessage()
   this.formattedMessage = this._getSiblings(this.elementList)
-  console.log(this.formattedMessage)
 }
