@@ -1,6 +1,6 @@
 <template>
     <div id="LoginContainer">
-        <h2> Login </h2>
+        <h1> Login </h1>
         <loginForm></loginForm>
     </div>
 </template>
@@ -18,12 +18,12 @@ export default {
 
 <style scoped>
 #LoginContainer {
-  margin: 2em 0;
+
 }
 
-h2 {
+h1 {
   text-align: left;
-  margin: 30px 15px;
+  margin: 10px 15px 40px 15px;
 }
 
 

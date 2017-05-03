@@ -23,5 +23,7 @@ module.exports = [
   { class: 'big', type: 'close', match: /\]\^/, length: 2 },
   { class: 'small', type: 'open', match: /\.\[/, length: 2 },
   { class: 'small', type: 'close', match: /\]\./, length: 2 },
+  { class: 'pre', type: 'open', match: /q\[/, length: 2 },
+  { class: 'pre', type: 'close', match: /\]q/, length: 2 },
   { type: 'link', match: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ }                
 ]

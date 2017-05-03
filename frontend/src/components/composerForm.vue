@@ -2,8 +2,8 @@
   <form id="composerForm" @submit.prevent="submitPost">
     <span class="editing">
     <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
-    <hr> 
-    <div class="postPreview"> 
+    <div v-show="hasFormatting" class="postPreview">
+      <hr>
       <formattedMessage :formattedMessage="fMessage"></formattedMessage>
     </div>
     </span>    
@@ -24,7 +24,7 @@ export default {
   },
   components: { formattedMessage },
   created () {
-    this.postMessage = this.$store.state.postMessage
+    this.postMessage = this.$store.state.postMessage || ''
   },
   mounted () {
     this.$refs.postTextarea.focus()
@@ -33,6 +33,11 @@ export default {
     fMessage () {
       let formattedMessage = new FormattedMessage(tags, this.postMessage || '')
       return formattedMessage.formattedMessage
+    },
+    hasFormatting () {
+      return tags.some((tag) => {
+        return (this.postMessage.search(tag.match) >= 0)
+      })
     }
   },
   beforeDestroy () {
@@ -73,14 +78,15 @@ export default {
     font-size: 1.25em;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     outline: none;
-    height: 300px;
+    height: 30vh;
   }
 
   .postPreview {
     padding: 15px;
     text-align: left;
-    transition: height 1s ease;
+    transition: visibility 1s ease;
     margin: 1em 0 2em 0;
+    min-height: 30vh
   }
 
   #composerForm {

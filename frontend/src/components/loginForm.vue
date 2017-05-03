@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submitRegistration" id="loginForm">
       <h3> Username </h3>
-        <input id="formUsername" class="field" v-model="username" />
+        <input id="formUsername" class="field" v-model="username" autofocus/>
       <h3> Password </h3>
         <input id="formPassword" class="field" type="password" v-model="password">
       <br />
@@ -50,7 +50,7 @@ form {
 }
 
 h3 {
-  margin: 0;
+  margin-bottom: 10px;
   text-align: left;
   font-size: 1em;
 }

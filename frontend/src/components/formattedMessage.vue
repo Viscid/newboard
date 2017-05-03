@@ -1,14 +1,12 @@
 <script>
   export default {
     functional: true,
-    props: ['formattedMessage', 'message'],
     render: function (createElement, context) {
       if (!context.props.formattedMessage) return createElement('div', { attrs: { class: 'formattedMessage' } }, context.props.message)
       return limbs(context.props.formattedMessage)
 
       function limbs (limb) {
         let branches = []
-        console.log(limb)
         if ('class' in limb) {
           if (limb.class === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
           let attrs = { attrs: { class: limb.class } }
@@ -55,4 +53,5 @@
   .italic { font-style: italic; }
   .big { font-size: 1.8em; }
   .small { font-size: 0.6em; }
+  .pre { font-family: monospace; white-space: pre;  }
 </style>

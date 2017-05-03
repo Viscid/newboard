@@ -27,6 +27,7 @@ export default {
 </script>
 
 <style>
+
   .threadReplyButton {
     float: right;
     display: block;

@@ -45,7 +45,7 @@ export default {
  }
 
  li {
-   margin: 0.5em 0.5em 0.5em 0.5em;
+   margin: 0.5em 0.5em 0 0.5em;
    list-style: none;
    display: inline-block;
  }
