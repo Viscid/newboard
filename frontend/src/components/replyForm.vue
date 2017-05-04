@@ -45,8 +45,6 @@ export default {
   }
 
   .replyFormSubmit {
-    max-width: 100%;
-    width: 100vw;
     background-color: #aa4439;
     cursor: pointer;
     color: white;
@@ -56,9 +54,10 @@ export default {
     font-size: 1.2em;
     margin: 0;
     padding: 0;
+    width: 300px;
   }
 
   .replyFormSubmit:hover {
-    background-color: #ff6666;
+    background-color: #7a2419;
   }  
 </style>

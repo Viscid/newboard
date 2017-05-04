@@ -1,13 +1,16 @@
 <template>
     <form @submit.prevent="submitRegistration" id="registrationForm">
       <h3> Username </h3>
-        <input id="formUsername" class="field" v-model="username" />
+        <input name="username" v-validate="'required|alpha_dash|max:15'" id="formUsername" class="field" v-model="username" />
+        <span class="error" v-show="errors.has('username')"> {{ errors.first('username') }} </span>  
       <h3> Password </h3>
-        <input id="formPassword" class="field" type="password" v-model="password">
+        <input name="password" v-validate="'required|max:200'" id="formPassword" class="field" type="password" v-model="password">
+        <span class="error" v-show="errors.has('password')"> {{ errors.first('password') }} </span>  
       <h3> E-mail </h3>
-        <input id="formEmail" class="field" v-model="email">        
+        <input name="email" v-validate="'required|email'" id="formEmail" class="field" v-model="email">
+        <span class="error" v-show="errors.has('email')"> {{ errors.first('email') }} </span>
       <br />
-        <input class="submitButton" value="Register" type="submit" />
+        <input class="registerButton" value="Register" type="submit" />
     </form>
 </template>
 
@@ -16,11 +19,13 @@
     name: 'registrationForm',
     methods: {
       submitRegistration () {
-        var user = { username: this.username, password: this.password }
-        this.$store.dispatch('submitRegistration', user).then(() => {
-          this.$router.push('/')
-        })
-        this.$store.dispatch('setStatus', 'Registering User')
+        if (!this.errors.any()) {
+          var user = { username: this.username, password: this.password, email: this.email }
+          this.$store.dispatch('submitRegistration', user).then(() => {
+            this.$router.push('/')
+          })
+          this.$store.dispatch('setStatus', 'Registering User')
+        }
       }
     },
     data () {
@@ -41,7 +46,6 @@
 
 form {
   text-align: left;
-  width: 300px;
 }
 
 .field {
@@ -51,16 +55,40 @@ form {
   border-bottom: 1px solid #AAA;
   font-size: 20px;
   padding: 5px;
+  outline: none;
 }
 
 h3 {
-  margin: 0;
+  margin-bottom: 10px;
   text-align: left;
   font-size: 1em;
+  font-weight: normal;
 }
 
-.submitButton {
+.registerButton {
   font-size: 18px;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em;
+  width: 100%;
+  cursor: pointer;
 }
+
+.invalid {
+  border: 1px solid red;
+}
+
+.registerButton:hover {
+  background-color: #aa4439;
+  color: white;
+  border: 1px solid white;
+}
+
+.error {
+  color: red;
+  display: inline-block;
+  margin: 0 0 1em 0;
+}
+
 
 </style>

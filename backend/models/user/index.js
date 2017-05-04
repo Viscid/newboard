@@ -9,8 +9,7 @@ var userSchema = mongoose.Schema({
 
 var User = mongoose.model('User', userSchema)
 
-router.post('/register', function(req, res) {
-  console.log(req.body)
+router.post('/register', validateRegistrationFields, function(req, res) {
   if (req.body.hasOwnProperty('user')) {
     console.log('Creating user: ' + req.body.user.username + ' with password ' + req.body.user.password)
     var newUser = new User({
@@ -22,8 +21,29 @@ router.post('/register', function(req, res) {
       res.json(registeredUser)
     })
   }
-  
 })
+
+function validateRegistrationFields(req, res, next) {
+  console.log('Validating registration data...', req.body)
+  if (req.body.hasOwnProperty('user')) {
+    var username = req.body.user.username
+    var password = req.body.user.password
+    var email = req.body.user.email
+  
+
+    if (!username || !password || !email) {
+      res.status(500).send({error: 'Missing registration fields.'})
+    } else if (username.length > 15) res.status(500).send({error: 'Username length is too long'})
+    else if (password.length > 200) res.status(500).send({error: 'Password length is too long'})
+    else if (password.length > 100) res.status(500).send({error: 'E-Mail length is too long'})
+    else if (!/^[\w\-\s]+$/.test(username)) {
+      console.log(!/^[\w\-\s]+$/.test(username))
+      res.status(500).send({error: 'Username contains invalid characters'})
+    } else next()
+  } else {
+    res.status(500).send({error: 'Invalid registration data'})
+  }
+}
 
 router.put('/login', function(req, res) {
   if (req.session.user && !req.body.user.hasOwnProperty('username')) {

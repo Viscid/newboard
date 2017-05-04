@@ -1,6 +1,6 @@
 <template>
     <div id="LoginContainer">
-        <h1> Login </h1>
+        <h2> Login </h2>
         <loginForm></loginForm>
     </div>
 </template>
@@ -18,12 +18,22 @@ export default {
 
 <style scoped>
 #LoginContainer {
-
+  display: block;
+  margin: 2em auto;
+  padding: 0;
+  border: 1px solid #AAA;
+  width: 300px;
 }
 
-h1 {
-  text-align: left;
-  margin: 10px 15px 40px 15px;
+h2 {
+  display: inline-block;
+  background-color: #aa4439;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #DDD;
+  margin: 0;
+  width: 100%;
 }
 
 

@@ -71,7 +71,7 @@ export default {
 
     getReplyPost ({dispatch, commit}, slug) {
       axios.get(API_URL + '/post/' + slug, { withCredentials: true }).then((res) => {
-        commit('setReplyPost', res.data)
+        commit('setReplyPost', res.data.activePost)
       })
     },
 

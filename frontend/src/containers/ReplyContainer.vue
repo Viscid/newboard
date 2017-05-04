@@ -1,21 +1,23 @@
 <template>
   <div class="postReply">
     <h1> {{ post.username }} </h1>
-    <p> {{ post.message }} </p>
+    <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage"></formattedMessage>
     <replyForm :parentId="post._id"></replyForm>
   </div>
 </template>
 
 <script>
 import replyForm from '@/components/replyForm'
+import formattedMessage from '@/components/formattedMessage'
 
 export default {
   components: {
-    replyForm
+    replyForm, formattedMessage
   },
-  created () {
+  mounted () {
     ('post' in this.$route.params)
-    ? this.$store.dispatch('setReplyPost', this.$route.params.post) : this.$store.dispatch('getReplyPost', this.$route.params.slug)
+    ? this.$store.dispatch('setReplyPost', this.$route.params.post)
+    : this.$store.dispatch('getReplyPost', this.$route.params.slug)
   },
   computed: {
     post () {
