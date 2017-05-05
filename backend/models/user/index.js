@@ -3,45 +3,50 @@ var router = express.Router()
 var mongoose = require('mongoose')
 
 var userSchema = mongoose.Schema({
-  username: String,
+  username: { type: String, index: { unique: true }},
+  email: String,
   password: String
 })
 
 var User = mongoose.model('User', userSchema)
 
+var errors = require('../helpers/errors.js')
+
 router.post('/register', validateRegistrationFields, function(req, res) {
-  if (req.body.hasOwnProperty('user')) {
-    console.log('Creating user: ' + req.body.user.username + ' with password ' + req.body.user.password)
-    var newUser = new User({
-      username: req.body.user.username,
-      password: req.body.user.password
-    })
-    newUser.save(function (err, registeredUser) {
-      if(err) res.send(500)
-      res.json(registeredUser)
-    })
-  }
+  var user = req.body.user
+
+  User.count({email: user.email}, function(err, count) {
+    if (err) res.status(500).send({ error: 'Error finding submitted e-mail of user.'})
+    if (count > 0) res.status(500).send(errors.emailUsed)
+    else {
+      var newUser = new User({
+        username: user.username,
+        password: user.password,
+        email: user.email
+      })
+
+      newUser.save(function (err, registeredUser) {
+        if (err && err.code == 11000) res.status(500).send(errors.usernameTaken)
+        res.json(registeredUser)
+      })
+    }
+  })
 })
 
 function validateRegistrationFields(req, res, next) {
-  console.log('Validating registration data...', req.body)
   if (req.body.hasOwnProperty('user')) {
-    var username = req.body.user.username
-    var password = req.body.user.password
-    var email = req.body.user.email
+    var user = req.body.user
   
-
-    if (!username || !password || !email) {
-      res.status(500).send({error: 'Missing registration fields.'})
-    } else if (username.length > 15) res.status(500).send({error: 'Username length is too long'})
-    else if (password.length > 200) res.status(500).send({error: 'Password length is too long'})
-    else if (password.length > 100) res.status(500).send({error: 'E-Mail length is too long'})
-    else if (!/^[\w\-\s]+$/.test(username)) {
-      console.log(!/^[\w\-\s]+$/.test(username))
-      res.status(500).send({error: 'Username contains invalid characters'})
+    if (!user.username || !user.password || !user.email) {
+      res.status(500).send(errors.missingRegistrationFields)
+    } else if (user.username.length > 15) res.status(500).send(errors.usernameLength)
+    else if (user.password.length > 200) res.status(500).send(errors.passwordLenth)
+    else if (user.email.length > 100) res.status(500).send(errors.emailLength)
+    else if (!/^[\w\-\s]+$/.test(user.username)) {
+      res.status(500).send(errors.usernameInvalidCharacters)
     } else next()
   } else {
-    res.status(500).send({error: 'Invalid registration data'})
+    res.status(500).send(errors.invalidRegistrationData)
   }
 }
 

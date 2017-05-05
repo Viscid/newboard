@@ -35,7 +35,7 @@ export default {
     text-align: left;
     height: 50px;
     line-height: 50px;
-    min-width: 300px;
+    min-width: 430px;
     padding: 0 1.25em;
   }
 

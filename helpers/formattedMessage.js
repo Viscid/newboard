@@ -13,10 +13,10 @@ module.exports = function (formattingTags, message) {
       else if (typeof(element) === 'object' && (element.type === 'open')) {
         var elementEnd = this._findElementEnd(i, elementList)
         var childElements = elementList.slice(i + 1, elementEnd)
-        if (childElements.length) siblingNodes.push({class: element.class, content: this._getSiblings(childElements)})
+        if (childElements.length) siblingNodes.push({c: element.class, t: this._getSiblings(childElements)})
         i = elementEnd
       } else if (typeof(element) === 'object' && (element.type === 'link')) {
-        siblingNodes.push({class: 'link', href: element.href[0] })
+        siblingNodes.push({c: 'link', href: element.href[0] })
       }
     }
     return siblingNodes

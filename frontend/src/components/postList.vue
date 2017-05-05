@@ -43,7 +43,7 @@ export default {
   li {
     list-style: none;
     margin: 0 1em;
-    margin-bottom: 3em;
+    margin-bottom: 1.5em;
     background-color: white;
   }
 

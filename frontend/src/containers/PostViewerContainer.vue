@@ -1,5 +1,5 @@
 <template>
-    <div id="homeContainer">
+    <div id="postViewerContainer">
         <postList :loggedIn="loggedIn" :threads="thread"> </postList>
     </div>
 </template>
@@ -24,3 +24,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  #postViewerContainer {
+    margin: 20px 0;
+  }
+
+</style>

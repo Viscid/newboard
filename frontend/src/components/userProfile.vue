@@ -16,7 +16,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
 h3 {
   margin: 0;

@@ -29,6 +29,8 @@ h2 {
   display: inline-block;
   background-color: #aa4439;
   color: white;
+  font-weight: normal;
+  font-size: 1.2em;
   text-align: center;
   padding: 5px 0;
   border-bottom: 1px solid #DDD;

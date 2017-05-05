@@ -21,8 +21,14 @@
       submitRegistration () {
         if (!this.errors.any()) {
           var user = { username: this.username, password: this.password, email: this.email }
-          this.$store.dispatch('submitRegistration', user).then(() => {
+          this.$store.dispatch('submitRegistration', user)
+          .then(() => {
             this.$router.push('/')
+          })
+          .catch((error) => {
+            let serverError = error.response.data
+            if (serverError.type === 'USERNAME_TAKEN') this.errors.add('username', serverError.message)
+            if (serverError.type === 'EMAIL_USED') this.errors.add('email', serverError.message)
           })
           this.$store.dispatch('setStatus', 'Registering User')
         }
@@ -50,7 +56,6 @@ form {
 
 .field {
   width: 250px;
-  margin-bottom: 1em;
   border: 0px;
   border-bottom: 1px solid #AAA;
   font-size: 20px;
@@ -59,16 +64,18 @@ form {
 }
 
 h3 {
-  margin-bottom: 10px;
   text-align: left;
-  font-size: 1em;
   font-weight: normal;
+  margin: 10px 0;
+  font-size: 1em;
+  font-weight: bold;
 }
 
 .registerButton {
   font-size: 18px;
   background-color: white;
   border: 1px solid black;
+  margin-top: 2em;
   padding: 0.25em;
   width: 100%;
   cursor: pointer;
@@ -87,7 +94,9 @@ h3 {
 .error {
   color: red;
   display: inline-block;
-  margin: 0 0 1em 0;
+  margin: 0 0 15px 0;
+  font-size: 0.8em;
+  font-weight: bold;
 }
 
 

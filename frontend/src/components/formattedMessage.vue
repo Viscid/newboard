@@ -7,17 +7,16 @@
 
       function limbs (limb) {
         let branches = []
-        if ('class' in limb) {
-          if (limb.class === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
-          let attrs = { attrs: { class: limb.class } }
-          if ('content' in limb) { branches = limb.content.map((branch) => { return checkBranchType(branch) }) }
-          return createElement('span', attrs, branches)
+        if ('c' in limb) {
+          if (limb.c === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
+          if ('t' in limb) { branches = limb.t.map((branch) => { return _checkBranchType(branch) }) }
+          return createElement('span', { attrs: { class: limb.c } }, branches)
         } else if (Array.isArray(limb)) {
-          branches = limb.map((branch) => { return checkBranchType(branch) })
+          branches = limb.map((branch) => { return _checkBranchType(branch) })
           return createElement('div', { attrs: { class: 'formattedMessage' } }, branches)
         }
 
-        function checkBranchType (branch) {
+        function _checkBranchType (branch) {
           return (typeof (branch) === 'string') ? branch : limbs(branch)
         }
       }
