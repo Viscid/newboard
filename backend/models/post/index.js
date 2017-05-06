@@ -117,7 +117,8 @@ router.get('/', function(req, res) {
 
   var page = Number(req.query.page)
   var threadsPerPage = Number(req.query.threadsPerPage)
-  Post.find({ root: { $exists: false } })
+  Post.find({ root: { $exists: false } }, '')
+    .select('-message')
     .sort( { lastReply: -1 } )
     .limit ( threadsPerPage )
     .skip( (page - 1) * threadsPerPage )

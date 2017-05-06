@@ -1,10 +1,14 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
+var config = require('../../config.js')
+
+var bcrypt = require('bcrypt')
 
 var userSchema = mongoose.Schema({
   username: { type: String, index: { unique: true }},
   email: String,
+  hash: String,
   password: String
 })
 
@@ -19,15 +23,18 @@ router.post('/register', validateRegistrationFields, function(req, res) {
     if (err) res.status(500).send({ error: 'Error finding submitted e-mail of user.'})
     if (count > 0) res.status(500).send(errors.emailUsed)
     else {
-      var newUser = new User({
-        username: user.username,
-        password: user.password,
-        email: user.email
-      })
+      bcrypt.hash(user.password, config.bcryptSaltRounds, function(err, hash) {
+        if(err) res.sendStatus(500)
+        var newUser = new User({
+          username: user.username,
+          hash: hash,
+          email: user.email
+        })
 
-      newUser.save(function (err, registeredUser) {
-        if (err && err.code == 11000) res.status(500).send(errors.usernameTaken)
-        res.json(registeredUser)
+        newUser.save(function (err, registeredUser) {
+          if (err && err.code == 11000) res.status(500).send(errors.usernameTaken)
+          res.json(registeredUser)
+        })        
       })
     }
   })
@@ -57,12 +64,21 @@ router.put('/login', function(req, res) {
   }
   var user = req.body.user
   User.findOne({username: user.username}, function (err, foundUser) {
-    if (err) res.send(500)
-    if (foundUser.password === user.password) {
-      req.session.user = foundUser
-      res.json(foundUser)
-    } else {
-      res.send(500)
+    if (err) res.sendStatus(500)
+    else if (!foundUser) res.send(500) 
+    else {
+      bcrypt.compare(user.password, foundUser.hash).then(function(success) {
+        
+        if (success === true) {
+          req.session.user = foundUser
+          foundUser = foundUser.toObject()
+          delete foundUser['hash']
+          console.log('sending', foundUser)
+          res.json(foundUser)
+        } else {
+          res.send(500)
+        }
+      })
     }
   })
 })
