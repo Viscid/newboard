@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent="submitRegistration" id="loginForm">
       <h3> Username </h3>
-        <input name="username" v-validate="'required'" ref='usernameField' id="formUsername" class="field" v-model="username" autofocus/>
+        <input name="username" data-vv-validate-on="none" v-validate="'required'" ref='usernameField' id="formUsername" class="field" v-model="username" autofocus/>
         <span class="error" v-show="errors.has('username')"> {{errors.first('username')}} </span>
       <h3> Password </h3>
-        <input name="password" v-validate="'required'" id="formPassword" class="field" type="password" v-model="password">
+        <input name="password" data-vv-validate-on="none" v-validate="'required'" id="formPassword" class="field" type="password" v-model="password">
         <span class="error" v-show="errors.has('password')"> {{errors.first('password')}} </span>
       <br />
         <input class="submitButton" value="Submit" type="submit" />
@@ -16,10 +16,21 @@
     name: 'registrationForm',
     methods: {
       submitRegistration () {
-        var user = { username: this.username, password: this.password }
-        this.$store.dispatch('loginUser', user).then(() => {
-          this.$router.push('/')
+        this.$validator.validateAll()
+        .then(() => {
+          var user = { username: this.username, password: this.password }
+          this.$store.dispatch('loginUser', user)
+          .then(() => {
+            this.$router.push('/')
+          })
+          .catch((error) => {
+            let serverError = error.response.data
+            this.errors.add('username', serverError.message)
+          })
         })
+       .catch((errors) => {
+         console.log(errors)
+       })
       }
     },
     mounted () {

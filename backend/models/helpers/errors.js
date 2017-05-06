@@ -6,5 +6,6 @@ module.exports = {
   passwordLenth: { type: 'PASSWORD_LENGTH', message: 'Password is too long.' },
   emailLength: { type: 'EMAIL_LENGTH', message: 'Email is too long.' },
   usernameInvalidCharacters: { type: 'USERNAME_INVALID_CHARACTERS', message: 'Username contains invalid characters.' },
-  invalidRegistrationData: { type: 'INVALID_REGISTRATION_DATA', message: 'Registration data contains invalid information.' }
+  invalidRegistrationData: { type: 'INVALID_REGISTRATION_DATA', message: 'Registration data contains invalid information.' },
+  loginCredentialsInvalid: { type: 'INVALID_LOGIN_CREDENTIALS', message: 'Invalid Username or Password.' }
 }

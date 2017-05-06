@@ -133,7 +133,11 @@ export default {
     },
 
     logout ({dispatch, commit}) {
-      commit('logout')
+      axios.put(API_URL + '/user/logout', null, { withCredentials: true }).then((res) => {
+        commit('logout')
+      }).catch((err) => {
+        console.log(err)
+      })
     }
 
   }

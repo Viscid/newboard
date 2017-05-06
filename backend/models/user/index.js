@@ -21,10 +21,10 @@ router.post('/register', validateRegistrationFields, function(req, res) {
 
   User.count({email: user.email}, function(err, count) {
     if (err) res.status(500).send({ error: 'Error finding submitted e-mail of user.'})
-    if (count > 0) res.status(500).send(errors.emailUsed)
+    if (count > 0) res.status(400).send(errors.emailUsed)
     else {
       bcrypt.hash(user.password, config.bcryptSaltRounds, function(err, hash) {
-        if(err) res.sendStatus(500)
+        if(err) res.status(500).send({ error: 'Error hashing password.'})
         var newUser = new User({
           username: user.username,
           hash: hash,
@@ -64,23 +64,25 @@ router.put('/login', function(req, res) {
   }
   var user = req.body.user
   User.findOne({username: user.username}, function (err, foundUser) {
-    if (err) res.sendStatus(500)
-    else if (!foundUser) res.send(500) 
+    if (err) res.status(500).send({error: 'Error finding user.'})
+    else if (!foundUser) res.status(404).send(errors.loginCredentialsInvalid) 
     else {
-      bcrypt.compare(user.password, foundUser.hash).then(function(success) {
-        
-        if (success === true) {
+      bcrypt.compare(user.password, foundUser.hash).then(function(succ) {
+        if (succ === true) {
           req.session.user = foundUser
           foundUser = foundUser.toObject()
           delete foundUser['hash']
           console.log('sending', foundUser)
           res.json(foundUser)
-        } else {
-          res.send(500)
-        }
+        } else res.status(404).send(errors.loginCredentialsInvalid) 
       })
     }
   })
+})
+
+router.put('/logout', function (req, res) {
+  if (req.session.user) delete req.session.user
+  res.sendStatus(204)
 })
 
 module.exports = router
