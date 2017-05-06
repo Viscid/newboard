@@ -28,6 +28,8 @@ export default {
 h2 {
   display: inline-block;
   background-color: #aa4439;
+  font-weight: normal;
+  font-size: 1.2em;
   color: white;
   text-align: center;
   padding: 5px 0;

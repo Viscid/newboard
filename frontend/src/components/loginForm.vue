@@ -1,9 +1,11 @@
 <template>
     <form @submit.prevent="submitRegistration" id="loginForm">
       <h3> Username </h3>
-        <input ref='usernameField' id="formUsername" class="field" v-model="username" autofocus/>
+        <input name="username" v-validate="'required'" ref='usernameField' id="formUsername" class="field" v-model="username" autofocus/>
+        <span class="error" v-show="errors.has('username')"> {{errors.first('username')}} </span>
       <h3> Password </h3>
-        <input id="formPassword" class="field" type="password" v-model="password">
+        <input name="password" v-validate="'required'" id="formPassword" class="field" type="password" v-model="password">
+        <span class="error" v-show="errors.has('password')"> {{errors.first('password')}} </span>
       <br />
         <input class="submitButton" value="Submit" type="submit" />
     </form>
@@ -44,7 +46,6 @@ form {
 
 .field {
   width: 250px;
-  margin-bottom: 1em;
   border: 0px;
   border-bottom: 1px solid #AAA;
   font-size: 20px;
@@ -53,14 +54,14 @@ form {
 }
 
 h3 {
-  margin-bottom: 10px;
+  margin-top: 10px;
   text-align: left;
   font-size: 1em;
-  font-weight: normal;
 }
 
 .submitButton {
   font-size: 18px;
+  margin-top: 1em;
   background-color: white;
   border: 1px solid black;
   padding: 0.25em;
@@ -72,6 +73,12 @@ h3 {
   background-color: #aa4439;
   color: white;
   border: 1px solid white;
+}
+
+.error {
+  display: inline-block;
+  color: red;
+  margin: 10px 0;
 }
 
 
