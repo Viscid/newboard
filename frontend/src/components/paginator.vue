@@ -45,7 +45,7 @@ export default {
  }
 
  li {
-   margin: 0.5em 0.5em 0 0.5em;
+   margin: 10px 10px 0 10px;
    list-style: none;
    display: inline-block;
  }
@@ -55,11 +55,11 @@ export default {
  }
 
  .paginatorFirst, .paginatorLast {
-   font-size: 0.9em;
+   font-size: 15px;
  }
 
  .paginatorPage {
-   font-size: 0.9em;
+   font-size: 15px;
  }
 
  .active {

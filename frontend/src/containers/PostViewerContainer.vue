@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
   #postViewerContainer {
-    margin: 20px 0;
+    margin: 32px 0;
   }
 
 </style>

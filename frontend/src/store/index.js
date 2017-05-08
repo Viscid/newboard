@@ -5,6 +5,7 @@ const API_URL = 'http://localhost:2222'
 export default {
   state: {
     postMessage: undefined,
+    searchResults: [],
     selectedReply: '',
     replyPost: {},
     user: {},
@@ -27,6 +28,9 @@ export default {
     },
     setReplyPost (state, post) {
       state.replyPost = post
+    },
+    setSearchResults (state, results) {
+      state.searchResults = results
     },
     setUser (state, user) {
       state.user = user
@@ -56,6 +60,11 @@ export default {
     }
   },
   actions: {
+    search (context, query) {
+      axios.post(API_URL + '/post/find/', { query }, { withCredentials: true }).then((res) => {
+        context.commit('setSearchResults', res.data)
+      })
+    },
 
     getPosts ({dispatch, commit}, page = 1, threadsPerPage = 15) {
       axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true }).then((res) => {

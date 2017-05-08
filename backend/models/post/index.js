@@ -22,6 +22,8 @@ var postSchema = mongoose.Schema({
   slug: { type: String, slug: ['username', 'message'], unique: true }
 })
 
+postSchema.index({message: 'text', username: 'text'})
+
 var Post = mongoose.model('Post', postSchema)
 
 router.post('/', function(req, res) {
@@ -110,6 +112,16 @@ router.get('/:slug', function(req, res) {
           })
         })        
     }
+  })
+})
+
+router.post('/find/', function(req, res) {
+  var query = req.body.query
+  Post.find({$text: {$search: query}})
+  .select('-formattedMessage')
+  .exec(function(err, results) {
+    if(err) res.status(500).json(err)
+    res.json(results)
   })
 })
 

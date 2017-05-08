@@ -1,6 +1,6 @@
 <template>
     <div id="menuBar"> 
-      <router-link to="/"> Home </router-link><!--
+      <router-link to="/" @click="setPage" > Home </router-link><!--
       --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--       
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
@@ -22,7 +22,12 @@ export default {
   },
   methods: {
     logout () {
-      this.$store.dispatch('logout')
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push('/')
+      })
+    },
+    setPage () {
+      this.$store.dispatch('setPage', 1)
     }
   }
 }

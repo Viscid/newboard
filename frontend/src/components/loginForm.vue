@@ -27,10 +27,7 @@
             let serverError = error.response.data
             this.errors.add('username', serverError.message)
           })
-        })
-       .catch((errors) => {
-         console.log(errors)
-       })
+        }).catch(() => {})
       }
     },
     mounted () {

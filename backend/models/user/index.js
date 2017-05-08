@@ -33,7 +33,10 @@ router.post('/register', validateRegistrationFields, function(req, res) {
 
         newUser.save(function (err, registeredUser) {
           if (err && err.code == 11000) res.status(500).send(errors.usernameTaken)
-          res.json(registeredUser)
+          req.session.user = registeredUser
+          var returnedUser = registeredUser.toObject()
+          delete returnedUser['hash']
+          res.json(returnedUser)
         })        
       })
     }

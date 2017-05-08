@@ -102,6 +102,13 @@ export default {
     border-left: 1px solid #DADADA;
   }
 
+  @media (max-device-width: 480px) {
+    .replies {
+      margin-left: 2px;
+      padding-left: 0.25em;
+    }
+  }
+
   .reply {
     margin: 0;
     padding-top: 5px;

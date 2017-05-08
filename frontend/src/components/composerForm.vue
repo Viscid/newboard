@@ -2,10 +2,9 @@
   <form id="composerForm" @submit.prevent="submitPost">
     <span class="editing">
     <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
-    <div v-show="hasFormatting" class="postPreview">
-      <hr>
-      <formattedMessage :formattedMessage="fMessage"></formattedMessage>
-    </div>
+    <transition name="formatting-preview">
+        <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage"></formattedMessage>
+    </transition>
     </span>    
     <input class="postButton" type="submit" />
   </form>
@@ -62,6 +61,15 @@ export default {
 </script>
 
 <style scoped>
+
+  .formattedMessage.formatting-preview-enter {
+    height: 1px;
+  }
+
+  .formattedMessage.formatting-preview-enter-active {
+    transition: height 1.5s ease;
+  }
+
   .editing {
     text-align: left;
   }
@@ -81,12 +89,11 @@ export default {
     height: 30vh;
   }
 
-  .postPreview {
+  .formattedMessage {
     padding: 15px;
     text-align: left;
-    transition: visibility 1s ease;
     margin: 1em 0 2em 0;
-    min-height: 30vh
+    height: 30vh;
   }
 
   #composerForm {
