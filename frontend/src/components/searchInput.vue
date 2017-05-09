@@ -16,6 +16,7 @@ export default {
     },
     clear () {
       this.$refs.searchInput.value = ''
+      this.$store.dispatch('clearSearchResults')
     }
   }
 }

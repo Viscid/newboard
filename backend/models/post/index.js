@@ -77,40 +77,23 @@ router.get('/:slug', function(req, res) {
 
   Post.findOne({ slug: slug }, function(err, queriedPost) {
     var activePost = queriedPost
-    var thread = {}
-    var replyDict = {}
 
     if (queriedPost.get('root')) {
-      
       Post.findOne({ _id: queriedPost.root }, function(err, queriedThread) {
-        thread = queriedThread.toObject()
-        
-        Post.find({ root: thread._id})
-          .exec(function(err, queriedReplies) {
-
-            replyDict = buildDictionaryFromReplyResults(queriedReplies)
-
-            res.json({
-              thread: thread,
-              replies: replyDict,
-              activePost: activePost
-            })
-
-          })
+        var thread = queriedThread.toObject()
+        sendThread(thread, activePost)
       })
     } else {
-      thread = queriedPost
-      
-      Post.find({ root: thread._id})
-        .exec(function(err, queriedReplies) {
-          replyDict = buildDictionaryFromReplyResults(queriedReplies)
+      var thread = queriedPost.toObject()
+      sendThread(thread, activePost)    
+    }
 
-          res.json({
-            thread: thread,
-            replies: replyDict,
-            activePost: activePost
-          })
-        })        
+    function sendThread(thread, activePost) {
+      Post.find({ root: thread._id})
+      .exec(function(err, queriedReplies) {
+        var threadWithReplies = attachRepliesToThreads([thread], queriedReplies)
+        res.json({ thread: threadWithReplies[0], activePost: activePost })
+      })       
     }
   })
 })
@@ -134,6 +117,7 @@ router.get('/', function(req, res) {
     .sort( { lastReply: -1 } )
     .limit ( threadsPerPage )
     .skip( (page - 1) * threadsPerPage )
+    .lean()
     .exec(function(err, threadResults) {
       if (err) { 
         res.send(500) // Some sort of DB error
@@ -146,8 +130,8 @@ router.get('/', function(req, res) {
           if (err) {
             res.send(500) // Some sort of DB error with replies
           } else {
-            var replyDict = buildDictionaryFromReplyResults(replyResults)
-            res.json({threads: threadResults, replies: replyDict})
+            var threads = attachRepliesToThreads(threadResults, replyResults)
+            res.json(threads)
           }
         })
       }
@@ -157,15 +141,21 @@ router.get('/', function(req, res) {
 module.exports = router
 
 
-function buildDictionaryFromReplyResults(results) {
-  var dict = {}
+function attachRepliesToThreads(threads, replies) {
+  threads.forEach(function(thread, index) {
+    threads[index].replies = {}
 
-  results.forEach(function(result) {
-    var parentId = result.parentId
-    if (dict.hasOwnProperty(parentId)) {
-      dict[parentId].push(result)
-    } else { dict[parentId] = [result] }
+    var filteredReplies = replies.filter(function(reply) {
+      return (threads[index]._id.toString() === reply.root.toString())
+    })
+    
+    filteredReplies.forEach(function(reply) {
+      var parent = reply['parentId'].toString()
+
+      if (threads[index].replies.hasOwnProperty(parent)) threads[index].replies[parent].push(reply)
+      else threads[index].replies[parent] = [reply]
+    })
   })
 
-  return dict
+  return threads
 }

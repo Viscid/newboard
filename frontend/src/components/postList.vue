@@ -6,7 +6,7 @@
     <div class="postBody">
       <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage"> </formattedMessage>
     </div>
-    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :parent="thread"></replyList>
+    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id"></replyList>
   </li>
 </ul>
 
@@ -27,8 +27,8 @@ export default {
     formattedMessage
   },
   methods: {
-    hasReplies (post) {
-      return (post._id in this.$store.state.posts.replies)
+    hasReplies (thread) {
+      return thread.hasOwnProperty('replies') ? (thread._id in thread['replies']) : false
     }
   }
 }

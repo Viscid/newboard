@@ -1,10 +1,9 @@
 <template>
 
-  <ul>
-    <li v-for="result in results">
-      <result :key="result._id" :value="result"> </result>
-    </li>
-  </ul>
+  <table v-show="results.length">
+      <thead> <td> User </td> <td> Message </td> <td> Date &amp; Time </td> </thead>
+      <result v-for="result in results" :key="result._id" :value="result"> </result>
+  </table>
 
 </template>
 
@@ -20,5 +19,11 @@ export default {
 </script>
 
 <style>
+thead {
+  font-weight: bold;
+}
 
+table {
+  margin: 0 auto;
+}
 </style>

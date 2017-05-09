@@ -1,16 +1,16 @@
 <template>
-  <span>
-    <span class="username"> {{ value.username }} </span>
-    <span class="message"> <router-link :to="{ name: 'PostViewer', params: { slug: value.slug } }"> {{ value.message }} </router-link> </span>
-    <span class="datetime"> {{ getDate(value.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </span>
-  </span>
+  <tr>
+    <td class="username"> {{ value.username }} </td>
+    <td class="message"> <router-link :to="{ name: 'PostViewer', params: { slug: value.slug } }"> {{ value.message }} </router-link> </td>
+    <td class="datetime"> {{ getDate(value.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </td>
+  </tr>
 </template>
 
 <script>
 import fecha from 'fecha'
 
 export default {
-  name: 'Search Result',
+  name: 'SearchResult',
   props: ['value'],
   methods: {
     getDate (date, style) {

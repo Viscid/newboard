@@ -1,8 +1,8 @@
 <template> 
   <ul class="replies">
-    <li :key="reply._id" v-for="reply in replies" class="reply">
+    <li :key="reply._id" v-for="reply in thread.replies[parent]" class="reply">
       <div class="expandedReply" v-if="selectedReply === reply._id">
-        <postHeader :post="reply"> </postHeader>
+        <postHeader :post="reply" :thread="thread"> </postHeader>
         <div class="postBody">
           <span class="postMessage"> {{ reply.message }} </span>
         </div>
@@ -10,9 +10,9 @@
       <div v-else>
         <span class="replyUsername"> {{reply.username}} </span>: <span :class="replyOrderWeight(reply.replyOrder)">
         <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
-        <router-link v-show="loggedIn" class="replyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
+        <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
       </div>
-     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :parent="reply"> </replyList>
+     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :thread="thread" :parent="reply._id"> </replyList>
     </li>
   </ul>
 </template>
@@ -23,7 +23,7 @@ import replyList from './replyList'
 import postHeader from './postHeader'
 
 export default {
-  props: ['parent', 'replyCount'],
+  props: ['parent', 'replyCount', 'thread'],
   name: 'replyList',
   components: {
     replyList,
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     hasReplies (parentId) {
-      return (parentId in this.$store.state.posts.replies)
+      return (parentId in this.thread.replies)
     },
     replyOrderWeight (replyOrder) {
       switch (this.replyCount - replyOrder) {
@@ -68,9 +68,6 @@ export default {
   },
 
   computed: {
-    replies () {
-      return this.$store.state.posts.replies[this.parent._id]
-    },
     loggedIn () {
       return ('username' in this.$store.state.user)
     },
@@ -122,7 +119,7 @@ export default {
     color: #aa4439;
   }
 
-  .replyButton {
+  .shortReplyButton {
     display: inline-block;
     margin-left: 0.5em;
     text-decoration: none;
@@ -130,7 +127,7 @@ export default {
     font-size: 0.8em;
   }
 
-  .replyButton:hover {
+  .shortReplyButton:hover {
     color: #333;
   }
 

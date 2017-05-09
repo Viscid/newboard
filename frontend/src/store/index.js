@@ -7,15 +7,13 @@ export default {
     postMessage: undefined,
     searchResults: [],
     selectedReply: '',
+    activeThread: [],
     replyPost: {},
     user: {},
     options: {
       postLimit: 5
     },
-    posts: {
-      threads: [],
-      replies: {}
-    },
+    threads: [],
     status: {
       visible: false,
       message: undefined
@@ -23,14 +21,17 @@ export default {
     page: 1
   },
   mutations: {
-    setPosts (state, posts) {
-      state.posts = posts
+    setThreads (state, threads) {
+      state.threads = threads
     },
     setReplyPost (state, post) {
       state.replyPost = post
     },
     setSearchResults (state, results) {
       state.searchResults = results
+    },
+    clearSearchResults (state) {
+      state.searchResults = []
     },
     setUser (state, user) {
       state.user = user
@@ -42,7 +43,7 @@ export default {
       state.selectedReply = replyId
     },
     setActiveThread (state, data) {
-      state.posts = { threads: [data.thread], replies: data.replies }
+      state.activeThread = data.thread
       state.selectedReply = data.activePost._id
     },
     stashPostMessage (state, post) {
@@ -66,9 +67,9 @@ export default {
       })
     },
 
-    getPosts ({dispatch, commit}, page = 1, threadsPerPage = 15) {
+    getThreads ({dispatch, commit}, page = 1, threadsPerPage = 15) {
       axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true }).then((res) => {
-        commit('setPosts', res.data)
+        commit('setThreads', res.data)
       })
     },
 
@@ -135,6 +136,10 @@ export default {
     setPage ({dispatch, commit}, page) {
       commit('setPage', page)
       dispatch('getPosts', page)
+    },
+
+    clearSearchResults (context) {
+      context.commit('clearSearchResults')
     },
 
     stashPostMessage ({dispatch, commit}, message) {

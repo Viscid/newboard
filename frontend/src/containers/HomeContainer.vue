@@ -13,12 +13,11 @@ export default {
   name: 'HomeContainer',
   components: { postList, paginator },
   beforeCreate () {
-    this.$store.dispatch('getPosts')
+    this.$store.dispatch('getThreads')
   },
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
-    threads () { return this.$store.state.posts.threads },
-    replies () { return this.$store.state.posts.replies },
+    threads () { return this.$store.state.threads },
     page () { return this.$store.state.page }
   }
 }
