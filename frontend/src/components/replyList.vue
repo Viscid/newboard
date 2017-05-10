@@ -4,7 +4,7 @@
       <div class="expandedReply" v-if="selectedReply === reply._id">
         <postHeader :post="reply" :thread="thread"> </postHeader>
         <div class="postBody">
-          <span class="postMessage"> {{ reply.message }} </span>
+          <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage"></formattedMessage>
         </div>
       </div>
       <div v-else>
@@ -21,19 +21,22 @@
 import replyList from './replyList'
 
 import postHeader from './postHeader'
+import formattedMessage from '@/components/formattedMessage.vue'
 
 export default {
   props: ['parent', 'replyCount', 'thread'],
   name: 'replyList',
   components: {
     replyList,
-    postHeader
+    postHeader,
+    formattedMessage
   },
   methods: {
     hasReplies (parentId) {
       return (parentId in this.thread.replies)
     },
     replyOrderWeight (replyOrder) {
+      console.log(this.replyCount, replyOrder)
       switch (this.replyCount - replyOrder) {
         case 0:
           return 'ro0'

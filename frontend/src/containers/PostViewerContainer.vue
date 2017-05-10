@@ -21,6 +21,9 @@ export default {
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
     thread () { return ('_id' in this.$store.state.activeThread) ? [this.$store.state.activeThread] : [] }
+  },
+  destroyed () {
+    this.$store.dispatch('clearPostViewer')
   }
 }
 </script>

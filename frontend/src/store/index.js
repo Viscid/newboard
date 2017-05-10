@@ -46,6 +46,9 @@ export default {
       state.activeThread = data.thread
       state.selectedReply = data.activePost._id
     },
+    clearActiveThread (state) {
+      state.activeThread = {}
+    },
     stashPostMessage (state, post) {
       state.postMessage = post.message
     },
@@ -140,6 +143,10 @@ export default {
 
     clearSearchResults (context) {
       context.commit('clearSearchResults')
+    },
+
+    clearPostViewer (context) {
+      context.commit('clearActiveThread')
     },
 
     stashPostMessage ({dispatch, commit}, message) {

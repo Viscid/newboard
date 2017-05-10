@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .username {
     font-weight: bold;
     color: #aa4439;
@@ -29,6 +29,7 @@ export default {
   .message {
     font-style: italic;
     padding: 0.5em;
+    min-width: 300px;
   }
 
   .datetime {

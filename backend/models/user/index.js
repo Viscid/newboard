@@ -33,10 +33,12 @@ router.post('/register', validateRegistrationFields, function(req, res) {
 
         newUser.save(function (err, registeredUser) {
           if (err && err.code == 11000) res.status(500).send(errors.usernameTaken)
-          req.session.user = registeredUser
-          var returnedUser = registeredUser.toObject()
-          delete returnedUser['hash']
-          res.json(returnedUser)
+          else {
+            var returnedUser = registeredUser.toObject()
+            req.session.user = registeredUser
+            delete returnedUser['hash']
+            res.json(returnedUser)
+          }
         })        
       })
     }
@@ -72,10 +74,9 @@ router.put('/login', function(req, res) {
     else {
       bcrypt.compare(user.password, foundUser.hash).then(function(succ) {
         if (succ === true) {
-          req.session.user = foundUser
           foundUser = foundUser.toObject()
+          req.session.user = foundUser
           delete foundUser['hash']
-          console.log('sending', foundUser)
           res.json(foundUser)
         } else res.status(404).send(errors.loginCredentialsInvalid) 
       })
