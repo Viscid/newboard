@@ -34,9 +34,7 @@ export default {
       return formattedMessage.formattedMessage
     },
     hasFormatting () {
-      return tags.some((tag) => {
-        return (this.postMessage.search(tag.match) >= 0)
-      })
+      return tags.some(tag => this.postMessage.search(tag.match) >= 0)
     }
   },
   beforeDestroy () {
@@ -44,10 +42,7 @@ export default {
   },
   methods: {
     submitPost () {
-      const post = {
-        message: this.postMessage
-      }
-
+      const post = { message: this.postMessage }
       this.$store.dispatch('submitPost', post).then(() => {
         this.postMessage = ''
         this.$router.push('/')

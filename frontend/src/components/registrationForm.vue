@@ -1,17 +1,18 @@
 <template>
-    <form @submit.prevent="submitRegistration" id="registrationForm">
+    <form v-if="!destroying" @submit.prevent="submitRegistration" id="registrationForm">
       <h3> Username </h3>
-        <input name="username" v-validate="'required|alpha_dash|max:15'" id="formUsername" class="field" v-model="username" />
+        <input ref="username" name="username" v-validate="'required|alpha_dash|max:15'" id="formUsername" class="field" v-model="username" />
         <span class="error" v-show="errors.has('username')"> {{ errors.first('username') }} </span>  
       <h3> Password </h3>
-        <input name="password" v-validate="'required|max:200'" id="formPassword" class="field" type="password" v-model="password">
+        <input ref="password" ame="password" v-validate="'required|max:200'" id="formPassword" class="field" type="password" v-model="password">
         <span class="error" v-show="errors.has('password')"> {{ errors.first('password') }} </span>  
       <h3> E-mail </h3>
-        <input name="email" v-validate="'required|email'" id="formEmail" class="field" v-model="email">
+        <input ref="email" name="email" v-validate="'required|email'" id="formEmail" class="field" v-model="email">
         <span class="error" v-show="errors.has('email')"> {{ errors.first('email') }} </span>
       <br />
         <input class="registerButton" value="Register" type="submit" />
     </form>
+    
 </template>
 
 <script>
@@ -23,7 +24,12 @@
           var user = { username: this.username, password: this.password, email: this.email }
           this.$store.dispatch('submitRegistration', user)
           .then(() => {
-            this.$router.push('/')
+            this.$refs.username.blur()
+            this.$refs.password.blur()
+            this.$refs.email.blur()
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 10)
           })
           .catch((error) => {
             let serverError = error.response.data
@@ -32,14 +38,21 @@
           })
           this.$store.dispatch('setStatus', 'Registering User')
         }
+      },
+      changeDestroying () {
+        this.destroying = !this.destroying
       }
     },
     data () {
       return {
         username: undefined,
         password: undefined,
-        email: undefined
+        email: undefined,
+        destroying: false
       }
+    },
+    beforeDestroy () {
+      this.destroying = true
     }
   }
 </script>

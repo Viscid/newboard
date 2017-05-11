@@ -30,11 +30,6 @@ export default new Router({
       component: LoginContainer
     },
     {
-      path: '/profile',
-      name: 'Profile',
-      component: ProfileContainer
-    },
-    {
       path: '/compose',
       name: 'Compose',
       component: ComposerContainer
@@ -48,6 +43,11 @@ export default new Router({
       path: '/p/:slug',
       name: 'PostViewer',
       component: PostViewerContainer
+    },
+    {
+      path: '/u/:username',
+      name: 'UserProfile',
+      component: ProfileContainer
     },
     {
       path: '/search',

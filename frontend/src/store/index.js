@@ -132,13 +132,19 @@ export default {
       })
     },
 
+    // fetchProfile(context, username) {
+    //   return new Promise((resolve, reject) => {
+    //     axios.get(API_URL + '/user/profile/')
+    //   })
+    // },
+
     selectReply (context, replyId) {
       context.commit('setSelectedReply', replyId)
     },
 
     setPage ({dispatch, commit}, page) {
       commit('setPage', page)
-      dispatch('getPosts', page)
+      dispatch('getThreads', page)
     },
 
     clearSearchResults (context) {

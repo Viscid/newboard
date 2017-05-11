@@ -1,7 +1,14 @@
 <template>
   <div class="postReply">
-    <h1> {{ post.username }} </h1>
-    <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage"></formattedMessage>
+    <div class="postHeader">
+      <span class="postUsername"> {{ post.username }} </span> -
+      <span class="postDatetime">
+        <router-link v-if="'datetime' in post" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </router-link>
+      </span>
+    </div>
+    <div class="postBody">
+      <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage"></formattedMessage>
+    </div>
     <replyForm :parentId="post._id"></replyForm>
   </div>
 </template>
@@ -9,6 +16,7 @@
 <script>
 import replyForm from '@/components/replyForm'
 import formattedMessage from '@/components/formattedMessage'
+import fecha from 'fecha'
 
 export default {
   components: {
@@ -23,6 +31,11 @@ export default {
     post () {
       return (this.$route.params.slug === this.$store.state.replyPost.slug)
        ? this.$store.state.replyPost : {}
+    }
+  },
+  methods: {
+    getDate (date, style) {
+      return fecha.format(new Date(date), style)
     }
   }
 }

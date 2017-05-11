@@ -1,23 +1,29 @@
 <template>
     <div id="ProfileContainer">
-        <h2> Profile </h2>
-        <userProfile></userProfile>
+        <h2> {{ username }} </h2>
     </div>
 </template>
 
 <script>
-import userProfile from '../components/userProfile'
-
 export default {
   name: 'ProfileContainer',
-  components: {
-    userProfile
+  data () {
+    return {
+      username: this.$route.params.username
+    }
+  },
+  created () {
+    this.$store.dispatch('fetchProfile', this.username)
   }
 }
 </script>
 
-<style>
-#ProfileContainer {
-  margin: 2em 0;
+<style scoped>
+  #ProfileContainer {
+    margin: 1em;
+  }
+
+h2 {
+
 }
 </style>

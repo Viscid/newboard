@@ -1,18 +1,11 @@
 var express = require('express')
 var router = express.Router()
-var mongoose = require('mongoose')
+
 var config = require('../../config.js')
 
 var bcrypt = require('bcrypt')
 
-var userSchema = mongoose.Schema({
-  username: { type: String, index: { unique: true }},
-  email: String,
-  hash: String,
-  password: String
-})
-
-var User = mongoose.model('User', userSchema)
+var User = require('./User')
 
 var errors = require('../helpers/errors.js')
 

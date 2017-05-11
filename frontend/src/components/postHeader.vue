@@ -1,6 +1,6 @@
 <template>
   <div class="postHeader">
-    <span class="postUsername"> {{ post.username }} </span> -
+    <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> -
     <span class="postDatetime">
       <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </router-link>
     </span>

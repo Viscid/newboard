@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-else>
-        <span class="replyUsername"> {{reply.username}} </span>: <span :class="replyOrderWeight(reply.replyOrder)">
+        <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
         <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
         <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
       </div>
@@ -36,7 +36,6 @@ export default {
       return (parentId in this.thread.replies)
     },
     replyOrderWeight (replyOrder) {
-      console.log(this.replyCount, replyOrder)
       switch (this.replyCount - replyOrder) {
         case 0:
           return 'ro0'
@@ -120,6 +119,11 @@ export default {
   .replyUsername {
     font-weight: bold;
     color: #aa4439;
+    text-decoration: none;
+  }
+
+  .replyUsername:hover {
+    text-decoration: underline;
   }
 
   .shortReplyButton {

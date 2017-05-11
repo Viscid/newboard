@@ -50,6 +50,11 @@ export default {
   .postUsername {
     font-weight: bold;
     color: #aa4439;
+    text-decoration: none;
+  }
+
+  .postUsername:hover {
+    text-decoration: underline;
   }
 
   .postHeader {
@@ -71,7 +76,7 @@ export default {
   }
 
   .postBody {
-    padding: 1em;
+    padding: 0.75em 1em;
     word-wrap: break-word;
   }
 

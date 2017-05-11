@@ -33,18 +33,22 @@ export default {
 
 <style scoped>
   textarea {
+    box-sizing: border-box;
     display: block;
     height: 200px;
     width: 100vw;
     max-width: 100%;
+    border: 0;
+    border-top: 1px dashed #AAA;
     margin-bottom: 2em;
+    padding: 0.5em 1em;
     outline: none;
-    border: none;
     font-size: 1.2em;
     font-family: inherit;
   }
 
   .replyFormSubmit {
+    display: block;
     background-color: #aa4439;
     cursor: pointer;
     color: white;
@@ -52,7 +56,7 @@ export default {
     font-weight: bold;
     height: 50px;
     font-size: 1.2em;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     width: 300px;
   }

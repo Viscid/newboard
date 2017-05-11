@@ -5,7 +5,7 @@
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
       --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }"> Search </router-link><!--
-      --><router-link class="profileLink" v-show="isLoggedIn" :to="{ name: 'Profile' }"> {{ getUser.username }}  </router-link><!--
+      --><router-link v-if="username" class="profileLink" v-show="isLoggedIn" :to="{ name: 'UserProfile', params: { username } }"> {{ username }}  </router-link><!--
       --><a @click="logout" v-show="isLoggedIn"> Sign out </a>
     </div>
 </template>
@@ -13,8 +13,8 @@
 <script>
 export default {
   computed: {
-    getUser () {
-      return this.$store.state.user
+    username () {
+      return this.$store.state.user.username
     },
     isLoggedIn () {
       return 'username' in this.$store.state.user
