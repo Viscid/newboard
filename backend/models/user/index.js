@@ -6,8 +6,11 @@ var config = require('../../config.js')
 var bcrypt = require('bcrypt')
 
 var User = require('./User')
+var Post = require('../post/Post')
 
 var errors = require('../helpers/errors.js')
+
+var Promise = require('bluebird')
 
 router.post('/register', validateRegistrationFields, function(req, res) {
   var user = req.body.user
@@ -80,6 +83,37 @@ router.put('/login', function(req, res) {
 router.put('/logout', function (req, res) {
   if (req.session.user) delete req.session.user
   res.sendStatus(204)
+})
+
+router.get('/profile/:username', function (req, res) {
+  console.log(req.params)
+  var username = req.params.username
+  if (!username) res.status(500).send(errors.noProfileUsername)
+  else {
+    var profile = {}
+    Promise.all([
+      User.findOne({username: username})
+      .exec()
+      .then( function(user) {
+        profile['registered'] = user.registrationDate
+        profile['lastLogin'] = user.lastLogin
+      }),
+      Post.find({username: username})
+      .limit(10)
+      .sort( { datetime: -1 } )
+      .exec()
+      .then( function(posts) {
+        console.log(posts)
+        profile['lastPosts'] = posts
+      })
+    ])
+    .then(function () {
+      res.json(profile)
+    })
+    .catch(function() {
+      res.status(500).send(errors.errorFetchingProfile)
+    })
+  }
 })
 
 module.exports = router

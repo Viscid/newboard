@@ -7,5 +7,7 @@ module.exports = {
   emailLength: { type: 'EMAIL_LENGTH', message: 'Email is too long.' },
   usernameInvalidCharacters: { type: 'USERNAME_INVALID_CHARACTERS', message: 'Username contains invalid characters.' },
   invalidRegistrationData: { type: 'INVALID_REGISTRATION_DATA', message: 'Registration data contains invalid information.' },
-  loginCredentialsInvalid: { type: 'INVALID_LOGIN_CREDENTIALS', message: 'Invalid Username or Password.' }
+  loginCredentialsInvalid: { type: 'INVALID_LOGIN_CREDENTIALS', message: 'Invalid Username or Password.' },
+  noProfileUsername: { type: 'NO_PROFILE_USERNAME', message: 'No profile username specified.'},
+  errorFetchingProfile: { type: 'ERROR_FETCHING_PROFILE', message: 'Error fetching profile.'}
 }

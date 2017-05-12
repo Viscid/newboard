@@ -1,12 +1,24 @@
 <template>
     <div id="ProfileContainer">
-        <h2> {{ username }} </h2>
+        <h1 class="profileUsername"> {{ username }} </h1>
+        <hr>
+        <profileInfoBox :profileInfo="profileInfo"></profileInfoBox>
+        <h2 class="profileUserPostsHeader" :posts="userPosts"> {{ username }}'s Recent Posts </h2>
+        <profileUserPosts :posts="userPosts"></profileUserPosts>
     </div>
 </template>
 
 <script>
+import profileInfoBox from '@/components/profileInfoBox.vue'
+import profileUserPosts from '@/components/profileUserPosts.vue'
+import fecha from 'fecha'
+
 export default {
   name: 'ProfileContainer',
+  components: {
+    profileInfoBox,
+    profileUserPosts
+  },
   data () {
     return {
       username: this.$route.params.username
@@ -14,6 +26,22 @@ export default {
   },
   created () {
     this.$store.dispatch('fetchProfile', this.username)
+  },
+  computed: {
+    userPosts () {
+      return this.$store.state.activeProfile.lastPosts
+    },
+    profileInfo () {
+      const dateFormat = 'MMMM Do, YYYY @ h:mm:ssa'
+      let registrationDate = this.$store.state.activeProfile.registered
+      let lastPosted = ('lastPosts' in this.$store.state.activeProfile)
+        ? this.$store.state.activeProfile.lastPosts[0].datetime
+        : 'unknown'
+      return [
+        { description: 'Registered since', data: fecha.format(new Date(registrationDate), dateFormat) },
+        { description: 'Last posted', data: fecha.format(new Date(lastPosted), dateFormat) }
+      ]
+    }
   }
 }
 </script>
@@ -23,7 +51,18 @@ export default {
     margin: 1em;
   }
 
-h2 {
+  .profileUsername {
+    color: #aa4439;
+    margin-bottom: 0;
+  }
 
-}
+  .profileUserPostsHeader {
+    margin-top: 2em;
+    color: #aa4439;
+  }
+
+  hr {
+    border-style: solid;
+    border-color: #CCC;
+  }
 </style>

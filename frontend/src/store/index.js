@@ -8,6 +8,7 @@ export default {
     searchResults: [],
     selectedReply: '',
     activeThread: [],
+    activeProfile: {},
     replyPost: {},
     user: {},
     options: {
@@ -48,6 +49,9 @@ export default {
     },
     clearActiveThread (state) {
       state.activeThread = {}
+    },
+    setActiveProfile (state, profile) {
+      state.activeProfile = profile
     },
     stashPostMessage (state, post) {
       state.postMessage = post.message
@@ -132,11 +136,16 @@ export default {
       })
     },
 
-    // fetchProfile(context, username) {
-    //   return new Promise((resolve, reject) => {
-    //     axios.get(API_URL + '/user/profile/')
-    //   })
-    // },
+    fetchProfile (context, username) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/user/profile/' + username, { withCredentials: true }).then((res) => {
+          context.commit('setActiveProfile', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
 
     selectReply (context, replyId) {
       context.commit('setSelectedReply', replyId)

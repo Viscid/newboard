@@ -8,6 +8,7 @@ var MongoStore = require('connect-mongo')(session)
 var config = require('./config')
 
 var mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 mongoose.connect(config.database)
 
 app.use(bodyParser.urlencoded({ extended: true }))
