@@ -6,13 +6,14 @@
         <div class="postBody">
           <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage"></formattedMessage>
         </div>
+        <adminPostActions :post="reply" v-show="isAdmin"></adminPostActions>
       </div>
       <div v-else>
         <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
         <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
         <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
       </div>
-     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :thread="thread" :parent="reply._id"> </replyList>
+     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :thread="thread" :parent="reply._id" :isAdmin="isAdmin"> </replyList>
     </li>
   </ul>
 </template>
@@ -22,14 +23,16 @@ import replyList from './replyList'
 
 import postHeader from './postHeader'
 import formattedMessage from '@/components/formattedMessage.vue'
+import adminPostActions from '@/components/adminPostActions.vue'
 
 export default {
-  props: ['parent', 'replyCount', 'thread'],
+  props: ['parent', 'replyCount', 'thread', 'isAdmin'],
   name: 'replyList',
   components: {
     replyList,
     postHeader,
-    formattedMessage
+    formattedMessage,
+    adminPostActions
   },
   methods: {
     hasReplies (parentId) {

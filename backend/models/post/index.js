@@ -7,7 +7,9 @@ var tags = require('../../../config/tags.js')
 
 var Post = require('./Post')
 
-router.post('/', function(req, res) {
+var checkAccess = require('../helpers/checkAccess')
+
+router.post('/', checkAccess('user'), function(req, res) {
   if ('user' in req.session && 'username' in req.session.user) { // Check if user is logged in.
 
     if ('post' in req.body) {
@@ -53,7 +55,7 @@ router.post('/', function(req, res) {
   } else res.sendStatus(500) // User is not logged in.
 })
 
-router.get('/:slug', function(req, res) {
+router.get('/:slug', function(req, res) { // Returns a post as found by its slug. 
   var slug = req.params.slug
 
   Post.findOne({ slug: slug }, function(err, queriedPost) {
@@ -79,7 +81,7 @@ router.get('/:slug', function(req, res) {
   })
 })
 
-router.post('/find/', function(req, res) {
+router.post('/find/', checkAccess('user'), function(req, res) { // Searches for a text-indexed posts
   var query = req.body.query
   Post.find({$text: {$search: query}})
   .select('-formattedMessage')
@@ -94,7 +96,7 @@ router.get('/', function(req, res) {
   var page = Number(req.query.page)
   var threadsPerPage = Number(req.query.threadsPerPage)
   Post.find({ root: { $exists: false } }, '')
-    .select('-message')
+    // .select('-message')
     .sort( { lastReply: -1 } )
     .limit ( threadsPerPage )
     .skip( (page - 1) * threadsPerPage )
@@ -119,9 +121,6 @@ router.get('/', function(req, res) {
     })
 })
 
-module.exports = router
-
-
 function attachRepliesToThreads(threads, replies) {
   threads.forEach(function(thread, index) {
     threads[index].replies = {}
@@ -137,6 +136,7 @@ function attachRepliesToThreads(threads, replies) {
       else threads[index].replies[parent] = [reply]
     })
   })
-
   return threads
 }
+
+module.exports = router

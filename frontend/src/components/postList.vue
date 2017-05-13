@@ -6,7 +6,8 @@
     <div class="postBody">
       <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage"> </formattedMessage>
     </div>
-    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id"></replyList>
+    <adminPostActions :post="thread" v-show="isAdmin"></adminPostActions>
+    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id" :isAdmin="isAdmin"></replyList>
   </li>
 </ul>
 
@@ -17,14 +18,16 @@ import replyList from './replyList'
 
 import postHeader from './postHeader'
 import formattedMessage from './formattedMessage'
+import adminPostActions from './adminPostActions'
 
 export default {
   name: 'postList',
-  props: ['loggedIn', 'threads'],
+  props: ['loggedIn', 'threads', 'isAdmin'],
   components: {
     replyList,
     postHeader,
-    formattedMessage
+    formattedMessage,
+    adminPostActions
   },
   methods: {
     hasReplies (thread) {

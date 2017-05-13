@@ -1,10 +1,13 @@
 <template>
-    <div id="ProfileContainer">
+    <div v-if="hasProfile" id="ProfileContainer">
         <h1 class="profileUsername"> {{ username }} </h1>
         <hr>
         <profileInfoBox :profileInfo="profileInfo"></profileInfoBox>
         <h2 class="profileUserPostsHeader" :posts="userPosts"> {{ username }}'s Recent Posts </h2>
         <profileUserPosts :posts="userPosts"></profileUserPosts>
+    </div>
+    <div v-else id="ProfileContainer">
+      <h1 class="profileUsername"> Unknown User </h1>
     </div>
 </template>
 
@@ -27,20 +30,26 @@ export default {
   created () {
     this.$store.dispatch('fetchProfile', this.username)
   },
+  destroyed () {
+    this.$store.dispatch('clearActiveProfile')
+  },
   computed: {
     userPosts () {
       return this.$store.state.activeProfile.lastPosts
     },
     profileInfo () {
       const dateFormat = 'MMMM Do, YYYY @ h:mm:ssa'
-      let registrationDate = this.$store.state.activeProfile.registered
+      let registrationDate = this.$store.state.activeProfile.registered || new Date(0)
       let lastPosted = ('lastPosts' in this.$store.state.activeProfile)
         ? this.$store.state.activeProfile.lastPosts[0].datetime
-        : 'unknown'
+        : new Date(0)
       return [
         { description: 'Registered since', data: fecha.format(new Date(registrationDate), dateFormat) },
         { description: 'Last posted', data: fecha.format(new Date(lastPosted), dateFormat) }
       ]
+    },
+    hasProfile () {
+      return ('registered' in this.$store.state.activeProfile)
     }
   }
 }

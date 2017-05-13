@@ -4,6 +4,9 @@ const API_URL = 'http://localhost:2222'
 
 export default {
   state: {
+    admin: {
+      users: []
+    },
     postMessage: undefined,
     searchResults: [],
     selectedReply: '',
@@ -22,6 +25,9 @@ export default {
     page: 1
   },
   mutations: {
+    setAdminUserList (state, list) {
+      state.admin.users = list
+    },
     setThreads (state, threads) {
       state.threads = threads
     },
@@ -52,6 +58,9 @@ export default {
     },
     setActiveProfile (state, profile) {
       state.activeProfile = profile
+    },
+    clearActiveProfile (state) {
+      state.activeProfile = {}
     },
     stashPostMessage (state, post) {
       state.postMessage = post.message
@@ -145,6 +154,64 @@ export default {
           reject(err)
         })
       })
+    },
+
+    fetchAdminUserList (context) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/admin/users', { withCredentials: true }).then((res) => {
+          context.commit('setAdminUserList', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    adminChangeUserRole (context, roleChange) {
+      return new Promise((resolve, reject) => {
+        axios.put(API_URL + '/admin/user/' + roleChange.username, {role: roleChange.role}, { withCredentials: true }).then((res) => {
+          context.commit('setAdminUserList', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    adminNukePost ({dispatch, commit}, post) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/admin/post/' + post._id + '/nuke', { withCredentials: true }).then((res) => {
+          dispatch('getThreads')
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    adminDeletePost ({dispatch, commit}, post) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/admin/post/' + post._id + '/delete', { withCredentials: true }).then((res) => {
+          dispatch('getThreads')
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    adminBanUser (context, post) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/admin/post/' + post._id + '/banUser', { withCredentials: true }).then((res) => {
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    clearActiveProfile (context) {
+      context.commit('clearActiveProfile')
     },
 
     selectReply (context, replyId) {

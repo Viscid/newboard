@@ -8,6 +8,8 @@ import ComposerContainer from '@/containers/ComposerContainer'
 import ReplyContainer from '@/containers/ReplyContainer'
 import PostViewerContainer from '@/containers/PostViewerContainer'
 import SearchContainer from '@/containers/SearchContainer'
+import AdminContainer from '@/containers/AdminContainer'
+import AdminUsersContainer from '@/containers/AdminUsersContainer'
 
 Vue.use(Router)
 
@@ -53,6 +55,18 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: SearchContainer
+    },
+    {
+      path: '/admin',
+      name: 'AdminPanel',
+      component: AdminContainer,
+      children: [
+        {
+          name: 'UserAdmin',
+          path: 'users',
+          component: AdminUsersContainer
+        }
+      ]
     }
   ]
 })

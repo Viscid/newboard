@@ -6,6 +6,7 @@
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
       --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }"> Search </router-link><!--
       --><router-link v-if="username" class="profileLink" v-show="isLoggedIn" :to="{ name: 'UserProfile', params: { username } }"> {{ username }}  </router-link><!--
+      --><router-link v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"> Admin </router-link><!--
       --><a @click="logout" v-show="isLoggedIn"> Sign out </a>
     </div>
 </template>
@@ -18,6 +19,9 @@ export default {
     },
     isLoggedIn () {
       return 'username' in this.$store.state.user
+    },
+    isAdmin () {
+      return (this.$store.state.user['role'] === 'admin')
     }
   },
   methods: {

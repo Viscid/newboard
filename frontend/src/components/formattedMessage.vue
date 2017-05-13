@@ -2,7 +2,10 @@
   export default {
     functional: true,
     render: function (createElement, context) {
-      if (!context.props.formattedMessage) return createElement('div', { attrs: { class: 'formattedMessage' } }, context.props.message)
+      if (!context.props.formattedMessage || !context.props.formattedMessage.length) {
+        return createElement('div', { attrs: { class: 'formattedMessage' } }, context.props.message)
+      }
+
       return limbs(context.props.formattedMessage)
 
       function limbs (limb) {

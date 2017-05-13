@@ -86,7 +86,6 @@ router.put('/logout', function (req, res) {
 })
 
 router.get('/profile/:username', function (req, res) {
-  console.log(req.params)
   var username = req.params.username
   if (!username) res.status(500).send(errors.noProfileUsername)
   else {
