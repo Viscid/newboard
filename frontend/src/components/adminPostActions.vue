@@ -28,7 +28,17 @@ export default {
 <style>
   .adminPostActions {
     font-size: 0.8em;
-    padding-left: 1em;
+    padding-left: 1em;   
+  }
+
+  .adminPostAction {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */       
   }
 
   .adminNuke {

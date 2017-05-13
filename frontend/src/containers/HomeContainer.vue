@@ -1,6 +1,6 @@
 <template>
     <div id="homeContainer">
-        <paginator :page="page" action="setPage"> </paginator>
+        <paginator :length="threads.length" :page="page" :pageSize="15" action="setPage"> </paginator>
         <postList :loggedIn="loggedIn" :threads="threads" :isAdmin="isAdmin"> </postList>
     </div>
 </template>

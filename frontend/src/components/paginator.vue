@@ -1,16 +1,17 @@
 <template>
   <div>
+    <span v-show="page <= 5" class="paginatorFirst"> Page: </span>
     <a v-if="page > 5" class="paginatorFirst" @click="setPage(1)"> First </a>
     <ul>
-      <li class="paginatorPage" v-if="page <= 5" v-for="n in 9"> <a @click="setPage(n)"> <span :class="activePage(n) ? 'active' : ''"> {{ n }} </span> </a>  </li>
-      <li class="paginatorPage" v-if="page > 5" v-for="n in 9"> <a @click="setPage( pageShift(n) )"> <span :class="activePage(pageShift(n)) ? 'active' : ''"> {{ pageShift (n) }} </span> </a> </li>
+      <li class="paginatorPage" v-if="page <= 5" v-for="n in 9"> <a @click="setPage(n)"> <span  v-show="(page >= n) || (length >= Number(pageSize))" :class="activePage(n) ? 'active' : ''"> {{ n }} </span> </a>  </li>
+      <li class="paginatorPage" v-if="page > 5" v-for="n in 9"> <a @click="setPage( pageShift(n) )"> <span v-show="(page >= pageShift(n)) || (length >= Number(pageSize))" :class="activePage(pageShift(n)) ? 'active' : ''"> {{ pageShift (n) }} </span> </a> </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['page', 'action'],
+  props: ['page', 'action', 'length', 'pageSize'],
   methods: {
     setPage (n) {
       this.$store.dispatch(this.action, n)

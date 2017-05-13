@@ -37,7 +37,8 @@ router.post('/', checkAccess('user'), function(req, res) {
 
               var reply = new Post(newPost)
 
-              reply.save(function (err) {
+              reply.save(function (err, reply) {
+                if ('socket' in req) req.io.emit('post', reply)
                 err ? res.sendStatus(500) : res.sendStatus(200)
               })
             })
@@ -47,7 +48,8 @@ router.post('/', checkAccess('user'), function(req, res) {
 
         var newThread = new Post(newPost)
 
-        newThread.save(function (err) {
+        newThread.save(function (err, post) {
+          if ('socket' in req) req.io.emit('post', post)
           err ? res.sendStatus(500) : res.sendStatus(200)
         })
       }
@@ -63,8 +65,9 @@ router.get('/:slug', function(req, res) { // Returns a post as found by its slug
 
     if (queriedPost.get('root')) {
       Post.findOne({ _id: queriedPost.root }, function(err, queriedThread) {
-        var thread = queriedThread.toObject()
-        sendThread(thread, activePost)
+        var thread = queriedThread ? queriedThread.toObject() : undefined
+        if (thread) sendThread(thread, activePost)
+        else res.status(500).send({error: 'Root no longer exists'})
       })
     } else {
       var thread = queriedPost.toObject()

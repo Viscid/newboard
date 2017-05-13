@@ -1,7 +1,9 @@
 <template>
     <div id="menuBar"> 
       <router-link to="/" @click="setPage" > Home </router-link><!--
-      --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--       
+      --><router-link v-show="isLoggedIn" :to="{ name: 'Compose' }"> Compose </router-link><!--
+      --><a class="newPost" @click="getNewPosts" v-if="(Number(newPosts) === 1) && !isFetching"> New post! </a><!--
+      --><a class="newPost" @click="getNewPosts" v-else-if="(Number(newPosts) > 1) && !isFetching"> {{ newPosts }} new posts! </a><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"> Register </router-link><!--
       --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }"> Search </router-link><!--
@@ -13,9 +15,13 @@
 
 <script>
 export default {
+  props: ['newPosts'],
   computed: {
     username () {
       return this.$store.state.user.username
+    },
+    isFetching () {
+      return this.$store.state.fetching
     },
     isLoggedIn () {
       return 'username' in this.$store.state.user
@@ -32,6 +38,9 @@ export default {
     },
     setPage () {
       this.$store.dispatch('setPage', 1)
+    },
+    getNewPosts () {
+      this.$store.dispatch('getNewPosts')
     }
   }
 }
@@ -66,6 +75,11 @@ export default {
     float: right;
     font-weight: bold;
     display: inline-block;
+    color: white;
+  }
+
+  .newPost {
+    font-weight: bold;
     color: white;
   }
 </style>

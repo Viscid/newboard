@@ -1,6 +1,6 @@
 <template>
   <div id="root">
-    <menuBar></menuBar>
+    <menuBar :newPosts="newPosts"></menuBar>
     <router-view></router-view>
     <statusBar :message="status.message" :visible="status.visible"></statusBar>
   </div>
@@ -19,6 +19,9 @@ export default {
   computed: {
     status () {
       return this.$store.state.status
+    },
+    newPosts () {
+      return this.$store.state.newPosts.length
     }
   },
   created () {

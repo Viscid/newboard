@@ -6,6 +6,10 @@ import router from './router'
 import Vuex from 'vuex'
 import store from './store'
 import VeeValidate from 'vee-validate'
+import socketio from 'socket.io-client'
+import VueSocketIO from 'vue-socket.io'
+
+export const SocketInstance = socketio('http://localhost:2222')
 
 Vue.config.productionTip = false
 
@@ -13,6 +17,8 @@ Vue.use(Vuex)
 Vue.use(VeeValidate, { classNames: { invalid: 'invalid' } })
 
 const appStore = new Vuex.Store(store)
+
+Vue.use(VueSocketIO, SocketInstance, appStore)
 
 /* eslint-disable no-new */
 new Vue({

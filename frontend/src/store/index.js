@@ -18,6 +18,8 @@ export default {
       postLimit: 5
     },
     threads: [],
+    fetching: false,
+    newPosts: [],
     status: {
       visible: false,
       message: undefined
@@ -30,6 +32,7 @@ export default {
     },
     setThreads (state, threads) {
       state.threads = threads
+      state.newPosts = []
     },
     setReplyPost (state, post) {
       state.replyPost = post
@@ -74,6 +77,18 @@ export default {
     },
     logout (state) {
       state.user = {}
+    },
+    addNewPost (state, post) {
+      state.newPosts.push(post)
+    },
+    clearNewPosts (state) {
+      state.newPosts = []
+    },
+    isFetching (state) {
+      state.fetching = true
+    },
+    notFetching (state) {
+      state.fetching = false
     }
   },
   actions: {
@@ -84,8 +99,18 @@ export default {
     },
 
     getThreads ({dispatch, commit}, page = 1, threadsPerPage = 15) {
-      axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true }).then((res) => {
-        commit('setThreads', res.data)
+      commit('isFetching')
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true })
+        .then((res) => {
+          commit('setThreads', res.data)
+          commit('notFetching')
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+          commit('notFetching')
+        })
       })
     },
 
@@ -135,11 +160,13 @@ export default {
     },
 
     submitPost ({dispatch, commit}, post) {
+      commit('isFetching')
       return new Promise((resolve, reject) => {
         axios.post(API_URL + '/post', {post}, { withCredentials: true }).then((res) => {
           resolve()
         }).catch((err) => {
           console.log(err)
+          commit('notFetching')
           reject(err)
         })
       })
@@ -241,6 +268,17 @@ export default {
       }).catch((err) => {
         console.log(err)
       })
+    },
+
+    getNewPosts ({dispatch, commit}) {
+      dispatch('getThreads')
+      .then(() => {
+        commit('clearNewPosts')
+      })
+    },
+
+    socket_post (context, post) {
+      context.commit('addNewPost', post)
     }
 
   }

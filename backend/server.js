@@ -1,5 +1,7 @@
 var express = require('express')
 var app = express()
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
 var bodyParser = require('body-parser')
 var morgan = require('morgan')
 var session = require('express-session')
@@ -32,12 +34,17 @@ app.use(function(req, res, next) {
   next()
 })
 
+app.use(function(req, res, next) {
+  req.io = io
+  next()
+})
+
 var models = require('./models')
 
 app.use('/', models)
 
 var port = process.env.PORT || 2222
 
-app.listen(port)
+server.listen(port)
 
 console.log('API up on port ' + port)
