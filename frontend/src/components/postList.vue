@@ -62,7 +62,7 @@ export default {
 
   .postHeader {
     font-weight: bold;
-    padding: 0.5em 1em;
+    padding: 0.5em 1em 2px 1em;
     color: black;
     border-bottom: 1px solid #AAA;
   }

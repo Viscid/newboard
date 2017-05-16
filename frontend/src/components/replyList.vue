@@ -67,7 +67,7 @@ export default {
     },
     trimReply (message) {
       let length = message.length
-      if (length > 50) return message.slice(0, 80) + '...'
+      if (length > 80) return message.slice(0, 80) + '...'
       else return message
     }
   },
@@ -101,7 +101,7 @@ export default {
     margin: 0;
     margin-left: 1em;
     padding-left: 0.5em;
-    border-left: 1px solid #DADADA;
+    /* border-left: 1px solid #DADADA; */
   }
 
   @media (max-device-width: 480px) {

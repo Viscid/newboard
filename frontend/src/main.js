@@ -8,8 +8,9 @@ import store from './store'
 import VeeValidate from 'vee-validate'
 import socketio from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
+import config from '../../config'
 
-export const SocketInstance = socketio('http://localhost:2222')
+export const SocketInstance = socketio(config.API_URL)
 
 Vue.config.productionTip = false
 

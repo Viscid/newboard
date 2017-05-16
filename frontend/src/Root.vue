@@ -42,4 +42,9 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
+
+input { /* iOS rounded input button fix */
+  -webkit-border-radius:0; 
+  border-radius:0;
+}
 </style>

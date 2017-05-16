@@ -2,9 +2,9 @@
   <div class="postHeader">
     <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> -
     <span class="postDatetime">
-      <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </router-link>
+      <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mma') }} </router-link>
     </span>
-    <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: post.slug, post }}" class="largeReplyButton"> reply </router-link>
+    <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: post.slug, post }}" class="largeReplyButton"> Reply </router-link>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
-
-const API_URL = 'http://localhost:2222'
+import config from '../../../config'
+const API_URL = config.API_URL
 
 export default {
   state: {

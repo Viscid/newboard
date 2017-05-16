@@ -88,6 +88,7 @@ module.exports = function (formattingTags, message) {
   this._findNextTag = function (formattingTags, message) {
     var nextTag
     var firstTagPos
+    if (!message) return undefined
     formattingTags.forEach(function(tag) {
       var thisTagPos = message.search(tag.match)
       if ((thisTagPos >= 0) && ((firstTagPos === undefined) || (thisTagPos < firstTagPos))) {

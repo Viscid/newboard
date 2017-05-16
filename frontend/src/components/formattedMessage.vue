@@ -54,6 +54,7 @@
   .underline { text-decoration: underline; }
   .italic { font-style: italic; }
   .big { font-size: 1.8em; }
+  .big .big .big .big { font-size: 130px; }
   .small { font-size: 0.6em; }
   .pre { font-family: monospace; white-space: pre;  }
 </style>

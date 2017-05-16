@@ -7,7 +7,7 @@ var morgan = require('morgan')
 var session = require('express-session')
 var MongoStore = require('connect-mongo')(session)
 
-var config = require('./config')
+var config = require('../config/')
 
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
@@ -27,7 +27,7 @@ app.use(session({
 }))
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:1111')
+  res.header('Access-Control-Allow-Origin', config.corsOrigin)
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE')
   res.header('Access-Control-Allow-Credentials', 'true')
@@ -41,7 +41,9 @@ app.use(function(req, res, next) {
 
 var models = require('./models')
 
-app.use('/', models)
+app.use('/api/', models)
+
+app.use(express.static('dist'))
 
 var port = process.env.PORT || 2222
 

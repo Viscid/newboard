@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-var config = require('../../config.js')
+var config = require('../../../config')
 
 var bcrypt = require('bcrypt')
 
@@ -102,7 +102,6 @@ router.get('/profile/:username', function (req, res) {
       .sort( { datetime: -1 } )
       .exec()
       .then( function(posts) {
-        console.log(posts)
         profile['lastPosts'] = posts
       })
     ])
