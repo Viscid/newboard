@@ -10,7 +10,7 @@ import socketio from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
 import config from '../../config'
 
-export const SocketInstance = socketio(config.API_URL)
+export const SocketInstance = socketio(config.SOCKETIO_URL)
 
 Vue.config.productionTip = false
 

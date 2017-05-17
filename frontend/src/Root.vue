@@ -21,7 +21,10 @@ export default {
       return this.$store.state.status
     },
     newPosts () {
-      return this.$store.state.newPosts.length
+      return this.$store.state.newPosts.filter((post) => {
+        if (!('username' in this.$store.state.user)) return true
+        return (post.username !== this.$store.state.user.username)
+      })
     }
   },
   created () {
