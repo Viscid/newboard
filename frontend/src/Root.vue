@@ -24,7 +24,7 @@ export default {
       return this.$store.state.newPosts.filter((post) => {
         if (!('username' in this.$store.state.user)) return true
         return (post.username !== this.$store.state.user.username)
-      })
+      }).length
     }
   },
   created () {
