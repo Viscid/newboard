@@ -45,7 +45,7 @@ app.use('/api/', models)
 
 app.use(express.static('dist'))
 
-var port = process.env.PORT || 2222
+var port = process.env.PORT || config.backendPort
 
 server.listen(port)
 
