@@ -75,10 +75,11 @@ export default {
 
   textarea {
     display: block;
+    box-sizing: border-box;
     border: 0;
     padding: 15px;
-    width: 95%;
     font-size: 1.25em;
+    width: 100%;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     outline: none;
     height: 30vh;

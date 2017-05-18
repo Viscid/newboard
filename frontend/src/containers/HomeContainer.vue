@@ -2,6 +2,7 @@
     <div id="homeContainer">
         <paginator :length="threads.length" :page="page" :pageSize="15" action="setPage"> </paginator>
         <postList :loggedIn="loggedIn" :threads="threads" :isAdmin="isAdmin"> </postList>
+        <paginator v-show="threads.length" :length="threads.length" :page="page" :pageSize="15" action="setPage"> </paginator>
     </div>
 </template>
 

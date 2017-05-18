@@ -92,16 +92,15 @@ module.exports = function (formattingTags, message) {
     formattingTags.forEach(function(tag) {
       var thisTagPos = message.search(tag.match)
       if ((thisTagPos >= 0) && ((firstTagPos === undefined) || (thisTagPos < firstTagPos))) {
-        nextTag = tag
+        if (tag.type === 'link') {
+          nextTag = { type: 'link', href: message.match(tag.match) }
+          nextTag.length = nextTag.href[0].length
+        } else nextTag = { class: tag.class, type: tag.type, length: tag.length }
         nextTag.position = thisTagPos
         firstTagPos = thisTagPos
-        if (nextTag.type === 'link') {
-           nextTag.href = message.match(tag.match)
-           nextTag.length = nextTag.href[0].length
-        }
       }
     })
-    
+
     return nextTag
   }
 
