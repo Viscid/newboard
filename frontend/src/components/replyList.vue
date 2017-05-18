@@ -113,9 +113,6 @@ export default {
   .replies {
     margin: 0;
     padding-left: 0;
-    background-image: url('../assets/horizonal_line.png');
-    background-repeat: repeat-x;
-    background-position: 0 10px;
   }
 
   .reply:last-child {
