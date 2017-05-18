@@ -1,7 +1,7 @@
 <template> 
   <ul class="replies">
-    <li :key="reply._id" v-for="reply in thread.replies[parent]" class="reply">
-      <div class="expandedReply" v-if="selectedReply === reply._id">
+    <li :key="reply._id" v-for="reply in thread.replies[parent]" :class="{ reply: true, active: isSelected(reply._id) }">
+      <div class="expandedReply" v-if="isSelected(reply._id)">
         <postHeader :post="reply" :thread="thread"> </postHeader>
         <div class="postBody">
           <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage"></formattedMessage>
@@ -9,9 +9,11 @@
         <adminPostActions :post="reply" v-show="isAdmin"></adminPostActions>
       </div>
       <div v-else>
-        <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
-        <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
-        <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
+        <div class="unexapndedReply">
+          <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
+          <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
+          <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
+        </div>
       </div>
      <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :thread="thread" :parent="reply._id" :isAdmin="isAdmin"> </replyList>
     </li>
@@ -69,6 +71,9 @@ export default {
       let length = message.length
       if (length > 80) return message.slice(0, 80) + '...'
       else return message
+    },
+    isSelected (replyId) {
+      return (replyId === this.$store.state.selectedReply)
     }
   },
 
@@ -94,14 +99,23 @@ export default {
   }
 
   .expandedReply {
-    padding: 0.5em 0;
+    padding: 0;
+    background-color: white;
   }
 
   .replies {
     margin: 0;
-    margin-left: 1em;
-    padding-left: 0.5em;
+    padding-left: 0;
+    background-image: url('../assets/horizonal_line.png');
+    background-repeat: repeat-x;
+    background-position: 0 10px;
     /* border-left: 1px solid #DADADA; */
+  }
+
+  .reply:last-child {
+    background-image: url('../assets/replyline_list_end.png');
+    background-repeat: no-repeat;
+    border: 0;
   }
 
   @media (max-device-width: 480px) {
@@ -112,17 +126,30 @@ export default {
   }
 
   .reply {
+    background-image: url('../assets/replyline_list_item.png');
+    background-repeat: no-repeat;  
     margin: 0;
+    padding-left: 15px;
     padding-top: 5px;
-    box-shadow: none;
-    border: none;
+    border-left: 1px solid #BBB;
     list-style: none;
   }
+
+  .reply.active {
+    background-image: url('../assets/replyline_list_active_end.png');
+    background-position: 0 22px;
+    border-left: 1px solid #BBB;
+  }  
 
   .replyUsername {
     font-weight: bold;
     color: #aa4439;
     text-decoration: none;
+  }
+
+  .unexapndedReply {
+    background-color: white;
+    padding-left: 5px;
   }
 
   .replyUsername:hover {

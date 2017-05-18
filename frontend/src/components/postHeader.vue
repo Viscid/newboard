@@ -38,4 +38,8 @@ export default {
   .largeReplyButton:hover {
     color: black;
   }
+
+  .postHeader {
+    height: 21px;
+  }
 </style>
