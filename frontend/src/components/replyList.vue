@@ -103,13 +103,19 @@ export default {
     background-color: white;
   }
 
+  @media (max-device-width: 480px) {
+    .replies {
+      margin-left: 2px;
+      padding-left: 0.25em;
+    }
+  }  
+
   .replies {
     margin: 0;
     padding-left: 0;
     background-image: url('../assets/horizonal_line.png');
     background-repeat: repeat-x;
     background-position: 0 10px;
-    /* border-left: 1px solid #DADADA; */
   }
 
   .reply:last-child {
@@ -118,12 +124,7 @@ export default {
     border: 0;
   }
 
-  @media (max-device-width: 480px) {
-    .replies {
-      margin-left: 2px;
-      padding-left: 0.25em;
-    }
-  }
+
 
   .reply {
     background-image: url('../assets/replyline_list_item.png');

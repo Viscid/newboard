@@ -52,7 +52,7 @@ export default {
 
   @media(max-width: 500px) {
     li {
-      margin: 0;
+      margin: 0 0 2em 2px;
     }
   }
 
