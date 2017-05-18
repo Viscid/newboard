@@ -9,7 +9,7 @@
         <adminPostActions :post="reply" v-show="isAdmin"></adminPostActions>
       </div>
       <div v-else>
-        <div class="unexapndedReply">
+        <div class="unexpandedReply">
           <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
           <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
           <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
@@ -122,21 +122,20 @@ export default {
   }
 
 
-
   .reply {
     background-image: url('../assets/replyline_list_item.png');
     background-repeat: no-repeat;  
     margin: 0;
     padding-left: 15px;
     padding-top: 5px;
-    border-left: 1px solid #BBB;
+    border-left: 1px solid #CCC;
     list-style: none;
   }
 
   .reply.active {
     background-image: url('../assets/replyline_list_active_end.png');
     background-position: 0 22px;
-    border-left: 1px solid #BBB;
+    border-left: 1px solid #CCC;
   }  
 
   .replyUsername {
@@ -145,7 +144,7 @@ export default {
     text-decoration: none;
   }
 
-  .unexapndedReply {
+  .unexpandedReply {
     background-color: white;
     padding-left: 5px;
   }
