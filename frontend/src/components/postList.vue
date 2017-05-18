@@ -50,6 +50,12 @@ export default {
     background-color: white;
   }
 
+  @media(max-width: 500px) {
+    li {
+      margin: 0;
+    }
+  }
+
   .postUsername {
     font-weight: bold;
     color: #aa4439;

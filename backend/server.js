@@ -22,7 +22,7 @@ app.use(session({
   secret: config.sessionSecret,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, name: 'poop.gobble.delight' },
+  cookie: { secure: false, name: 'poop.gobble.delight', maxAge: 60480000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
