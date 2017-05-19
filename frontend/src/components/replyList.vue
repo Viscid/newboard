@@ -103,13 +103,6 @@ export default {
     background-color: white;
   }
 
-  @media (max-device-width: 480px) {
-    .replies {
-      margin-left: 2px;
-      padding-left: 0.25em;
-    }
-  }  
-
   .replies {
     margin: 0;
     padding-left: 0;
@@ -120,7 +113,6 @@ export default {
     background-repeat: no-repeat;
     border: 0;
   }
-
 
   .reply {
     background-image: url('../assets/replyline_list_item.png');
@@ -133,9 +125,16 @@ export default {
   }
 
   .reply.active {
-    background-image: url('../assets/replyline_list_active_end.png');
-    background-position: 0 22px;
+    background-image: url('../assets/replyline_list_active_item.png');
+    background-position: 0 14px;
+    padding-top: 0;
     border-left: 1px solid #CCC;
+  }
+
+  .reply:last-child.active {
+    background-image: url('../assets/replyline_list_active_end.png');
+    background-position: 0 -1px;
+    border-left: 0;
   }  
 
   .replyUsername {
@@ -146,7 +145,7 @@ export default {
 
   .unexpandedReply {
     background-color: white;
-    padding-left: 5px;
+    padding-left: 2px;
   }
 
   .replyUsername:hover {

@@ -52,7 +52,7 @@ export default {
 
   @media(max-width: 500px) {
     li {
-      margin: 0 0 2em 2px;
+      margin: 0 0 2em 5px;
     }
   }
 
@@ -68,9 +68,9 @@ export default {
 
   .postHeader {
     font-weight: bold;
-    padding: 0.5em 1em 2px 1em;
+    padding: 5px 10px 2px 4px;
     color: black;
-    border-bottom: 1px solid #AAA;
+    border-bottom: 1px solid #CCC;
   }
 
 
