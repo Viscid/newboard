@@ -27,9 +27,6 @@ export default {
   beforeCreate () {
     this.$store.dispatch('getThreads', this.page)
   },
-  updated () {
-    this.$store.dispatch('getThreads', this.page)
-  },
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
     isAdmin () { return (this.$store.state.user['role'] === 'admin') },
