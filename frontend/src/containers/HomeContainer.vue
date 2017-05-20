@@ -25,7 +25,7 @@ export default {
   },
   beforeUpdate () {
     let page = Number(this.$route.query.page)
-    if (page !== this.page) {
+    if ((page > 0) && (page !== this.page)) {
       this.page = page
       this.$store.dispatch('getThreads', this.page)
     }
