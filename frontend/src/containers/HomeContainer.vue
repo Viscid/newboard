@@ -1,8 +1,8 @@
 <template>
     <div id="homeContainer">
-        <paginator :length="threads.length" :page="page" :pageSize="15" action="setPage"> </paginator>
+        <paginator :length="threads.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
         <postList :loggedIn="loggedIn" :threads="threads" :isAdmin="isAdmin"> </postList>
-        <paginator v-show="threads.length" :length="threads.length" :page="page" :pageSize="15" action="setPage"> </paginator>
+        <paginator v-show="threads.length" :length="threads.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
     </div>
 </template>
 
@@ -13,14 +13,27 @@ import paginator from '../components/paginator'
 export default {
   name: 'HomeContainer',
   components: { postList, paginator },
+  data () {
+    return {
+      page: Number(this.$route.query.page) || 1
+    }
+  },
+  methods: {
+    setPage (page) {
+      this.$router.push({ path: '/', query: { page } })
+      this.page = this.$route.query.page
+    }
+  },
   beforeCreate () {
-    this.$store.dispatch('getThreads')
+    this.$store.dispatch('getThreads', this.page)
+  },
+  updated () {
+    this.$store.dispatch('getThreads', this.page)
   },
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
     isAdmin () { return (this.$store.state.user['role'] === 'admin') },
-    threads () { return this.$store.state.threads },
-    page () { return this.$store.state.page }
+    threads () { return this.$store.state.threads }
   }
 }
 </script>

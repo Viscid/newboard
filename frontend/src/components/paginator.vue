@@ -10,10 +10,10 @@
 
 <script>
 export default {
-  props: ['page', 'action', 'length', 'pageSize'],
+  props: ['page', 'length', 'pageSize'],
   methods: {
     setPage (n) {
-      this.$store.dispatch(this.action, n)
+      this.$emit('pageChange', n)
     },
     pageShift (n) {
       return this.page - 5 + n
