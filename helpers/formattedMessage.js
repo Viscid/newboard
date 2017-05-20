@@ -15,11 +15,8 @@ module.exports = function (formattingTags, message) {
         var childElements = elementList.slice(i + 1, elementEnd)
         if (childElements.length) siblingNodes.push({c: element.class, t: this._getSiblings(childElements)})
         i = elementEnd
-      } else if (typeof(element) === 'object' && (element.type === 'link')) {
-        siblingNodes.push({c: 'link', href: element.href })
-      } else if (typeof(element) === 'object' && (element.type === 'youtube')) {
-        siblingNodes.push({c: 'youtube', href: element.href, id: element.id })
-      }
+      } else if (typeof(element) === 'object' && (element.type === 'link')) siblingNodes.push({c: 'link', href: element.href })
+      else if (typeof(element) === 'object' && (element.type === 'youtube')) siblingNodes.push({c: 'youtube', href: element.href, id: element.id })
     }
     return siblingNodes
   }
@@ -99,13 +96,7 @@ module.exports = function (formattingTags, message) {
         if (tag.type === 'link') {
           var match = message.match(tag.match)
           tag.subtypes.forEach(function(subtype) {
-            if (match[0].search(subtype.match) >= 0) { 
-              nextTag = { type: subtype.type, href: match[0] }
-              var subtypeMatch = match[0].match(subtype.match)
-              if (subtype.type == 'youtube') {
-                nextTag.id = subtypeMatch[1]
-              }
-            }
+            if (match[0].search(subtype.match) >= 0) nextTag = { type: subtype.type, href: match[0] }
           })
           nextTag = nextTag || { type: 'link', href: match[0] }
           nextTag.length = nextTag.href.length

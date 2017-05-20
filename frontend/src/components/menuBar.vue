@@ -88,6 +88,7 @@ export default {
     background: #aa4439;
     line-height: 50px;
     padding: 0 1.25em;
+    height: 50px;
   }
 
   a {

@@ -1,11 +1,11 @@
 <template>
   <form id="composerForm" @submit.prevent="submitPost">
-    <span class="editing">
+    <div class="editing">
     <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
     <transition name="formatting-preview">
         <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage"></formattedMessage>
     </transition>
-    </span>    
+    </div>    
     <input class="postButton" type="submit" />
   </form>
 </template>
@@ -67,6 +67,9 @@ export default {
 
   .editing {
     text-align: left;
+    display: flex;
+    height: calc(100vh - 110px);
+    flex-direction: column;
   }
 
   h3 {
@@ -82,18 +85,20 @@ export default {
     width: 100%;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     outline: none;
-    height: 30vh;
+    flex: 2;
   }
 
   .formattedMessage {
+    display: block;
     padding: 15px;
     text-align: left;
     margin: 1em 0 2em 0;
-    height: 30vh;
+    flex: 3;
   }
 
   #composerForm {
     text-align: center;
+    height: 80vh
   }
 
   .postButton {

@@ -35,8 +35,8 @@ export default {
   textarea {
     box-sizing: border-box;
     display: block;
-    height: 200px;
     width: 100vw;
+    height: 300px;
     max-width: 100%;
     border: 0;
     border-top: 1px dashed #AAA;
