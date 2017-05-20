@@ -45,6 +45,10 @@ app.use('/api/', models)
 
 app.use(express.static('dist'))
 
+app.get('/*', function(req, res) {
+  res.sendfile(__dirname + '/dist/index.html')
+})
+
 var port = process.env.PORT || config.backendPort
 
 server.listen(port)
