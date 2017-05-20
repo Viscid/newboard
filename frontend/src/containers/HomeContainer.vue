@@ -21,10 +21,16 @@ export default {
   methods: {
     setPage (page) {
       this.$router.push({ path: '/', query: { page } })
-      this.page = this.$route.query.page
     }
   },
-  beforeCreate () {
+  beforeUpdate () {
+    let page = Number(this.$route.query.page)
+    if (page !== this.page) {
+      this.page = page
+      this.$store.dispatch('getThreads', this.page)
+    }
+  },
+  created () {
     this.$store.dispatch('getThreads', this.page)
   },
   computed: {
