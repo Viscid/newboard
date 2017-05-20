@@ -25,5 +25,9 @@ module.exports = [
   { class: 'small', type: 'close', match: /\]\./, length: 2 },
   { class: 'pre', type: 'open', match: /q\[/, length: 2 },
   { class: 'pre', type: 'close', match: /\]q/, length: 2 },
-  { type: 'link', match: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ }                
+  { type: 'link', match: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+      subtypes: [
+          { type: 'youtube', match: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/ }
+      ]
+  }
 ]

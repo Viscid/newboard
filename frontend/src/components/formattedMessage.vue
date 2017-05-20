@@ -12,6 +12,7 @@
         let branches = []
         if ('c' in limb) {
           if (limb.c === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
+          else if (limb.c === 'youtube') return createElement('iframe', { attrs: { height: '315', width: '420', src: 'https://www.youtube.com/embed/' + limb.id, frameborder: '0', allowfullscreen: true } })
           if ('t' in limb) { branches = limb.t.map((branch) => { return _checkBranchType(branch) }) }
           return createElement('span', { attrs: { class: limb.c } }, branches)
         } else if (Array.isArray(limb)) {

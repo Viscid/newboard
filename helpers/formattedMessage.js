@@ -16,7 +16,9 @@ module.exports = function (formattingTags, message) {
         if (childElements.length) siblingNodes.push({c: element.class, t: this._getSiblings(childElements)})
         i = elementEnd
       } else if (typeof(element) === 'object' && (element.type === 'link')) {
-        siblingNodes.push({c: 'link', href: element.href[0] })
+        siblingNodes.push({c: 'link', href: element.href })
+      } else if (typeof(element) === 'object' && (element.type === 'youtube')) {
+        siblingNodes.push({c: 'youtube', href: element.href, id: element.id })
       }
     }
     return siblingNodes
@@ -93,14 +95,24 @@ module.exports = function (formattingTags, message) {
       var thisTagPos = message.search(tag.match)
       if ((thisTagPos >= 0) && ((firstTagPos === undefined) || (thisTagPos < firstTagPos))) {
         if (tag.type === 'link') {
-          nextTag = { type: 'link', href: message.match(tag.match) }
-          nextTag.length = nextTag.href[0].length
+          var match = message.match(tag.match)
+          tag.subtypes.forEach(function(subtype) {
+            if (match.input.search(subtype.match) >= 0) { 
+              nextTag = { type: subtype.type, href: match.input }
+              var subtypeMatch = match.input.match(subtype.match)
+              if (subtype.type == 'youtube') {
+                nextTag.id = subtypeMatch[1]
+              }
+            }
+          })
+          nextTag = nextTag || { type: 'link', href: match.input }
+          nextTag.length = nextTag.href.length
         } else nextTag = { class: tag.class, type: tag.type, length: tag.length }
         nextTag.position = thisTagPos
         firstTagPos = thisTagPos
       }
     })
-
+    console.log(nextTag)
     return nextTag
   }
 
