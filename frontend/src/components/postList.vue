@@ -73,7 +73,6 @@ export default {
     border-bottom: 1px solid #CCC;
   }
 
-
   .postDatetime a {
     text-decoration: none;
     font-style: italic;

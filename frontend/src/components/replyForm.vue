@@ -61,7 +61,4 @@ export default {
     width: 300px;
   }
 
-  .replyFormSubmit:hover {
-    background-color: #7a2419;
-  }  
 </style>

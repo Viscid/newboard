@@ -32,6 +32,8 @@ module.exports = function (formattingTags, message) {
     var message = ''
     this.elementList.forEach(function(element) {
       if (typeof(element) === 'string') message += element
+      else if ((typeof(element) === 'object') && (element.type === 'link')) message += element.href
+      else if ((typeof(element) === 'object') && (element.type === 'youtube')) message += element.href
     })
     return message
   }
@@ -97,22 +99,22 @@ module.exports = function (formattingTags, message) {
         if (tag.type === 'link') {
           var match = message.match(tag.match)
           tag.subtypes.forEach(function(subtype) {
-            if (match.input.search(subtype.match) >= 0) { 
-              nextTag = { type: subtype.type, href: match.input }
-              var subtypeMatch = match.input.match(subtype.match)
+            if (match[0].search(subtype.match) >= 0) { 
+              nextTag = { type: subtype.type, href: match[0] }
+              var subtypeMatch = match[0].match(subtype.match)
               if (subtype.type == 'youtube') {
                 nextTag.id = subtypeMatch[1]
               }
             }
           })
-          nextTag = nextTag || { type: 'link', href: match.input }
+          nextTag = nextTag || { type: 'link', href: match[0] }
           nextTag.length = nextTag.href.length
         } else nextTag = { class: tag.class, type: tag.type, length: tag.length }
         nextTag.position = thisTagPos
         firstTagPos = thisTagPos
       }
     })
-    console.log(nextTag)
+    
     return nextTag
   }
 
