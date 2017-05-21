@@ -13,22 +13,16 @@ import paginator from '../components/paginator'
 export default {
   name: 'HomeContainer',
   components: { postList, paginator },
-  data () {
-    return {
-      page: Number(this.$route.query.page) || 1
-    }
-  },
   methods: {
     setPage (page) {
-      this.$router.push({ path: '/', query: { page } })
-      this.page = page
-      this.$store.dispatch('getThreads', this.page)
+      this.$store.dispatch('setPage', page)
     }
   },
   created () {
-    this.$store.dispatch('getThreads', Number(this.$route.query.page))
+    this.$store.dispatch('getThreads', this.$store.state.page)
   },
   computed: {
+    page () { return this.$store.state.page },
     loggedIn () { return ('username' in this.$store.state.user) },
     isAdmin () { return (this.$store.state.user['role'] === 'admin') },
     threads () { return this.$store.state.threads }

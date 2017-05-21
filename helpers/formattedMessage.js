@@ -77,7 +77,7 @@ module.exports = function (formattingTags, message) {
       delete nextTag.position
       tagList.push(nextTag)
     }
-    if (message.length) tagList.push(message)
+    if (message && message.length) tagList.push(message)
     return tagList
   }
 

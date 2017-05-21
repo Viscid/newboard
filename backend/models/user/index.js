@@ -22,9 +22,9 @@ router.post('/register', validateRegistrationFields, function(req, res) {
       bcrypt.hash(user.password, config.bcryptSaltRounds, function(err, hash) {
         if(err) res.status(500).send({ error: 'Error hashing password.'})
         var newUser = new User({
-          username: user.username,
+          username: user.username.trim(),
           hash: hash,
-          email: user.email
+          email: user.email.trim()
         })
 
         newUser.save(function (err, registeredUser) {
@@ -64,7 +64,7 @@ router.put('/login', function(req, res) {
     return
   }
   var user = req.body.user
-  User.findOne({username: user.username}, function (err, foundUser) {
+  User.findOne({username: user.username.trim()}, function (err, foundUser) {
     if (err) res.status(500).send({error: 'Error finding user.'})
     else if (!foundUser) res.status(404).send(errors.loginCredentialsInvalid) 
     else {

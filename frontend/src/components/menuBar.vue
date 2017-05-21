@@ -1,8 +1,10 @@
 <template>
     <div id="menuBar"> 
-      <router-link :to="{ name: 'Home' }" @click="setPage" exact>
+      <router-link :to="{ name: 'Home' }" exact>
+      <span @click="setPage">
         <img height="24" width="24" class="mobile" src="../assets/icons/Home.svg" />
         <span class="screen"> Home </span>
+      </span>
       </router-link><!--
       --><router-link class="composeLink" v-show="isLoggedIn" :to="{ name: 'Compose' }"  exact>
         <img height="24" width="24" class="mobile" src="../assets/icons/Compose.svg" />
