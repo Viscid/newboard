@@ -1,5 +1,5 @@
 <template>
-    <div id="menuBar"> 
+    <div id="menuBar" class="noselect"> 
       <router-link :to="{ name: 'Home' }" exact>
       <span @click="setPage">
         <img height="24" width="24" class="mobile" src="../assets/icons/Home.svg" />
@@ -100,13 +100,7 @@ export default {
     margin: 0;
     opacity: 0.5;
     transition: color 0.25s;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;    
+    cursor: pointer; 
   }
 
   a:hover {

@@ -2,8 +2,16 @@
   <div>
     <a v-if="page > 5" class="paginatorFirst" @click="setPage(1)"> First </a>
     <ul>
-      <li class="paginatorPage" v-if="page <= 5" v-for="n in 9"> <a @click="setPage(n)"> <span :class="activePage(n) ? 'active' : ''"> {{ n }} </span> </a>  </li>
-      <li class="paginatorPage" v-if="page > 5" v-for="n in 9"> <a @click="setPage( pageShift(n) )"> <span :class="activePage(pageShift(n)) ? 'active' : ''"> {{ pageShift (n) }} </span> </a> </li>
+      <li class="paginatorPage" v-if="page <= 5" v-for="n in 9"> 
+        <a class="noselect" @click="setPage(n)"> 
+          <span :class="activePage(n) ? 'active' : ''"> {{ n }} </span>
+        </a>
+      </li>
+      <li class="paginatorPage" v-if="page > 5" v-for="n in 9">
+        <a class="noselect" @click="setPage( pageShift(n) )">
+          <span :class="activePage(pageShift(n)) ? 'active' : ''"> {{ pageShift (n) }} </span>
+        </a>
+      </li>
     </ul>
   </div>
 </template>
@@ -29,13 +37,6 @@ export default {
  div {
    text-align: center;
    margin: 0 auto;
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */   
  }
 
  ul {

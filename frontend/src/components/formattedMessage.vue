@@ -1,6 +1,11 @@
 <script>
+  import youtube from './youtube.vue'
+
   export default {
     functional: true,
+    components: {
+      youtube
+    },
     render: function (createElement, context) {
       if (!context.props.formattedMessage || !context.props.formattedMessage.length) {
         return createElement('div', { attrs: { class: 'formattedMessage' } }, context.props.message)
@@ -12,7 +17,7 @@
         let branches = []
         if ('c' in limb) {
           if (limb.c === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
-          else if (limb.c === 'youtube') return createElement('iframe', { attrs: { height: '315', width: '420', src: 'https://www.youtube.com/embed/' + limb.id, frameborder: '0', allowfullscreen: true } })
+          else if (limb.c === 'youtube') return createElement(youtube, { attrs: { height: '315', width: '420', id: limb.id } })
           if ('t' in limb) { branches = limb.t.map((branch) => { return _checkBranchType(branch) }) }
           return createElement('span', { attrs: { class: limb.c } }, branches)
         } else if (Array.isArray(limb)) {
