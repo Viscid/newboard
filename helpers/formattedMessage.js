@@ -96,7 +96,13 @@ module.exports = function (formattingTags, message) {
         if (tag.type === 'link') {
           var match = message.match(tag.match)
           tag.subtypes.forEach(function(subtype) {
-            if (match[0].search(subtype.match) >= 0) nextTag = { type: subtype.type, href: match[0] }
+            if (match[0].search(subtype.match) >= 0) {
+              nextTag = { type: subtype.type, href: match[0] }
+               var subtypeMatch = match.input.match(subtype.match)
+               if (subtype.type == 'youtube') {
+                 nextTag.id = subtypeMatch[1]
+               }              
+           }
           })
           nextTag = nextTag || { type: 'link', href: match[0] }
           nextTag.length = nextTag.href.length

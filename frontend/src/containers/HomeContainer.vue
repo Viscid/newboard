@@ -21,17 +21,12 @@ export default {
   methods: {
     setPage (page) {
       this.$router.push({ path: '/', query: { page } })
-    }
-  },
-  beforeUpdate () {
-    let page = Number(this.$route.query.page)
-    if ((page > 0) && (page !== this.page)) {
       this.page = page
       this.$store.dispatch('getThreads', this.page)
     }
   },
   created () {
-    this.$store.dispatch('getThreads', this.page)
+    this.$store.dispatch('getThreads', Number(this.$route.query.page))
   },
   computed: {
     loggedIn () { return ('username' in this.$store.state.user) },
