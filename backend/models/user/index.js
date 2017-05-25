@@ -62,10 +62,14 @@ router.put('/login', function(req, res) {
   if (req.session.user && !req.body.user.hasOwnProperty('username')) {
     res.json(req.session.user)
     return
+  } else if (!req.body.user.hasOwnProperty('username')) {
+    res.sendStatus(404)
+    return
   }
+  
   var user = req.body.user
   User.findOne({username: user.username.trim()}, function (err, foundUser) {
-    if (err) res.status(500).send({error: 'Error finding user.'})
+    if (err) res.status(404).send({error: 'Error finding user.'})
     else if (!foundUser) res.status(404).send(errors.loginCredentialsInvalid) 
     else {
       bcrypt.compare(user.password, foundUser.hash).then(function(succ) {
