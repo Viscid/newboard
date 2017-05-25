@@ -3,7 +3,7 @@
     <div class="editing">
     <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
     <transition name="formatting-preview">
-        <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage"></formattedMessage>
+        <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage" :settings="settings"></formattedMessage>
     </transition>
     </div>    
     <input class="postButton" type="submit" />
@@ -35,6 +35,9 @@ export default {
     },
     hasFormatting () {
       return tags.some(tag => this.postMessage.search(tag.match) >= 0)
+    },
+    settings () {
+      return this.$store.state.settings
     }
   },
   beforeDestroy () {
