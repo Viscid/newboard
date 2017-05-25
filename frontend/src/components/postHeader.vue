@@ -4,7 +4,7 @@
     <span class="postDatetime">
       <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mma') }} </router-link>
     </span>
-    <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: post.slug, post }}" class="largeReplyButton"> Reply </router-link>
+    <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: post.slug, post }}" class="largeReplyButton noselect"> <img src="../assets/reply.svg"> </router-link>
   </div>
 </template>
 
@@ -28,15 +28,22 @@ export default {
 
 <style>
   .largeReplyButton {
-    float: right;
     display: block;
     font-weight: bold;
     text-decoration: none;
     color: #AAA;
   }
 
-  .largeReplyButton:hover {
-    color: black;
+  .largeReplyButton img {
+    margin-top: -16px;
+    float: right;
+    height: 25px;
+    width: 25px;
+    opacity: 0.5;
+  }
+
+  .largeReplyButton img:hover {
+    opacity: 1;
   }
 
   .postHeader {

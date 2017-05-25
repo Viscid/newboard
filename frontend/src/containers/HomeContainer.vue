@@ -16,10 +16,15 @@ export default {
   methods: {
     setPage (page) {
       this.$store.dispatch('setPage', page)
+      this.$router.push({to: 'Home', query: { page }})
     }
   },
-  created () {
-    this.$store.dispatch('getThreads')
+  beforeCreate () {
+    if ('page' in this.$route.query) {
+      this.$store.dispatch('setPage', Number(this.$route.query.page)).then(() => {
+        this.$store.dispatch('getThreads')
+      })
+    } else this.$store.dispatch('getThreads')
   },
   computed: {
     page () { return this.$store.state.page },

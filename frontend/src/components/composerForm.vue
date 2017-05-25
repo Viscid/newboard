@@ -6,7 +6,7 @@
         <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage" :settings="settings"></formattedMessage>
     </transition>
     </div>    
-    <input class="postButton" type="submit" />
+    <input class="postButton" type="submit" value="Post" />
   </form>
 </template>
 

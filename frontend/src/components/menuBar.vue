@@ -22,7 +22,7 @@
         <img height="24" width="24" class="mobile" src="../assets/icons/Profile.svg" />
         <span class="screen"> {{ username }} </span>
       </a>
-      <modal :height="250" :width="300" :adaptive="true" name="userModal">
+      <modal :height="200" :width="300" :adaptive="true" name="userModal">
         <div class="modalContent">
           <h3> {{ username }} </h3>
           <ul class="userMenuList">
@@ -100,7 +100,6 @@ export default {
 
 h3 {
   margin: 0;
-  margin-bottom: 20px;
   font-size: 1.4em;
   background-color: #aa4439;
   color: white;
@@ -110,7 +109,6 @@ h3 {
  .modalContent {
   text-align: center;
   box-sizing: border-box;
-  height: 300px;
 }
 
 .userMenuListItem {
@@ -119,12 +117,13 @@ h3 {
   text-align: left;
   background-color: transparent;
   margin: 0;
-  padding: 0;
-  line-height: 40px;
+  padding: 0 1em;
+  line-height: 50px;
 }
 
 .userMenuList {
-  padding-left: 2em;
+  margin: 0;
+  padding: 0;
 }
 
 .userMenuListItem a {

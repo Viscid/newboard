@@ -4,7 +4,7 @@
       <div class="expandedReply" v-if="isSelected(reply._id)">
         <postHeader :post="reply" :thread="thread"> </postHeader>
         <div class="postBody">
-          <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage"></formattedMessage>
+          <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage" :settings="settings"></formattedMessage>
         </div>
         <adminPostActions :post="reply" v-show="isAdmin"></adminPostActions>
       </div>
@@ -83,6 +83,9 @@ export default {
     },
     selectedReply () {
       return this.$store.state.selectedReply
+    },
+    settings () {
+      return this.$store.state.settings
     }
   }
 }
