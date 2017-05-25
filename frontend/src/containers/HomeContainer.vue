@@ -19,7 +19,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getThreads', this.$store.state.page)
+    this.$store.dispatch('getThreads')
   },
   computed: {
     page () { return this.$store.state.page },

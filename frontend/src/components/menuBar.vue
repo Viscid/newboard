@@ -18,12 +18,21 @@
         <img height="24" width="24" class="mobile" src="../assets/icons/Search.svg" />
         <span class="screen"> Search </span>
       </router-link><!--
-      --><router-link v-if="username" class="profileLink" v-show="isLoggedIn" :to="{ name: 'UserProfile', params: { username } }"  exact>
+      --><router-link v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"  exact> Admin </router-link><!--
+      --><a v-if="username" @click="showModal" class="userMenuLink" v-show="isLoggedIn">
         <img height="24" width="24" class="mobile" src="../assets/icons/Profile.svg" />
         <span class="screen"> {{ username }} </span>
-      </router-link><!--
-      --><router-link v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"  exact> Admin </router-link><!--
-      --><a class="signoutButton" @click="logout" v-show="isLoggedIn"> Sign out </a>
+      </a>
+      <modal :height="250" :width="300" :adaptive="true" name="userModal">
+        <div class="modalContent">
+          <h3> {{ username }} </h3>
+          <ul class="userMenuList">
+            <li class="userMenuListItem"> <router-link :to="{ name: 'UserProfile', params: { username }}"> <a  @click="closeModal"> My Profile </a> </router-link> </li>
+            <li class="userMenuListItem"> <a @click="logout"> Sign Out </a> </li>
+            <li class="userMenuListItem"> <router-link :to="{ name: 'Settings' }"> <a @click="closeModal"> Interface Settings </a> </router-link> </li>
+          </ul>
+        </div>
+      </modal>
     </div>
 </template>
 
@@ -45,10 +54,17 @@ export default {
     }
   },
   methods: {
+    closeModal () {
+      this.$modal.hide('userModal')
+    },
     logout () {
+      this.$router.push('/')
       this.$store.dispatch('logout').then(() => {
-        this.$router.push('/')
+        this.$modal.hide('userModal')
       })
+    },
+    showModal () {
+      this.$modal.show('userModal')
     },
     setPage () {
       this.$store.dispatch('setPage', 1)
@@ -61,6 +77,46 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 1.4em;
+  background-color: #aa4439;
+  color: white;
+  padding: 0;
+}
+
+ .modalContent {
+  text-align: center;
+  box-sizing: border-box;
+  height: 300px;
+}
+
+.userMenuListItem {
+  display: block;
+  color: black;
+  text-align: left;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  line-height: 40px;
+}
+
+.userMenuList {
+  padding-left: 2em;
+}
+
+.userMenuListItem a {
+  background-color: none;
+  color: black;
+  padding: 0;
+  opacity: 1;
+} 
+
+.userMenuListItem a:hover {
+  color: #aa4439;
+}
+
 @media(max-width: 500px) {
   .mobile { display: inline-block; }
   .screen { display: none; }
@@ -107,7 +163,7 @@ export default {
     opacity: 1;
   }
 
-  .profileLink {
+  .userMenuLink {
     float: right;
     font-weight: bold;
     display: inline-block;

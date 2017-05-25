@@ -8,6 +8,7 @@ import ComposerContainer from '@/containers/ComposerContainer'
 import ReplyContainer from '@/containers/ReplyContainer'
 import PostViewerContainer from '@/containers/PostViewerContainer'
 import SearchContainer from '@/containers/SearchContainer'
+import SettingsContainer from '@/containers/SettingsContainer'
 import AdminContainer from '@/containers/AdminContainer'
 import AdminUsersContainer from '@/containers/AdminUsersContainer'
 
@@ -55,6 +56,11 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: SearchContainer
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: SettingsContainer
     },
     {
       path: '/admin',

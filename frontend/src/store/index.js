@@ -7,6 +7,10 @@ export default {
     admin: {
       users: []
     },
+    settings: {
+      youTubeEmbed: localStorage.getItem('youTubeEmbed') || true,
+      postsPerPage: Number(localStorage.getItem('postsPerPage')) || 15
+    },
     postMessage: undefined,
     searchResults: [],
     selectedReply: '',
@@ -82,6 +86,9 @@ export default {
     },
     clearNewPosts (state) {
       state.newPosts = []
+    },
+    changeSetting (state, setting) {
+      if (('name' in setting) && ('value' in setting)) state.settings[setting.name] = setting.value
     }
   },
   actions: {
@@ -91,11 +98,11 @@ export default {
       })
     },
 
-    getThreads ({dispatch, commit}, page = 1, threadsPerPage = 15) {
+    getThreads (context) {
       return new Promise((resolve, reject) => {
-        axios.get(API_URL + '/post', { params: { page, threadsPerPage }, withCredentials: true })
+        axios.get(API_URL + '/post', { params: { page: context.state.page, threadsPerPage: context.state.settings.postsPerPage }, withCredentials: true })
         .then((res) => {
-          commit('setThreads', res.data)
+          context.commit('setThreads', res.data)
           resolve()
         })
         .catch((err) => {
@@ -267,6 +274,26 @@ export default {
 
     socket_post (context, post) {
       context.commit('addNewPost', post)
+    },
+
+    changeSetting (context, setting) {
+      return new Promise((resolve) => {
+        context.commit('changeSetting', setting)
+        resolve()
+      })
+    },
+
+    saveSettings ({dispatch, commit}, settings) {
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/settings', {settings}, { withCredentials: true }).then((res) => {
+          Object.keys(res.data).forEach((key) => {
+            localStorage.setItem(key, res.data[key])
+          })
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
     }
 
   }

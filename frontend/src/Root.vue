@@ -28,7 +28,9 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loginUser', {})
+    this.$store.dispatch('loginUser', {}).catch(() => {
+      console.log('No session found.')
+    })
   }
 }
 </script>

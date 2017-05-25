@@ -17,7 +17,10 @@
         let branches = []
         if ('c' in limb) {
           if (limb.c === 'link') return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
-          else if (limb.c === 'youtube') return createElement(youtube, { attrs: { height: '315', width: '420', id: limb.id } })
+          else if (limb.c === 'youtube') {
+            if (context.props.hasOwnProperty('settings') && context.props.settings['youTubeEmbed']) return createElement(youtube, { attrs: { height: '315', width: '420', id: limb.id, href: limb.href } })
+            else return createElement('a', { attrs: { href: limb.href, class: 'messageLink', target: '_blank' } }, limb.href)
+          }
           if ('t' in limb) { branches = limb.t.map((branch) => { return _checkBranchType(branch) }) }
           return createElement('span', { attrs: { class: limb.c } }, branches)
         } else if (Array.isArray(limb)) {

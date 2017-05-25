@@ -4,7 +4,7 @@
   <li :key="thread._id" v-for="thread in threads">
     <postHeader :post="thread"> </postHeader>
     <div class="postBody">
-      <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage"> </formattedMessage>
+      <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage" :settings="settings"> </formattedMessage>
     </div>
     <adminPostActions :post="thread" v-show="isAdmin"></adminPostActions>
     <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id" :isAdmin="isAdmin"></replyList>
@@ -32,6 +32,11 @@ export default {
   methods: {
     hasReplies (thread) {
       return thread.hasOwnProperty('replies') ? (thread._id in thread['replies']) : false
+    }
+  },
+  computed: {
+    settings () {
+      return this.$store.state.settings
     }
   }
 }

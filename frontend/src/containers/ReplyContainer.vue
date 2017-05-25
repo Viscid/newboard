@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="postBody">
-      <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage"></formattedMessage>
+      <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage" :settings="settings"></formattedMessage>
     </div>
     <replyForm :parentId="post._id"></replyForm>
   </div>
@@ -31,6 +31,9 @@ export default {
     post () {
       return (this.$route.params.slug === this.$store.state.replyPost.slug)
        ? this.$store.state.replyPost : {}
+    },
+    settings () {
+      return this.$store.state.settings
     }
   },
   methods: {

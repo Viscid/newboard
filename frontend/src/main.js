@@ -9,12 +9,14 @@ import VeeValidate from 'vee-validate'
 import socketio from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
 import config from '../../config'
+import vmodal from 'vue-js-modal'
 
 export const SocketInstance = socketio(config.SOCKETIO_URL)
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
+Vue.use(vmodal)
 Vue.use(VeeValidate, { classNames: { invalid: 'invalid' } })
 
 const appStore = new Vuex.Store(store)
