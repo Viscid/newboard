@@ -1,17 +1,16 @@
 <template>
     <div id="menuBar" class="noselect"> 
-      <router-link :to="{ name: 'Home' }" exact>
-      <span @click="setPage">
-        <img height="24" width="24" class="mobile" src="../assets/icons/Home.svg" />
-        <span class="screen"> Home </span>
-      </span>
+      <router-link class="homeButton" :to="{ name: 'Home' }" exact>
+        <span @click="setPage">
+          <img height="24" width="24" class="mobile" src="../assets/icons/Home.svg" />
+          <span class="screen"> Home </span>
+          <div v-if="(Number(newPosts) >= 1)" class="newPostNotifier"> {{ newPosts }} </div>
+        </span>
       </router-link><!--
       --><router-link class="composeLink" v-show="isLoggedIn" :to="{ name: 'Compose' }"  exact>
         <img height="24" width="24" class="mobile" src="../assets/icons/Compose.svg" />
         <span class="screen"> Compose </span>
       </router-link><!--
-      --><a class="newPost" @click="getNewPosts" v-if="(Number(newPosts) === 1)"> New post! </a><!--
-      --><a class="newPost" @click="getNewPosts" v-else-if="(Number(newPosts) > 1)"> {{ newPosts }} new posts! </a><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"  exact> Login </router-link><!--
       --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"  exact> Register </router-link><!--
       --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }"  exact>
@@ -77,6 +76,28 @@ export default {
 </script>
 
 <style scoped>
+.homeButton {
+  position: relative;
+  display: inline-block;
+  height: 24px;
+}
+
+.newPostNotifier {
+  position: absolute;
+  right: -5px;
+  top: 5px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #666;
+  color: black;
+  height: 18px;
+  width: 18px;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+  line-height: 18px;
+  border-radius: 4px;
+}
+
 h3 {
   margin: 0;
   margin-bottom: 20px;

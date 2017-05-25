@@ -6,9 +6,6 @@
         <h2 class="profileUserPostsHeader" :posts="userPosts"> {{ username }}'s Recent Posts </h2>
         <profileUserPosts :posts="userPosts"></profileUserPosts>
     </div>
-    <div id="ProfileContainer" v-else>
-      <h1 class="profileUsername"> Unknown User </h1>
-    </div>
 </template>
 
 <script>

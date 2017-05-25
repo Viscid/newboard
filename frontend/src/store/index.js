@@ -103,6 +103,7 @@ export default {
         axios.get(API_URL + '/post', { params: { page: context.state.page, threadsPerPage: context.state.settings.postsPerPage }, withCredentials: true })
         .then((res) => {
           context.commit('setThreads', res.data)
+          document.title = 'Viscity.org'
           resolve()
         })
         .catch((err) => {
@@ -274,6 +275,11 @@ export default {
 
     socket_post (context, post) {
       context.commit('addNewPost', post)
+      let newPosts = context.state.newPosts.filter((post) => {
+        return (post.username !== context.state.user.username)
+      }).length
+
+      if (newPosts > 0) document.title = `(${newPosts}) Viscity.org`
     },
 
     changeSetting (context, setting) {
