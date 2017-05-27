@@ -96,8 +96,8 @@ router.post('/find/', checkAccess('user'), function(req, res) { // Searches for 
 
 router.get('/', function(req, res) {
 
-  var page = Number(req.query.page)
-  var threadsPerPage = Number(req.query.threadsPerPage)
+  var page = Number(req.query.page || 1)
+  var threadsPerPage = Number(req.query.threadsPerPage || 15)
   Post.find({ root: { $exists: false } }, '')
     // .select('-message')
     .sort( { lastReply: -1 } )

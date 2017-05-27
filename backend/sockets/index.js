@@ -2,8 +2,7 @@ var jwt = require('jsonwebtoken')
 
 var config = require('../../config')
 
-var onlineUsers = {}
-var onlineUsersCount = 0
+var userSessions = {}
 
 module.exports = function(io) {
   return function(socket) {
@@ -12,14 +11,14 @@ module.exports = function(io) {
 
     socket.on('logout', function() {
       if ('username' in socket) {
-        delete socket.username
-        delete onlineUsers[socket.id]
+        delete socket['username']
+        delete userSessions[socket.id]
       }
       updateOnlineUsers(io)
     })
 
     socket.on('disconnect', function() {
-      if ('username' in socket) delete socket.username
+      if ('username' in socket) delete socket['username']
       updateOnlineUsers(io)
     })
 
@@ -29,7 +28,7 @@ module.exports = function(io) {
           console.log(err)
           return
         }
-        onlineUsers[socket.id] = decoded.username
+        userSessions[socket.id] = decoded.username
         socket.username = decoded.username
         updateOnlineUsers(io)
       })
@@ -44,20 +43,13 @@ function updateOnlineUsers(io) {
       return
     }
 
-    onlineUsersCount = clients.length
-
-    for (var socketId in onlineUsers) {
-      if (clients.indexOf(socketId) === -1) {
-        delete onlineUsers[socketId]
-      }
+    var onlineUsers = []
+    for (var socketId in userSessions) {
+      if (clients.indexOf(socketId) < 0) delete userSessions[socketId]
+      if (onlineUsers.indexOf(userSessions[socketId]) < 0) onlineUsers.push(userSessions[socketId])
     }
 
-    var onlineUsersArray = []
-    for (var key in onlineUsers) {
-      if (onlineUsersArray.indexOf(String(onlineUsers[key])) === -1) onlineUsersArray.push(onlineUsers[key])
-    }
-
-    io.emit('onlineUsers', {list: onlineUsersArray, total: onlineUsersCount })
+    io.emit('onlineUsers', {list: onlineUsers, total: clients.length })
   })
 }
 
