@@ -1,6 +1,6 @@
 <template>
     <div id="menuBar" class="noselect"> 
-      <router-link class="homeButton" :to="{ name: 'Home' }" exact>
+      <router-link class="homeLink" :to="{ name: 'Home' }" exact>
         <span @click="setPage">
           <img height="24" width="24" class="mobile" src="../assets/icons/Home.svg" />
           <span class="screen"> Home </span>
@@ -17,6 +17,7 @@
         <img height="24" width="24" class="mobile" src="../assets/icons/Search.svg" />
         <span class="screen"> Search </span>
       </router-link><!--
+      --><router-link class="onlineUsersLink" :to="{ name: 'OnlineUsers' }" exact>{{onlineUsers}} Online</router-link><!--
       --><router-link v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"  exact> Admin </router-link><!--
       --><a v-if="username" @click="showModal" class="userMenuLink" v-show="isLoggedIn">
         <img height="24" width="24" class="mobile" src="../assets/icons/Profile.svg" />
@@ -50,6 +51,9 @@ export default {
     },
     isAdmin () {
       return (this.$store.state.user['role'] === 'admin')
+    },
+    onlineUsers () {
+      return (this.$store.state.onlineUserCount)
     }
   },
   methods: {
@@ -59,6 +63,7 @@ export default {
     logout () {
       this.$router.push('/')
       this.$store.dispatch('logout').then(() => {
+        this.$socket.emit('logout')
         this.$modal.hide('userModal')
       })
     },
@@ -76,7 +81,8 @@ export default {
 </script>
 
 <style scoped>
-.homeButton {
+
+.homeLink {
   position: relative;
   display: inline-block;
   height: 24px;

@@ -28,9 +28,9 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('loginUser', {}).catch(() => {
-      console.log('No session found.')
-    })
+    this.$store.dispatch('loginUser', {}).then(() => {
+      this.$socket.emit('login', this.$store.state.user.token)
+    }).catch(() => { console.log('No session found.') })
   }
 }
 </script>

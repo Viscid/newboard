@@ -23,11 +23,12 @@
         if (!this.errors.any()) {
           var user = { username: this.username, password: this.password, email: this.email }
           this.$store.dispatch('submitRegistration', user)
-          .then(() => {
+          .then((returnedUser) => {
             this.$refs.username.blur()
             this.$refs.password.blur()
             this.$refs.email.blur()
             setTimeout(() => {
+              this.$socket.emit('login', returnedUser.token)
               this.$router.push('/')
             }, 10)
           })

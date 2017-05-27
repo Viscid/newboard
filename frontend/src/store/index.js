@@ -21,6 +21,8 @@ export default {
     options: {
       postLimit: 5
     },
+    onlineUsers: [],
+    onlineUserCount: 0,
     threads: [],
     newPosts: [],
     status: {
@@ -89,6 +91,10 @@ export default {
     },
     changeSetting (state, setting) {
       if (('name' in setting) && ('value' in setting)) state.settings[setting.name] = setting.value
+    },
+    setOnlineUsers (state, users) {
+      state.onlineUsers = users.list
+      state.onlineUserCount = users.total
     }
   },
   actions: {
@@ -138,7 +144,7 @@ export default {
     submitRegistration ({dispatch, commit}, user) {
       return new Promise((resolve, reject) => {
         axios.post(API_URL + '/user/register', {user}, { withCredentials: true }).then((res) => {
-          resolve()
+          resolve(res.data)
           commit('setUser', res.data)
         }).catch((err) => {
           reject(err)
@@ -150,7 +156,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
           commit('setUser', res.data)
-          resolve()
+          resolve(res.data)
         }).catch((err) => {
           reject(err)
         })
@@ -280,6 +286,10 @@ export default {
       }).length
 
       if (newPosts > 0) document.title = `(${newPosts}) Viscity.org`
+    },
+
+    socket_onlineUsers (context, users) {
+      context.commit('setOnlineUsers', users)
     },
 
     changeSetting (context, setting) {

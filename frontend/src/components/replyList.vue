@@ -10,7 +10,8 @@
       </div>
       <div v-else>
         <div class="unexpandedReply">
-          <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>: <span :class="replyOrderWeight(reply.replyOrder)">
+          <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
+          <span class="onlineDot" v-show="isOnline(reply.username)"> &bull; </span> : <span :class="replyOrderWeight(reply.replyOrder)">
           <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
           <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
         </div>
@@ -74,6 +75,9 @@ export default {
     },
     isSelected (replyId) {
       return (replyId === this.$store.state.selectedReply)
+    },
+    isOnline (username) {
+      return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     }
   },
 

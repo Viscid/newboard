@@ -5,6 +5,7 @@ import RegistrationContainer from '@/containers/RegistrationContainer'
 import LoginContainer from '@/containers/LoginContainer'
 import ProfileContainer from '@/containers/ProfileContainer'
 import ComposerContainer from '@/containers/ComposerContainer'
+import OnlineUsersContainer from '@/containers/OnlineUsersContainer'
 import ReplyContainer from '@/containers/ReplyContainer'
 import PostViewerContainer from '@/containers/PostViewerContainer'
 import SearchContainer from '@/containers/SearchContainer'
@@ -73,6 +74,11 @@ export default new Router({
           component: AdminUsersContainer
         }
       ]
+    },
+    {
+      path: '/online',
+      name: 'OnlineUsers',
+      component: OnlineUsersContainer
     }
   ],
   scrollBehavior (to, from, savedPosition) {

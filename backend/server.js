@@ -40,7 +40,6 @@ app.use(function(req, res, next) {
 })
 
 var models = require('./models')
-
 app.use('/api/', models)
 
 app.use(express.static('dist'))
@@ -48,6 +47,10 @@ app.use(express.static('dist'))
 app.get('/*', function(req, res) {
   res.sendFile(__dirname + '/dist/index.html')
 })
+
+var socketHandler = require ('./sockets')(io)
+
+io.on('connect', socketHandler)
 
 var port = process.env.PORT || config.backendPort
 

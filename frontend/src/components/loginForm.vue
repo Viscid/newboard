@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submitRegistration" id="loginForm">
+    <form @submit.prevent="loginUser" id="loginForm">
       <h3> Username </h3>
         <input name="username" data-vv-validate-on="none" v-validate="'required'" ref='usernameField' id="formUsername" class="field" v-model="username" autofocus/>
         <span class="error" v-show="errors.has('username')"> {{errors.first('username')}} </span>
@@ -15,12 +15,13 @@
   export default {
     name: 'registrationForm',
     methods: {
-      submitRegistration () {
+      loginUser () {
         this.$validator.validateAll()
         .then(() => {
           var user = { username: this.username, password: this.password }
           this.$store.dispatch('loginUser', user)
-          .then(() => {
+          .then((returnedUser) => {
+            this.$socket.emit('login', returnedUser.token)
             this.$router.push('/')
           })
           .catch((error) => {

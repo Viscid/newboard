@@ -1,6 +1,7 @@
 <template>
   <div class="postHeader">
-    <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> -
+    <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> 
+    <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
     <span class="postDatetime">
       <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mma') }} </router-link>
     </span>
@@ -16,6 +17,9 @@ export default {
   methods: {
     getDate (date, style) {
       return fecha.format(new Date(date), style)
+    },
+    isOnline (username) {
+      return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     }
   },
   computed: {
@@ -27,6 +31,10 @@ export default {
 </script>
 
 <style>
+  .onlineDot {
+    color: #00BB00;
+  }
+
   .largeReplyButton {
     display: block;
     font-weight: bold;

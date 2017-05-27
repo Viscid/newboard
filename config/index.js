@@ -5,6 +5,7 @@ module.exports = {
   backendPort: 1111,
   devPort: 2222,
   sessionSecret: 'jasnn2n2nn2n',
+  jwtKey: 'nn2n0000zkzk0zk',
   database: 'mongodb://localhost/newboard',
   bcryptSaltRounds: 10  
 }

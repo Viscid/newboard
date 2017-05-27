@@ -12,6 +12,8 @@ var errors = require('../helpers/errors.js')
 
 var Promise = require('bluebird')
 
+var jwt = require('jsonwebtoken')
+
 router.post('/register', validateRegistrationFields, function(req, res) {
   var user = req.body.user
 
@@ -32,6 +34,8 @@ router.post('/register', validateRegistrationFields, function(req, res) {
           else {
             var returnedUser = registeredUser.toObject()
             req.session.user = registeredUser
+            
+            returnedUser.token = jwt.sign({username: registeredUser.username}, config.jwtKey)
             delete returnedUser['hash']
             res.json(returnedUser)
           }
@@ -60,6 +64,7 @@ function validateRegistrationFields(req, res, next) {
 
 router.put('/login', function(req, res) {
   if (req.session.user && !req.body.user.hasOwnProperty('username')) {
+    req.session.user.token = jwt.sign({username: req.session.user.username}, config.jwtKey)
     res.json(req.session.user)
     return
   } else if (!req.body.user.hasOwnProperty('username')) {
@@ -71,11 +76,12 @@ router.put('/login', function(req, res) {
   User.findOne({username: user.username.trim()}, function (err, foundUser) {
     if (err) res.status(404).send({error: 'Error finding user.'})
     else if (!foundUser) res.status(404).send(errors.loginCredentialsInvalid) 
-    else {
+    else {  
       bcrypt.compare(user.password, foundUser.hash).then(function(succ) {
         if (succ === true) {
           foundUser = foundUser.toObject()
           req.session.user = foundUser
+          foundUser.token = jwt.sign({username: foundUser.username}, config.jwtKey)
           delete foundUser['hash']
           res.json(foundUser)
         } else res.status(404).send(errors.loginCredentialsInvalid) 
