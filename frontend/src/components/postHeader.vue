@@ -33,6 +33,7 @@ export default {
 <style>
   .onlineDot {
     color: #00BB00;
+    font-size: 1em;
   }
 
   .largeReplyButton {
