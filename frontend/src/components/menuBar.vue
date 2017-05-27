@@ -71,10 +71,8 @@ export default {
       this.$modal.show('userModal')
     },
     setPage () {
-      this.$store.dispatch('setPage', 1)
-    },
-    getNewPosts () {
-      this.$store.dispatch('getNewPosts')
+      if (this.$store.state.page !== 1) this.$store.dispatch('setPage', 1)
+      if (this.$props.newPosts > 0) this.$store.dispatch('getThreads')
     }
   }
 }

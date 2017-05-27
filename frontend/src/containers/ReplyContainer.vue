@@ -1,7 +1,8 @@
 <template>
   <div class="postReply">
     <div class="postHeader">
-      <span class="postUsername"> {{ post.username }} </span> -
+      <span class="postUsername"> {{ post.username }} </span>
+      <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
       <span class="postDatetime">
         <router-link v-if="'datetime' in post" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </router-link>
       </span>
@@ -39,6 +40,9 @@ export default {
   methods: {
     getDate (date, style) {
       return fecha.format(new Date(date), style)
+    },
+    isOnline (username) {
+      return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     }
   }
 }

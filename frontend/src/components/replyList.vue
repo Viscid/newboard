@@ -10,7 +10,7 @@
       </div>
       <div v-else>
         <div class="unexpandedReply">
-          <router-link :class="{replyUsername: true, userOnline: isOnline(reply.username)}" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
+          <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
           : <span :class="replyOrderWeight(reply.replyOrder)">
           <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
           <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
@@ -146,12 +146,8 @@ export default {
 
   .replyUsername {
     font-weight: bold;
-    color: #4c1e19;
-    text-decoration: none;
-  }
-
-  .userOnline {
     color: #aa4439;
+    text-decoration: none;
   }
 
   .unexpandedReply {

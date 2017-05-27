@@ -32,7 +32,7 @@ export default {
 
 <style>
   .onlineDot {
-    color: #00BB00;
+    color: #99DD99;
     font-size: 1em;
   }
 
@@ -44,7 +44,7 @@ export default {
   }
 
   .largeReplyButton img {
-    margin-top: -16px;
+    margin-top: -14px;
     float: right;
     height: 25px;
     width: 25px;
