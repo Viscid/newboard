@@ -7,11 +7,13 @@ export default class relativeTime {
     this.hours = (Math.floor(timeElapsed % 86400000) / 3600000)
     this.minutes = (Math.floor(timeElapsed % 3600000) / 60000)
     this.seconds = (Math.floor(timeElapsed % 60000) / 1000)
+    this.elapsed = timeElapsed
   }
 
   getString () {
     let timeString = ''
 
+    if (this.elapsed < 1000) { return 'Just now!' }
     if (this.years >= 1) timeString += Math.floor(this.years) + ' year' + (this.years >= 2 ? 's' : '') + ' '
     if (this.days >= 1) timeString += Math.floor(this.days) + ' day' + (this.days >= 2 ? 's' : '') + ' '
     if (this.hours >= 1) timeString += Math.floor(this.hours) + ' hour' + (this.hours >= 2 ? 's' : '') + ' '
