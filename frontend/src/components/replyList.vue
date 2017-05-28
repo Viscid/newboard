@@ -127,7 +127,7 @@ export default {
     margin: 0;
     padding-left: 15px;
     padding-top: 5px;
-    border-left: 1px solid #CCC;
+    border-left: 1px solid #DDD;
     list-style: none;
   }
 
@@ -135,7 +135,7 @@ export default {
     background-image: url('../assets/replyline_list_active_item.png');
     background-position: 0 14px;
     padding-top: 0;
-    border-left: 1px solid #CCC;
+    border-left: 1px solid #DDD;
   }
 
   .reply:last-child.active {

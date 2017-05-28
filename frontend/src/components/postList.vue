@@ -75,7 +75,7 @@ export default {
     font-weight: bold;
     padding: 5px 10px 2px 4px;
     color: black;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #DDD;
   }
 
   .postDatetime a {
