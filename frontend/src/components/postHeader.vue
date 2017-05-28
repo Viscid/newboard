@@ -3,7 +3,7 @@
     <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> 
     <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
     <span class="postDatetime">
-      <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mma') }} </router-link>
+      <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ date }} </router-link>
     </span>
     <router-link v-show="loggedIn" :to="{ name: 'Reply', params: { slug: post.slug, post }}" class="largeReplyButton noselect"> <img src="../assets/reply.svg"> </router-link>
   </div>
@@ -15,10 +15,23 @@ import RelativeTime from '../helpers/RelativeTime'
 
 export default {
   props: ['post', 'thread', 'settings'],
+  data () {
+    return {
+      timeNow: Date.now()
+    }
+  },
+  created () {
+    this.interval = setInterval(() => {
+      this.timeNow = Date.now()
+    }, 60000)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
   methods: {
-    getDate (date, style) {
+    getDate (date, style, timeNow) {
       if (this.$props.settings['dateTimeFormat'] === 'relative') {
-        let rt = new RelativeTime(date)
+        let rt = new RelativeTime(new Date(date).getTime(), timeNow)
         return rt.getString()
       } else return fecha.format(new Date(date), style)
     },
@@ -29,6 +42,9 @@ export default {
   computed: {
     loggedIn () {
       return ('username' in this.$store.state.user)
+    },
+    date () {
+      return this.getDate(this.$props.post.datetime, 'MMMM Do, YYYY @ h:mma', this.timeNow)
     }
   }
 }

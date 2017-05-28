@@ -1,6 +1,6 @@
 export default class relativeTime {
-  constructor (time) {
-    let timeElapsed = (Date.now() - new Date(time).getTime())
+  constructor (timeThen, timeNow) {
+    let timeElapsed = (timeNow - timeThen)
 
     this.years = (Math.floor(timeElapsed / 31556952000))
     this.days = (Math.floor(timeElapsed % 31556952000) / 86400000)

@@ -3,14 +3,14 @@
   <h2> Settings </h2>
     <div class="settingGroup">
       <div class="settingsFormInput">
-        <input name="youTubeEmbed" type="checkbox" @click="setSetting" :checked="getSetting('youTubeEmbed')"></input>
+        <input class="youTubeEmbedInput" name="youTubeEmbed" type="checkbox" @click="setSetting" :checked="getSetting('youTubeEmbed')"></input>
       </div>
       <label class="settingsFormLabel" for="youTubeEmbed"> Embed YouTube videos </label>
     </div>
     
     <div class="settingGroup">
       <div class="settingsFormInput">
-        <select name="dateTimeFormat" @change="setSetting">
+        <select class="dateTimeSelect" name="dateTimeFormat" @change="setSetting">
           <option value="absolute" :selected="getSetting('dateTimeFormat') === 'absolute'"> Absolute </option>
           <option value="relative" :selected="getSetting('dateTimeFormat') === 'relative'"> Relative </option>
         </select>
@@ -20,7 +20,7 @@
 
     <div class="settingGroup">
       <div class="settingsFormInput">
-        <input name="postsPerPage" type="number" @input="setSetting" size="2" min="5" max="50" :value="getSetting('postsPerPage')">
+        <input class="postsPerPageInput" name="postsPerPage" type="number" @input="setSetting" size="2" min="5" max="50" :value="getSetting('postsPerPage')">
       </div>
       <label class="settingsFormLabel" for="postsPerPage"> Posts per page </label>
     </div>
@@ -98,6 +98,10 @@ export default {
 
   #settingsContainer {
     padding: 1em;
+  }
+
+  .postsPerPageInput {
+    width: 50px;
   }
 
 
