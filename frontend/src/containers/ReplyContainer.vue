@@ -4,7 +4,7 @@
       <span class="postUsername"> {{ post.username }} </span>
       <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
       <span class="postDatetime">
-        <router-link v-if="'datetime' in post" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ getDate(post.datetime, 'MMMM Do, YYYY @ h:mm:ssa') }} </router-link>
+        <router-link v-if="'datetime' in post" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
       </span>
     </div>
     <div class="postBody">
@@ -24,6 +24,19 @@ export default {
   components: {
     replyForm, formattedMessage
   },
+  data () {
+    return {
+      timeNow: Date.now()
+    }
+  },
+  created () {
+    this.interval = setInterval(() => {
+      this.timeNow = Date.now()
+    }, 60000)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
   mounted () {
     ('post' in this.$route.params)
     ? this.$store.dispatch('setReplyPost', this.$route.params.post)
@@ -36,12 +49,15 @@ export default {
     },
     settings () {
       return this.$store.state.settings
+    },
+    date () {
+      return this.getDate(this.post.datetime, 'MMMM Do, YYYY @ h:mma', this.timeNow)
     }
   },
   methods: {
-    getDate (date, style) {
+    getDate (date, style, timeNow) {
       if (this.settings['dateTimeFormat'] === 'relative') {
-        let rt = new RelativeTime(date)
+        let rt = new RelativeTime(new Date(date).getTime(), timeNow)
         return rt.getString()
       } else return fecha.format(new Date(date), style)
     },
