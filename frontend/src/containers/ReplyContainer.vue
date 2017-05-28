@@ -18,6 +18,7 @@
 import replyForm from '@/components/replyForm'
 import formattedMessage from '@/components/formattedMessage'
 import fecha from 'fecha'
+import RelativeTime from '../helpers/RelativeTime.js'
 
 export default {
   components: {
@@ -39,7 +40,10 @@ export default {
   },
   methods: {
     getDate (date, style) {
-      return fecha.format(new Date(date), style)
+      if (this.settings['dateTimeFormat'] === 'relative') {
+        let rt = new RelativeTime(date)
+        return rt.getString()
+      } else return fecha.format(new Date(date), style)
     },
     isOnline (username) {
       return (this.$store.state.onlineUsers.indexOf(username) >= 0)

@@ -2,7 +2,7 @@
   <ul class="replies">
     <li :key="reply._id" v-for="reply in thread.replies[parent]" :class="{ reply: true, active: isSelected(reply._id) }">
       <div class="expandedReply" v-if="isSelected(reply._id)">
-        <postHeader :post="reply" :thread="thread"> </postHeader>
+        <postHeader :post="reply" :thread="thread" :settings="settings"> </postHeader>
         <div class="postBody">
           <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage" :settings="settings"></formattedMessage>
         </div>

@@ -9,11 +9,12 @@ router.post('/', checkAccess('user'), function(req, res) {
   var username = req.session.user.username
   var settings = req.body.settings
   User.findOneAndUpdate({username: username},
-   { $set: { settings: settings }},
+   { settings: settings },
    { upsert: true, new: true },
    function(err, user) {
      if (err) res.status(500).send(err)
      else {
+       req.session.user.settings = user.settings
        res.json(user.settings)}
    })
 })

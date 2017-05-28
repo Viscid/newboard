@@ -9,7 +9,8 @@ export default {
     },
     settings: {
       youTubeEmbed: localStorage.getItem('youTubeEmbed') || true,
-      postsPerPage: Number(localStorage.getItem('postsPerPage')) || 15
+      postsPerPage: Number(localStorage.getItem('postsPerPage')) || 15,
+      dateTimeFormat: localStorage.getItem('dateTimeFormat') || 'absolute'
     },
     postMessage: undefined,
     searchResults: [],
@@ -50,6 +51,7 @@ export default {
     },
     setUser (state, user) {
       state.user = user
+      if ('settings' in user) state['settings'] = user['settings']
     },
     setPage (state, page) {
       state.page = page

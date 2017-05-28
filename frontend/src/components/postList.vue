@@ -2,7 +2,7 @@
 
 <ul>
   <li :key="thread._id" v-for="thread in threads">
-    <postHeader :post="thread"> </postHeader>
+    <postHeader :post="thread" :settings="settings"> </postHeader>
     <div class="postBody">
       <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage" :settings="settings"> </formattedMessage>
     </div>
