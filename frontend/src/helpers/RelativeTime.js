@@ -1,12 +1,12 @@
 export default class relativeTime {
   constructor (timeThen, timeNow) {
-    let timeElapsed = (timeNow - timeThen)
+    let timeElapsed = (timeNow - new Date(timeThen).getTime())
 
-    this.years = (Math.floor(timeElapsed / 31556952000))
-    this.days = (Math.floor(timeElapsed % 31556952000) / 86400000)
-    this.hours = (Math.floor(timeElapsed % 86400000) / 3600000)
-    this.minutes = (Math.floor(timeElapsed % 3600000) / 60000)
-    this.seconds = (Math.floor(timeElapsed % 60000) / 1000)
+    this.years = (Math.trunc(timeElapsed / 31556952000))
+    this.days = (Math.trunc(timeElapsed % 31556952000) / 86400000)
+    this.hours = (Math.trunc(timeElapsed % 86400000) / 3600000)
+    this.minutes = (Math.trunc(timeElapsed % 3600000) / 60000)
+    this.seconds = (Math.trunc(timeElapsed % 60000) / 1000)
     this.elapsed = timeElapsed
   }
 

@@ -1,12 +1,12 @@
 <template>
 
 <ul>
-  <li :key="thread._id" v-for="thread in threads">
+  <li :class="{threadListItem: true, oddThread: (key % 2 === 0)}" :key="thread._id" v-for="(thread, key) in threads">
     <postHeader :post="thread" :settings="settings"> </postHeader>
     <div class="postBody">
       <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage" :settings="settings"> </formattedMessage>
     </div>
-    <adminPostActions :post="thread" v-show="isAdmin"></adminPostActions>
+    <actionBar :isAdmin="isAdmin" :post="thread" :loggedIn="loggedIn"></actionBar>
     <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id" :isAdmin="isAdmin"></replyList>
   </li>
 </ul>
@@ -18,7 +18,7 @@ import replyList from './replyList'
 
 import postHeader from './postHeader'
 import formattedMessage from './formattedMessage'
-import adminPostActions from './adminPostActions'
+import actionBar from './actionBar'
 
 export default {
   name: 'postList',
@@ -27,7 +27,7 @@ export default {
     replyList,
     postHeader,
     formattedMessage,
-    adminPostActions
+    actionBar
   },
   methods: {
     hasReplies (thread) {
@@ -38,6 +38,9 @@ export default {
     settings () {
       return this.$store.state.settings
     }
+  },
+  beforeDestroy () {
+    this.$store.dispatch('clearReactions')
   }
 }
 </script>
@@ -59,6 +62,15 @@ export default {
     li {
       margin: 0 0 2em 5px;
     }
+  }
+
+  .threadListItem {
+    border-left: 1px solid #FFF; 
+    padding-left: 5px;
+  }
+
+  .threadListItem:hover {
+    border-left: 1px solid #93b3ff;
   }
 
   .postUsername {

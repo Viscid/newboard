@@ -4,6 +4,7 @@ var router = express.Router()
 
 var formattedMessage = require('../../../helpers/formattedMessage.js')
 var tags = require('../../../config/tags.js')
+var reactions = require('../../../config/reactions.js')
 
 var Post = require('./Post')
 
@@ -92,6 +93,27 @@ router.post('/find/', checkAccess('user'), function(req, res) { // Searches for 
     if(err) res.status(500).json(err)
     res.json(results)
   })
+})
+
+router.post('/reaction', checkAccess('user'), function(req, res) {
+  var reaction = reactions.find(function(r) {
+    return (r.name === req.body.name)
+  })
+  var postId = ('_id' in req.body.post ? req.body.post._id : undefined)
+
+  if (reaction && postId) {
+    var reactionValue = { name: reaction.name, user: req.session.user.username }
+    Post.findOneAndUpdate({_id: postId},
+    { $push: { reactions: reactionValue} },
+    { upsert: true, new: true },
+    function(err, post) {
+      if (err) res.status(500).send(err)
+      else {
+        req.io.emit('reaction', { postId: post._id, reaction: reactionValue })
+        res.json(post)}
+    })    
+  } else { res.sendStatus(500) }
+  
 })
 
 router.get('/', function(req, res) {

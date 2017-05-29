@@ -6,7 +6,7 @@
         <div class="postBody">
           <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage" :settings="settings"></formattedMessage>
         </div>
-        <adminPostActions :post="reply" v-show="isAdmin"></adminPostActions>
+        <actionBar :isAdmin="isAdmin" :post="reply" :loggedIn="loggedIn"></actionBar>
       </div>
       <div v-else>
         <div class="unexpandedReply">
@@ -26,7 +26,7 @@ import replyList from './replyList'
 
 import postHeader from './postHeader'
 import formattedMessage from '@/components/formattedMessage.vue'
-import adminPostActions from '@/components/adminPostActions.vue'
+import actionBar from '@/components/actionBar.vue'
 
 export default {
   props: ['parent', 'replyCount', 'thread', 'isAdmin'],
@@ -35,7 +35,7 @@ export default {
     replyList,
     postHeader,
     formattedMessage,
-    adminPostActions
+    actionBar
   },
   methods: {
     hasReplies (parentId) {

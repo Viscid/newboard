@@ -57,7 +57,7 @@ export default {
   methods: {
     getDate (date, style, timeNow) {
       if (this.settings['dateTimeFormat'] === 'relative') {
-        let rt = new RelativeTime(new Date(date).getTime(), timeNow)
+        let rt = new RelativeTime(date, timeNow)
         return rt.getString()
       } else return fecha.format(new Date(date), style)
     },

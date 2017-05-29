@@ -9,6 +9,7 @@ var postSchema = mongoose.Schema({
   datetime: { type: Date, default: Date.now },
   message: String,
   formattedMessage: Array,
+  reactions: Array,
   parentId: mongoose.Schema.Types.ObjectId,
   replyCount: { type: Number },
   replyOrder: { type: Number },

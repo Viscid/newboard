@@ -15,6 +15,7 @@ export default {
     postMessage: undefined,
     searchResults: [],
     selectedReply: '',
+    reactions: [],
     activeThread: [],
     activeProfile: {},
     replyPost: {},
@@ -87,6 +88,12 @@ export default {
     },
     addNewPost (state, post) {
       state.newPosts.push(post)
+    },
+    addReaction (state, reaction) {
+      state.reactions.push(reaction)
+    },
+    clearReactions (state) {
+      state.reactions = []
     },
     clearNewPosts (state) {
       state.newPosts = []
@@ -176,6 +183,17 @@ export default {
       })
     },
 
+    react (context, reaction) {
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/post/reaction', { name: reaction.name, post: reaction.post }, { withCredentials: true }).then((res) => {
+          resolve()
+        }).catch((err) => {
+          console.log(err)
+          reject(err)
+        })
+      })
+    },
+
     fetchProfile (context, username) {
       return new Promise((resolve, reject) => {
         axios.get(API_URL + '/user/profile/' + username, { withCredentials: true }).then((res) => {
@@ -245,6 +263,10 @@ export default {
       context.commit('clearActiveProfile')
     },
 
+    clearReactions (context) {
+      context.commit('clearReactions')
+    },
+
     selectReply (context, replyId) {
       context.commit('setSelectedReply', replyId)
     },
@@ -288,6 +310,10 @@ export default {
       }).length
 
       if (newPosts > 0) document.title = `(${newPosts}) Viscity.org`
+    },
+
+    socket_reaction (context, reaction) {
+      context.commit('addReaction', reaction)
     },
 
     socket_onlineUsers (context, users) {
