@@ -27,10 +27,12 @@ Vue.directive('click-away', {
   inserted: function (el, binding) {
     setTimeout(() => {
       document.body.addEventListener('click', binding.value)
+      document.body.addEventListener('touchstart', binding.value)
     }, 0)
   },
   unbind: function (el, binding) {
     document.body.removeEventListener('click', binding.value)
+    document.body.removeEventListener('touchstart', binding.value)
   }
 })
 
