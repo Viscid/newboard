@@ -90,7 +90,7 @@ export default {
   position: absolute;
   right: -5px;
   top: 5px;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: white;
   border: 1px solid #666;
   color: black;
   height: 18px;
@@ -110,7 +110,7 @@ h3 {
   padding: 0;
 }
 
- .modalContent {
+.modalContent {
   text-align: center;
   box-sizing: border-box;
 }

@@ -1,42 +1,28 @@
 <template>
 
 <ul>
-  <li :class="{threadListItem: true, oddThread: (key % 2 === 0)}" :key="thread._id" v-for="(thread, key) in threads">
-    <postHeader :post="thread" :settings="settings"> </postHeader>
-    <div class="postBody">
-      <formattedMessage :message="thread.message" :formattedMessage="thread.formattedMessage" :settings="settings"> </formattedMessage>
-    </div>
-    <actionBar :isAdmin="isAdmin" :post="thread" :loggedIn="loggedIn"></actionBar>
-    <replyList v-if="hasReplies(thread)" :replyCount="thread.replyCount" :thread="thread" :parent="thread._id" :isAdmin="isAdmin"></replyList>
+  <li class="threadListItem" :key="post._id" v-for="post in posts">
+    <post :post="post" :settings="settings" :isAdmin="isAdmin" :loggedIn="loggedIn"></post>
+    <replyList v-if="hasReplies(post)" :replyCount="post.replyCount" :post="post" :parent="post._id" :isAdmin="isAdmin"></replyList>
   </li>
 </ul>
 
 </template>
 
 <script>
-import replyList from './replyList'
-
-import postHeader from './postHeader'
-import formattedMessage from './formattedMessage'
-import actionBar from './actionBar'
+import post from '@/components/post'
+import replyList from '@/components/replyList'
 
 export default {
   name: 'postList',
-  props: ['loggedIn', 'threads', 'isAdmin'],
+  props: ['loggedIn', 'posts', 'isAdmin', 'settings'],
   components: {
-    replyList,
-    postHeader,
-    formattedMessage,
-    actionBar
+    post,
+    replyList
   },
   methods: {
-    hasReplies (thread) {
-      return thread.hasOwnProperty('replies') ? (thread._id in thread['replies']) : false
-    }
-  },
-  computed: {
-    settings () {
-      return this.$store.state.settings
+    hasReplies (post) {
+      return post.hasOwnProperty('replies') ? (post._id in post['replies']) : false
     }
   },
   beforeDestroy () {
@@ -90,13 +76,13 @@ export default {
     border-bottom: 1px solid #DDD;
   }
 
-  .postDatetime a {
+  a.postDatetime {
     text-decoration: none;
     font-style: italic;
     color: inherit;
   }
 
-  .postDatetime a:hover {
+  a.postDatetime:hover {
     text-decoration: underline;
   }
 

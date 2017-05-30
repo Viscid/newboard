@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label for="searchInput"> Find: </label> <input @input="onChange" name="searchInput" ref="searchInput"> </input> <a @click="clear"> X </a>
+    <label for="searchInput"> Find </label> <input placeholder="something" @input="onChange" name="searchInput" ref="searchInput"> </input> <a @click="clear"> X </a>
   </div>
 </template>
 

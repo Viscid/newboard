@@ -1,24 +1,28 @@
 module.exports = [
   { name: 'Nod',
-    reaction: function(username) { return username + ' nodded.' }
+    describe: function(subject, object) { return `${subject} nodded.` }
   }, 
   { name: 'Shrug',
-    reaction: function(username) { return username + ' gave a shrug.' } 
+    describe: function(subject, object) { return `${subject} gave a shrug.` } 
   },
   {
     name: 'Chuckle',
-    reaction: function(username) { return username + ' let out a chuckle.' }
+    describe: function(subject, object) { return `${subject} let out a chuckle.` }
   },
   {
     name: 'Spit',
-    reaction: function(username) { return username + ' spat.' }
+    describe: function(subject, object) { return `${subject} spat.` }
   },
   {
     name: 'Hiss',
-    reaction: function(username) { return username + ' hissed.' }
+    describe: function(subject, object) { return `${subject} hissed.` }
   },
   {
     name: 'Roll',
-    reaction: function(username) { return username + ' rolled around on the ground.' }
+    describe: function(subject, object) { return `${subject} rolled around on the ground.` }
+  },
+  {
+    name: 'Hat Tip',
+    describe: function(subject, object) { return `${subject} tips his hat to ${object}.`}
   }
 ]

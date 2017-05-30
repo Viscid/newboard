@@ -23,6 +23,17 @@ const appStore = new Vuex.Store(store)
 
 Vue.use(VueSocketIO, SocketInstance, appStore)
 
+Vue.directive('click-away', {
+  inserted: function (el, binding) {
+    setTimeout(() => {
+      document.body.addEventListener('click', binding.value)
+    }, 0)
+  },
+  unbind: function (el, binding) {
+    document.body.removeEventListener('click', binding.value)
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#root',

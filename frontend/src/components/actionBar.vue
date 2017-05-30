@@ -1,6 +1,8 @@
 <template>
  <div class="actionBar noselect">
-  <a @click="toggleReactionBar" :class="{active: reacting}"> React </a> &vert;
+  <a @click="showActionBar" :class="{active: reacting}"> React </a> &vert;
+  <a @click="vote('up', post)"> Upvote </a> &vert;
+  <a @click="vote('down', post)"> Downvote </a> &vert;
   <router-link :to="{ name: 'Reply', params: { slug: post.slug, post }}"> Reply </router-link>
   <span v-show="isAdmin">
     &vert;
@@ -9,8 +11,8 @@
     <a class="adminPostAction adminBan" @click="banUser(post)"> Ban User </a>
   </span>
   <transition name="reactionTransition">
-    <div v-show="reacting" class="reactions">
-      <ul class="reactionList"> 
+    <div v-if="reacting" class="reactions">
+      <ul v-click-away="hideActionBar" class="reactionList"> 
         <li v-for="reaction in reactions" @click="react(reaction, post)" class="reactionItem"> {{ reaction.name }} </li>
       </ul>
     </div>
@@ -22,7 +24,7 @@
 import reactions from '../../../config/reactions'
 
 export default {
-  props: ['loggedIn', 'post', 'isAdmin'],
+  props: ['post', 'isAdmin'],
   data () {
     return {
       reacting: false,
@@ -30,8 +32,11 @@ export default {
     }
   },
   methods: {
-    toggleReactionBar () {
-      this.reacting = !this.reacting
+    showActionBar () {
+      this.reacting = true
+    },
+    hideActionBar () {
+      this.reacting = false
     },
     nukePost (post) {
       this.$store.dispatch('adminNukePost', post)
@@ -45,6 +50,9 @@ export default {
     react (reaction, post) {
       this.reacting = false
       this.$store.dispatch('react', { name: reaction.name, post })
+    },
+    vote (direction, post) {
+      this.$store.dispatch('vote', { direction, post })
     }
   }
 }
@@ -59,12 +67,12 @@ export default {
   }
 
   .actionBar {
+    color: #BBB;
     position: relative;
     font-size: 13px;
     height: 15px;
     line-height: 15px;
     margin: 1em;
-    color: #BBB;
   }
 
    .actionBar a.active {
@@ -72,37 +80,37 @@ export default {
   }
 
   .reactions {
-    position: absolute;
-    color: black;
+    color: #555;
     background-color: white;
-    padding: 5px;
+    position: absolute;
     top: 20px;
     border: 1px solid #CCC;
-    border-radius: 5px;
     outline: none;
-    z-index: 222;
+    z-index: 1;
+    box-shadow: 2px 2px 5px #DDD;
   }
 
   .reactionList {
     margin: 0;
     padding: 0;
+    max-width: 400px;
   }
 
   .reactionItem:hover {
-    color: #5f7ec6;
+    background-color: #F8F8F8;
+    color: #000;
   }
 
   .reactionItem {
     display: inline-block;
-    padding: 5px;
+    padding: 10px;
     margin: 0;
     cursor: pointer;
-  }  
+  }
 
   .actionBar a {
     color: #888;
     cursor: pointer;
-    user-select: none;
     text-decoration: none;
   }
 

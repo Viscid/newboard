@@ -15,7 +15,7 @@ export default {
     postMessage: undefined,
     searchResults: [],
     selectedReply: '',
-    reactions: [],
+    events: [],
     activeThread: [],
     activeProfile: {},
     replyPost: {},
@@ -90,7 +90,7 @@ export default {
       state.newPosts.push(post)
     },
     addReaction (state, reaction) {
-      state.reactions.push(reaction)
+      state.events.push(reaction)
     },
     clearReactions (state) {
       state.reactions = []
@@ -185,7 +185,18 @@ export default {
 
     react (context, reaction) {
       return new Promise((resolve, reject) => {
-        axios.post(API_URL + '/post/reaction', { name: reaction.name, post: reaction.post }, { withCredentials: true }).then((res) => {
+        axios.post(API_URL + '/post/reaction', reaction, { withCredentials: true }).then((res) => {
+          resolve()
+        }).catch((err) => {
+          console.log(err)
+          reject(err)
+        })
+      })
+    },
+
+    vote (context, vote) {
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/post/vote', vote, { withCredentials: true }).then((res) => {
           resolve()
         }).catch((err) => {
           console.log(err)

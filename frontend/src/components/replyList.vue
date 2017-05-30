@@ -1,22 +1,16 @@
 <template> 
   <ul class="replies">
-    <li :key="reply._id" v-for="reply in thread.replies[parent]" :class="{ reply: true, active: isSelected(reply._id) }">
+    <li :key="reply._id" v-for="reply in post.replies[parent]" :class="{ reply: true, active: isSelected(reply._id) }">
       <div class="expandedReply" v-if="isSelected(reply._id)">
-        <postHeader :post="reply" :thread="thread" :settings="settings"> </postHeader>
-        <div class="postBody">
-          <formattedMessage :message="reply.message" :formattedMessage="reply.formattedMessage" :settings="settings"></formattedMessage>
-        </div>
-        <actionBar :isAdmin="isAdmin" :post="reply" :loggedIn="loggedIn"></actionBar>
+        <post :post="reply" :settings="settings" :isAdmin="isAdmin" :loggedIn="loggedIn"></post>
       </div>
-      <div v-else>
-        <div class="unexpandedReply">
-          <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
-          : <span :class="replyOrderWeight(reply.replyOrder)">
-          <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
-          <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
-        </div>
+      <div v-else class="unexpandedReply">
+        <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
+        : <span :class="replyOrderWeight(reply.replyOrder)">
+        <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
+        <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
       </div>
-     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :thread="thread" :parent="reply._id" :isAdmin="isAdmin"> </replyList>
+     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :post="post" :parent="reply._id" :isAdmin="isAdmin"> </replyList>
     </li>
   </ul>
 </template>
@@ -24,22 +18,18 @@
 <script>
 import replyList from './replyList'
 
-import postHeader from './postHeader'
-import formattedMessage from '@/components/formattedMessage.vue'
-import actionBar from '@/components/actionBar.vue'
+import post from '@/components/post'
 
 export default {
-  props: ['parent', 'replyCount', 'thread', 'isAdmin'],
+  props: ['parent', 'replyCount', 'post', 'isAdmin'],
   name: 'replyList',
   components: {
     replyList,
-    postHeader,
-    formattedMessage,
-    actionBar
+    post
   },
   methods: {
     hasReplies (parentId) {
-      return (parentId in this.thread.replies)
+      return (parentId in this.post.replies)
     },
     replyOrderWeight (replyOrder) {
       switch (this.replyCount - replyOrder) {
@@ -75,9 +65,6 @@ export default {
     },
     isSelected (replyId) {
       return (replyId === this.$store.state.selectedReply)
-    },
-    isOnline (username) {
-      return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     }
   },
 
@@ -148,6 +135,10 @@ export default {
     font-weight: bold;
     color: #aa4439;
     text-decoration: none;
+  }
+
+  .replyMessageInline:hover {
+    text-decoration: underline;
   }
 
   .unexpandedReply {

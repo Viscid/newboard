@@ -2,16 +2,14 @@
   <div class="postHeader">
     <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> 
     <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
-    <span class="postDatetime">
-      <router-link :to="{ name: 'PostViewer', params: { slug: post.slug, thread } }">  {{ date }} </router-link>
-    </span>
-    <div v-show="allReactions.length" @click="toggleReactions" class="headerReactionCount noselect"> -
-      {{ allReactions.length + ' reaction' + (allReactions.length > 1 ? 's' : '') + '.' }}
+    <router-link class="postDatetime" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
+    <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect"> -
+      {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') + '.' }}
     </div>
     <transition name="reactionTransition">
-      <div v-show="showReactions" class="headerReactions">
-        <ul class="headerReactionList"> 
-          <li v-for="reaction in allReactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.user) }} </li>
+      <div v-if="reactionVisible" class="headerReactions">
+        <ul v-click-away="hideReactions" class="headerReactionList"> 
+          <li v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.user, post.username) }} </li>
         </ul>
       </div>
     </transition>    
@@ -24,35 +22,26 @@ import RelativeTime from '../helpers/RelativeTime'
 import reactions from '../../../config/reactions.js'
 
 export default {
-  props: ['post', 'thread', 'settings'],
+  props: ['post', 'settings'],
   data () {
     return {
       timeNow: Date.now(),
       reactions: ('reactions' in this.post) ? this.post.reactions : [],
-      newReactions: this.$store.state.reactions.filter((reaction) => {
-        return (reaction.postId === this.$props.post._id)
-      }),
-      showReactions: false,
-      reactionText: {}
+      reactionVisible: false
     }
-  },
-  created () {
-    reactions.forEach((reaction) => {
-      this.reactionText[reaction.name] = reaction.reaction
-    })
   },
   mounted () {
     if (this.$props.settings['dateTimeFormat'] === 'relative') this.interval = setInterval(() => { this.timeNow = Date.now() }, 10000)
-    this.reactionWatcher = this.$store.watch(
-      (state) => state.reactions,
-      (oldReactions, newReactions) => {
-        this.newReactions = newReactions.filter((reaction) => {
-          return (reaction.postId === this.$props.post._id)
-        })
-      })
+
+    this.unsubscribe = this.$store.subscribe((mutation) => {
+      if (mutation.type === 'addReaction') {
+        let reaction = mutation.payload
+        if (reaction.postId === this.post._id) this.reactions.push(reaction.reaction)
+      }
+    })
   },
   beforeDestroy () {
-    this.reactionWatcher()
+    this.unsubscribe()
     if (this.interval) clearInterval(this.interval)
   },
   methods: {
@@ -65,11 +54,14 @@ export default {
     isOnline (username) {
       return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     },
-    toggleReactions () {
-      this.showReactions = !this.showReactions
+    showReactions () {
+      this.reactionVisible = true
     },
-    getReactionText (name, user) {
-      if (name) return this.reactionText[name](user)
+    hideReactions () {
+      this.reactionVisible = false
+    },
+    getReactionText (name, subject, object) {
+      return reactions.find(reaction => reaction.name === name).describe(subject, object)
     }
   },
   computed: {
@@ -78,13 +70,6 @@ export default {
     },
     date () {
       return this.getDate(this.$props.post.datetime, 'MMMM Do, YYYY @ h:mma', this.timeNow)
-    },
-    allReactions () {
-      let newReactions = []
-      this.newReactions.forEach((reaction) => {
-        newReactions.push({ name: reaction.reaction.name, user: reaction.reaction.user })
-      })
-      return this.reactions.concat(newReactions)
     }
   },
   watch: {
@@ -114,11 +99,12 @@ export default {
     font-weight: normal;
     top: 30px;
     left: 200px;
-    padding: 1em;
-    border: 1px solid black;
-    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #777;
+    border-radius: 3px;
     background-color: white;;
     z-index: 222;
+    box-shadow: 2px 2px 5px #DDD;
   }
 
   .headerReactionItem {

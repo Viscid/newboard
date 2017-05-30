@@ -1,6 +1,6 @@
 <template>
     <div id="postViewerContainer">
-        <postList :loggedIn="loggedIn" :threads="thread" :isAdmin="isAdmin"> </postList>
+        <postList :loggedIn="loggedIn" :posts="thread" :isAdmin="isAdmin" :settings="settings"> </postList>
     </div>
 </template>
 
@@ -22,7 +22,8 @@ export default {
     loggedIn () { return ('username' in this.$store.state.user) },
     thread () { return ('_id' in this.$store.state.activeThread) ? [this.$store.state.activeThread] : [] },
     isAdmin () { return (this.$store.state.user['role'] === 'admin') },
-    isMod () { return (this.$store.state.user['role'] === 'mod') }
+    isMod () { return (this.$store.state.user['role'] === 'mod') },
+    settings () { return this.$store.state.settings }
   },
   destroyed () {
     this.$store.dispatch('clearPostViewer')

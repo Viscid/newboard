@@ -1,8 +1,8 @@
 <template>
     <div id="homeContainer">
-        <paginator :length="threads.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
-        <postList :loggedIn="loggedIn" :threads="threads" :isAdmin="isAdmin"> </postList>
-        <paginator v-show="threads.length" :length="threads.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
+        <paginator :length="posts.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
+        <postList :loggedIn="loggedIn" :posts="posts" :isAdmin="isAdmin" :settings="settings"> </postList>
+        <paginator v-show="posts.length" :length="posts.length" :page="page" :pageSize="15" @pageChange="setPage"> </paginator>
     </div>
 </template>
 
@@ -30,7 +30,8 @@ export default {
     page () { return this.$store.state.page },
     loggedIn () { return ('username' in this.$store.state.user) },
     isAdmin () { return (this.$store.state.user['role'] === 'admin') },
-    threads () { return this.$store.state.threads }
+    settings () { return this.$store.state.settings },
+    posts () { return this.$store.state.threads }
   }
 }
 </script>
