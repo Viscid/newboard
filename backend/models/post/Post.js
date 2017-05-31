@@ -10,6 +10,7 @@ var postSchema = mongoose.Schema({
   message: String,
   formattedMessage: Array,
   reactions: Array,
+  votes: Array,
   parentId: mongoose.Schema.Types.ObjectId,
   replyCount: { type: Number },
   replyOrder: { type: Number },

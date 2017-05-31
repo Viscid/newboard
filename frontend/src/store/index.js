@@ -92,6 +92,9 @@ export default {
     addReaction (state, reaction) {
       state.events.push(reaction)
     },
+    addVote (state, vote) {
+      state.events.push(vote)
+    },
     clearReactions (state) {
       state.reactions = []
     },
@@ -325,6 +328,10 @@ export default {
 
     socket_reaction (context, reaction) {
       context.commit('addReaction', reaction)
+    },
+
+    socket_vote (context, vote) {
+      context.commit('addVote', vote)
     },
 
     socket_onlineUsers (context, users) {

@@ -4,12 +4,17 @@
     <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
     <router-link class="postDatetime" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
     <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect"> -
-      {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') + '.' }}
+      {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') }}
     </div>
+    <span class="headerVoteSeparator" v-show="votes.length"> &vert; </span>
+    <span v-show="votes.length"
+      :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
+      {{ postScore }}
+    </span>
     <transition name="reactionTransition">
       <div v-if="reactionVisible" class="headerReactions">
         <ul v-click-away="hideReactions" class="headerReactionList"> 
-          <li v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.user, post.username) }} </li>
+          <li v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.username, post.username) }} </li>
         </ul>
       </div>
     </transition>    
@@ -27,6 +32,7 @@ export default {
     return {
       timeNow: Date.now(),
       reactions: ('reactions' in this.post) ? this.post.reactions : [],
+      votes: ('votes' in this.post) ? this.post.votes : [],
       reactionVisible: false
     }
   },
@@ -37,6 +43,9 @@ export default {
       if (mutation.type === 'addReaction') {
         let reaction = mutation.payload
         if (reaction.postId === this.post._id) this.reactions.push(reaction.reaction)
+      } else if (mutation.type === 'addVote') {
+        let vote = mutation.payload
+        if (vote.postId === this.post._id) this.votes.push(vote)
       }
     })
   },
@@ -70,6 +79,12 @@ export default {
     },
     date () {
       return this.getDate(this.$props.post.datetime, 'MMMM Do, YYYY @ h:mma', this.timeNow)
+    },
+    postScore () {
+      return this.votes.reduce((acc, vote) => {
+        if (vote.direction === 'up') return acc + 1
+        else return acc - 1
+      }, 0)
     }
   },
   watch: {
@@ -91,6 +106,23 @@ export default {
     height: 12px;
     display: inline-block;
     cursor: pointer;
+  }
+
+  .headerVoteSeparator {
+    color: #AAA;
+  }
+
+  .headerPostScore {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .positivePostScore {
+    color: #4dad3e;
+  }
+
+  .negativePostScore {
+    color: #ad3e3e
   }
 
   .headerReactions {
@@ -132,6 +164,7 @@ export default {
 
   .postHeader {
     height: 21px;
+    font-weight: normal;
     position: relative;
   }
 </style>
