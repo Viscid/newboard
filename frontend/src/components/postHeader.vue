@@ -6,10 +6,10 @@
     <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect"> -
       {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') }}
     </div>
-    <span class="headerVoteSeparator" v-show="votes.length"> &vert; </span>
+    <span class="headerVoteSeparator" v-show="votes.length"> &vert; Score: </span>
     <span v-show="votes.length"
       :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
-      {{ postScore }}
+      {{ (postScore >= 0 ? '+' : '-') }}{{ postScore }}
     </span>
     <transition name="reactionTransition">
       <div v-if="reactionVisible" class="headerReactions">
@@ -105,11 +105,13 @@ export default {
     font-size: 12px;
     height: 12px;
     display: inline-block;
+    font-weight: bold;
     cursor: pointer;
   }
 
   .headerVoteSeparator {
-    color: #AAA;
+    font-size: 12px;
+    color: black;
   }
 
   .headerPostScore {
