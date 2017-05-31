@@ -72,7 +72,7 @@ export default {
     font-size: 13px;
     height: 15px;
     line-height: 15px;
-    padding: 1em;
+    padding: 1em 0;
   }
 
    .actionBar a.active {

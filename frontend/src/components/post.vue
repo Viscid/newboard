@@ -24,7 +24,7 @@ export default {
 
 <style>
  .postBody {
-    padding: 4px 1em 0 1em;
+    padding: 4px 0 0 0 ;
     word-wrap: break-word;
   }
 </style>
