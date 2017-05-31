@@ -14,11 +14,11 @@ export default class relativeTime {
     let timeString = ''
 
     if (this.elapsed < 1000) { return 'Just now!' }
-    if (this.years >= 1) timeString += Math.floor(this.years) + ' year' + (this.years >= 2 ? 's' : '') + ' '
-    if (this.days >= 1) timeString += Math.floor(this.days) + ' day' + (this.days >= 2 ? 's' : '') + ' '
-    if (this.hours >= 1) timeString += Math.floor(this.hours) + ' hr' + (this.hours >= 2 ? 's' : '') + ' '
-    if (this.minutes >= 1) timeString += Math.floor(this.minutes) + ' min' + (this.minutes >= 2 ? 's' : '') + ' '
-    if (this.seconds >= 1) timeString += Math.floor(this.seconds) + ' sec' + (this.seconds >= 2 ? 's' : '') + ' '
+    if (this.years >= 1) timeString += Math.floor(this.years) + 'y '
+    if (this.days >= 1) timeString += Math.floor(this.days) + 'd '
+    if (this.hours >= 1) timeString += Math.floor(this.hours) + 'h '
+    if (this.minutes >= 1) timeString += Math.floor(this.minutes) + 'm '
+    if (this.seconds >= 1) timeString += Math.floor(this.seconds) + 's '
 
     timeString += 'ago'
 

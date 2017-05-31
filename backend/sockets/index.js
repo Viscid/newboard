@@ -46,7 +46,8 @@ function updateOnlineUsers(io) {
     var onlineUsers = []
     for (var socketId in userSessions) {
       if (clients.indexOf(socketId) < 0) delete userSessions[socketId]
-      if (onlineUsers.indexOf(userSessions[socketId]) < 0) onlineUsers.push(userSessions[socketId])
+      console.log (userSessions[socketId])
+      if (userSessions[socketId] && onlineUsers.indexOf(userSessions[socketId]) < 0) onlineUsers.push(userSessions[socketId])
     }
 
     io.emit('onlineUsers', {list: onlineUsers, total: clients.length })

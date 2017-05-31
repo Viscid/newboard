@@ -1,19 +1,24 @@
 <template>
   <div class="postHeader">
-    <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> 
-    <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
-    <router-link class="postDatetime" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
-    <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect"> -
-      {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') }}
+    <div class="headerTop">
+      <router-link class="postUsername" :to="{ name: 'UserProfile', params: { username: post.username }}"> {{ post.username }} </router-link> 
+      <span class="onlineDot" v-show="isOnline(post.username)"> &bull; </span> -
+      <router-link class="postDatetime" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
     </div>
-    <span class="headerVoteSeparator" v-show="votes.length"> &vert; Score: </span>
-    <span v-show="votes.length"
-      :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
-      {{ (postScore >= 0 ? '+' : '-') }}{{ postScore }}
-    </span>
+    <div class="headerBottom">
+      <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect">
+        {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') }}
+      </div>
+      <span class="headerVoteSeparator" v-show="votes.length && reactions.length"> &vert; </span>
+      <span v-show="votes.length" class="headerScore"> Score: </span> 
+      <span v-show="votes.length"
+        :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
+        {{ (postScore >= 0 ? '+' : '-') }}{{ postScore }}
+      </span>
+    </div>
     <transition name="reactionTransition">
-      <div v-if="reactionVisible" class="headerReactions">
-        <ul v-click-away="hideReactions" class="headerReactionList"> 
+      <div v-if="reactionVisible" :style="{right: reactionPos.x + 'px', top: reactionPos.y + 'px'}" class="headerReactions">
+        <ul v-click-away="hideReactions"class="headerReactionList"> 
           <li v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.username, post.username) }} </li>
         </ul>
       </div>
@@ -33,7 +38,8 @@ export default {
       timeNow: Date.now(),
       reactions: ('reactions' in this.post) ? this.post.reactions : [],
       votes: ('votes' in this.post) ? this.post.votes : [],
-      reactionVisible: false
+      reactionVisible: false,
+      reactionPos: {x: 50, y: 50}
     }
   },
   mounted () {
@@ -63,7 +69,8 @@ export default {
     isOnline (username) {
       return (this.$store.state.onlineUsers.indexOf(username) >= 0)
     },
-    showReactions () {
+    showReactions (e) {
+      this.reactionPos = {x: window.innerWidth - e.pageX - 15, y: 50}
       this.reactionVisible = true
     },
     hideReactions () {
@@ -117,10 +124,12 @@ export default {
   .headerPostScore {
     font-size: 12px;
     font-weight: normal;
+    color: #999;
   }
 
   .positivePostScore {
     color: #4dad3e;
+    font-weight: bold;
   }
 
   .negativePostScore {
@@ -132,13 +141,16 @@ export default {
     position: absolute;
     font-weight: normal;
     top: 30px;
-    left: 200px;
     padding: 10px;
     border: 1px solid #777;
     border-radius: 3px;
     background-color: white;;
     z-index: 222;
     box-shadow: 2px 2px 5px #DDD;
+  }
+
+  .headerScore {
+    font-size: 12px;
   }
 
   .headerReactionItem {
@@ -164,9 +176,49 @@ export default {
     opacity: 1;
   }
 
+  .headerTop {
+    height: 24px;
+    line-height: 24px;
+    border-bottom: 1px solid #DDD;   
+  }
+
+  .headerBottom {
+    text-align: right;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 1em;
+  }
+
   .postHeader {
-    height: 21px;
     font-weight: normal;
     position: relative;
+    color: black; 
   }
+
+  .postUsername {
+      font-weight: bold;
+      color: #aa4439;
+      text-decoration: none;
+    }
+
+  .postUsername:hover {
+    text-decoration: underline;
+  }
+
+  .postDatetime {
+    font-weight: normal;
+    font-size: 0.8em;
+  }
+  
+  a.postDatetime {
+    text-decoration: none;
+    font-style: italic;
+    color: inherit;
+  }
+
+  a.postDatetime:hover {
+    text-decoration: underline;
+  }
+
+
 </style>

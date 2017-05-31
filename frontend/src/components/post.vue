@@ -23,5 +23,8 @@ export default {
 </script>
 
 <style>
-
+ .postBody {
+    padding: 4px 1em 0 1em;
+    word-wrap: break-word;
+  }
 </style>

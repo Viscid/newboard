@@ -3,7 +3,7 @@
 <ul>
   <li class="threadListItem" :key="post._id" v-for="post in posts">
     <post :post="post" :settings="settings" :isAdmin="isAdmin" :loggedIn="loggedIn"></post>
-    <replyList v-if="hasReplies(post)" :replyCount="post.replyCount" :post="post" :parent="post._id" :isAdmin="isAdmin"></replyList>
+    <replyList v-if="hasReplies(post)" :replyCount="post.replyCount" :post="post" :parent="post._id" :isAdmin="isAdmin" :loggedIn="loggedIn"></replyList>
   </li>
 </ul>
 
@@ -57,42 +57,5 @@ export default {
 
   .threadListItem:hover {
     border-left: 1px solid #93b3ff;
-  }
-
-  .postUsername {
-    font-weight: bold;
-    color: #aa4439;
-    text-decoration: none;
-  }
-
-  .postUsername:hover {
-    text-decoration: underline;
-  }
-
-  .postHeader {
-    font-weight: bold;
-    padding: 5px 10px 2px 4px;
-    color: black;
-    border-bottom: 1px solid #DDD;
-  }
-
-  a.postDatetime {
-    text-decoration: none;
-    font-style: italic;
-    color: inherit;
-  }
-
-  a.postDatetime:hover {
-    text-decoration: underline;
-  }
-
-  .postBody {
-    padding: 0.75em 1em;
-    word-wrap: break-word;
-  }
-
-  .postDatetime {
-    font-weight: normal;
-    font-size: 0.8em;
   }
 </style>

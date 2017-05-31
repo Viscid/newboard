@@ -4,13 +4,8 @@
       <div class="expandedReply" v-if="isSelected(reply._id)">
         <post :post="reply" :settings="settings" :isAdmin="isAdmin" :loggedIn="loggedIn"></post>
       </div>
-      <div v-else class="unexpandedReply">
-        <router-link class="replyUsername" :to="{ name: 'UserProfile', params: { username: reply.username }}"> {{ reply.username }} </router-link>
-        : <span :class="replyOrderWeight(reply.replyOrder)">
-        <a class="replyMessageInline" @click="selectReply(reply._id)"> {{ trimReply(reply.message) }} </a> </span>
-        <router-link v-show="loggedIn" class="shortReplyButton" :to="{ name: 'Reply', params: { slug: reply.slug, post: reply }}"> &laquo; </router-link>
-      </div>
-     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :post="post" :parent="reply._id" :isAdmin="isAdmin"> </replyList>
+      <shortPost v-else class="unexpandedReply" :post="reply" :settings="settings" :replyCount="replyCount" :loggedIn="loggedIn"></shortPost>
+     <replyList v-if="hasReplies(reply._id)" :replyCount="replyCount" :post="post" :parent="reply._id" :isAdmin="isAdmin" :loggedIn="loggedIn"> </replyList>
     </li>
   </ul>
 </template>
@@ -19,59 +14,21 @@
 import replyList from './replyList'
 
 import post from '@/components/post'
+import shortPost from '@/components/shortPost'
 
 export default {
-  props: ['parent', 'replyCount', 'post', 'isAdmin'],
+  props: ['parent', 'replyCount', 'post', 'isAdmin', 'loggedIn'],
   name: 'replyList',
-  components: {
-    replyList,
-    post
-  },
+  components: { replyList, post, shortPost },
   methods: {
     hasReplies (parentId) {
       return (parentId in this.post.replies)
-    },
-    replyOrderWeight (replyOrder) {
-      switch (this.replyCount - replyOrder) {
-        case 0:
-          return 'ro0'
-        case 1:
-          return 'ro1'
-        case 2:
-          return 'ro2'
-        case 3:
-          return 'ro3'
-        case 4:
-          return 'ro4'
-        case 5:
-          return 'ro5'
-        case 6:
-          return 'ro6'
-        case 7:
-          return 'ro7'
-        case 8:
-          return 'ro8'
-        default:
-          return 'rox'
-      }
-    },
-    selectReply (replyId) {
-      this.$store.dispatch('selectReply', replyId)
-    },
-    trimReply (message) {
-      let length = message.length
-      if (length > 80) return message.slice(0, 80) + '...'
-      else return message
     },
     isSelected (replyId) {
       return (replyId === this.$store.state.selectedReply)
     }
   },
-
   computed: {
-    loggedIn () {
-      return ('username' in this.$store.state.user)
-    },
     selectedReply () {
       return this.$store.state.selectedReply
     },
