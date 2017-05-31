@@ -164,7 +164,7 @@ function addVote(post, username, direction) {
 
 function addReaction(post, value) {
   return new Promise(function(resolve, reject) {
-    if (!hasActed('reaction', post, value.username)) {
+    if (!hasActed('reactions', post, value.username)) {
       Post.findOneAndUpdate({_id: post._id},
       { $push: { reactions: value } },
       { upsert: true, new: true },
@@ -192,7 +192,7 @@ function hasActed(action, post, username) {
 router.get('/', function(req, res) {
   var page = Number(req.query.page || 1)
   var threadsPerPage = Number(req.query.threadsPerPage || 15)
-  
+
   Post.find({ root: { $exists: false } }, '')
     // .select('-message')
     .sort( { lastReply: -1 } )
