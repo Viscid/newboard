@@ -13,7 +13,7 @@
       <span v-show="votes.length" class="headerScore"> Score: </span> 
       <span v-show="votes.length"
         :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
-        {{ (postScore >= 0 ? '+' : '-') }}{{ postScore }}
+        {{ (postScore >= 0 ? '+' : '') }}{{ postScore }}
       </span>
     </div>
     <transition name="reactionTransition">
