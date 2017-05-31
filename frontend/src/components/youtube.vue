@@ -3,7 +3,7 @@
     <div v-if="!active" @mouseover="onMouseOver" @mouseout="onMouseOut" @click="loadYoutube" class="youtubeEmbed" :style="{ 
       height: height + 'px',
       width: width + 'px',
-      'background-image': 'url(https://img.youtube.com/vi/' + id + '/sddefault.jpg)'
+      'background-image': 'url(https://img.youtube.com/vi/' + id + '/hqdefault.jpg)'
       }">
       <img class="youtubePlayButton" v-show="hover" src="../assets/play.svg" :style="{left: (width/2 - 32) + 'px', top: (height/2 - 32) + 'px'}">
     </div>
