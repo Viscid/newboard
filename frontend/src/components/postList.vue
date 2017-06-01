@@ -39,7 +39,7 @@ export default {
 
   li {
     list-style: none;
-    margin: 0 1em;
+    margin: 0 5px;
     margin-bottom: 1.5em;
     background-color: white;
   }
@@ -52,7 +52,7 @@ export default {
 
   .threadListItem {
     border-left: 1px solid #FFF; 
-    padding-left: 5px;
+    padding: 0 10px;
   }
 
   .threadListItem:hover {
