@@ -7,7 +7,7 @@
       }">
       <img class="youtubePlayButton" v-show="hover" src="../assets/icons/play.svg" :style="{left: (width/2 - 32) + 'px', top: (height/2 - 32) + 'px'}">
     </div>
-    <iframe v-else :height="height" :width="width" :src="'http://www.youtube.com/embed/' + id + '?autoplay=1'" frameborder="0" allowfullscreen="true"> </iframe>
+    <iframe v-else :height="height" :width="width" :src="'https://www.youtube.com/embed/' + id + '?autoplay=1'" frameborder="0" allowfullscreen="true"> </iframe>
   </div>
 </template>
 
