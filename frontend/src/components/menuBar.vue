@@ -1,10 +1,12 @@
 <template>
     <div id="menuBar" class="noselect">
       <div class="menuBarLeft">
-        <router-link @click="setPage" class="menuBarItem homeLink" :to="{ name: 'Home' }" exact>
-          <img class="menuIcon" src="../assets/icons/Home.svg" />
-          <div v-if="(Number(newPosts) >= 1)" class="newPostNotifier"> {{ newPosts }} </div>
-        </router-link><!--
+        <div @click="setPage">
+          <router-link class="menuBarItem homeLink" :to="{ name: 'Home' }" exact>
+            <img class="menuIcon" src="../assets/icons/Home.svg" />
+            <div v-if="(Number(newPosts) >= 1)" class="newPostNotifier"> {{ newPosts }} </div>
+          </router-link>
+        </div><!--
         --><router-link class="menuBarItem composeLink" v-show="isLoggedIn" :to="{ name: 'Compose' }" exact>
           <img class="menuIcon" src="../assets/icons/Compose.svg" />
         </router-link><!--
@@ -143,7 +145,7 @@ export default {
 
   .newPostNotifier {
     position: absolute;
-    left: 2.5em;
+    left: 1.2em;
     bottom: 1.25em;
     box-shadow: 2px 2px 2px #222;
     background-color: white;
