@@ -1,7 +1,7 @@
 <template>
   <form id="composerForm" @submit.prevent="submitPost">
     <div class="editing">
-    <textarea ref="postTextarea" class="postTextarea" v-model="postMessage"></textarea>
+    <textarea ref="postTextarea" class="postTextarea" @keydown.ctrl.enter="submitPost" v-model="postMessage"></textarea>
     <transition name="formatting-preview">
         <formattedMessage v-if="hasFormatting" :formattedMessage="fMessage" :settings="settings"></formattedMessage>
     </transition>
