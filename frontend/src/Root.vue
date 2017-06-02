@@ -1,7 +1,7 @@
 <template>
   <div id="root">
     <menuBar :newPosts="newPosts"></menuBar>
-    <router-view></router-view>
+    <router-view class="activeView"></router-view>
     <statusBar :message="status.message" :visible="status.visible"></statusBar>
   </div>
 </template>
@@ -51,6 +51,10 @@ body {
 input { /* iOS rounded input button fix */
   -webkit-border-radius: 0; 
   border-radius: 0;
+}
+
+.activeView {
+  padding: 50px 10px 0 10px;
 }
 
 .noselect {

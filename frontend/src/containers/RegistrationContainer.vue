@@ -20,7 +20,6 @@ export default {
 #registrationContainer {
   display: block;
   margin: 2em auto;
-  padding: 0;
   border: 1px solid #AAA;
   width: 300px;
 }

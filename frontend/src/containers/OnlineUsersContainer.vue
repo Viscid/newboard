@@ -30,10 +30,3 @@ export default {
 
 </script>
 
-<style scoped>
-
-  #onlineUsersList {
-    padding: 1em;
-  }
-
-</style>

@@ -96,10 +96,6 @@ export default {
     display: inline-block;
   }
 
-  #settingsContainer {
-    padding: 1em;
-  }
-
   .postsPerPageInput {
     width: 50px;
   }

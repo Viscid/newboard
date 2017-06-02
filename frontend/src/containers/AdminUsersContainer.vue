@@ -24,10 +24,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-#adminUsersContainer {
-  padding: 1em;
-}
-
-</style>

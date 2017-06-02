@@ -30,10 +30,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  #postViewerContainer {
-    margin: 32px 0;
-  }
-
-</style>

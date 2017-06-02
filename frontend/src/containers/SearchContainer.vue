@@ -24,10 +24,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  #searchContainer {
-    padding: 0 1em;
-  }
-
-</style>

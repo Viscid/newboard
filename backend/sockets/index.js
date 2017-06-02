@@ -36,6 +36,14 @@ module.exports = function(io) {
   }
 }
 
+function userSockets(username) {
+  var sockets = []
+  for (var key in userSessions) {
+    if (userSessions[key] === username) sockets.push(key)
+  }
+  return sockets
+}
+
 function updateOnlineUsers(io) {
   io.sockets.clients(function(err, clients) {
     if (err) { 

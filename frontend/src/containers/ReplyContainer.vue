@@ -35,9 +35,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  #replyContainer {
-    padding: 1em;
-  }
-</style>

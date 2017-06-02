@@ -81,6 +81,7 @@ export default {
 
   .reactions {
     color: #555;
+
     background-color: white;
     position: absolute;
     top: 20px;
@@ -91,19 +92,23 @@ export default {
   }
 
   .reactionList {
+    display: flex;
     margin: 0;
     padding: 0;
-    max-width: 400px;
+    max-width: 350px;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .reactionItem:hover {
-    background-color: #F8F8F8;
+    background-color: #EEE;
     color: #000;
   }
 
   .reactionItem {
-    display: inline-block;
-    padding: 10px;
+    padding: 10px 0;
+    width: 50px;
+    text-align: center;
     margin: 0;
     cursor: pointer;
   }

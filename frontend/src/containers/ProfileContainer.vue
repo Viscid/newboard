@@ -53,10 +53,6 @@ export default {
 </script>
 
 <style scoped>
-  #ProfileContainer {
-    margin: 1em;
-  }
-
   .profileUsername {
     color: #aa4439;
     margin-bottom: 0;
