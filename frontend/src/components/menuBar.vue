@@ -1,31 +1,33 @@
 <template>
-    <div id="menuBar" class="noselect"> 
-      <router-link class="homeLink" :to="{ name: 'Home' }" exact>
-        <span @click="setPage">
-          <img height="24" width="24" class="menuIcon" src="../assets/icons/Home.svg" />
+    <div id="menuBar" class="noselect">
+      <div class="menuBarLeft">
+        <router-link @click="setPage" class="menuBarItem homeLink" :to="{ name: 'Home' }" exact>
+          <img class="menuIcon" src="../assets/icons/Home.svg" />
           <div v-if="(Number(newPosts) >= 1)" class="newPostNotifier"> {{ newPosts }} </div>
-        </span>
-      </router-link><!--
-      --><router-link class="composeLink" v-show="isLoggedIn" :to="{ name: 'Compose' }" exact>
-        <img height="24" width="24" class="menuIcon" src="../assets/icons/Compose.svg" />
-      </router-link><!--
-      --><router-link v-show="!isLoggedIn" :to="{ name: 'Login' }"  exact> Login </router-link><!--
-      --><router-link v-show="!isLoggedIn" :to="{ name: 'Registration' }"  exact> Register </router-link><!--
-      --><router-link class="onlineUsersLink" :to="{ name: 'OnlineUsers' }" exact> 
-        <img height="24" width="24" class="menuIcon usersIcon" src="../assets/icons/Users.svg"> </img>
-        <div class="onlineUsers"> {{ onlineUsers }} </div>
-      </router-link><!--
-      --><router-link v-show="isLoggedIn" :to="{ name: 'Search' }" exact>
-        <img height="24" width="24" class="menuIcon" alt="Search" src="../assets/icons/Search.svg" />
-      </router-link><!--
-      --><router-link v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"  exact> Admin </router-link><!--
-      --><a v-if="username" @click="showModal" class="userMenuLink" v-show="isLoggedIn">
-        <img height="24" width="24" class="menuIcon" src="../assets/icons/Profile.svg"></img>
-        <span class="menuIcon"> {{ username }} </span>
-      </a>
+        </router-link><!--
+        --><router-link class="menuBarItem composeLink" v-show="isLoggedIn" :to="{ name: 'Compose' }" exact>
+          <img class="menuIcon" src="../assets/icons/Compose.svg" />
+        </router-link><!--
+        --><router-link class="menuBarItem onlineUsersLink" :to="{ name: 'OnlineUsers' }" exact> 
+          <img class="menuIcon usersIcon" src="../assets/icons/Users.svg"> </img>
+          <div class="onlineUsers"> {{ onlineUsers }} </div>
+        </router-link><!--
+        --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Search' }" exact>
+          <img class="menuIcon" alt="Search" src="../assets/icons/Search.svg" />
+        </router-link><!--
+        --><router-link class="menuBarItem" v-show="!isLoggedIn" :to="{ name: 'Login' }"  exact> Login </router-link><!--
+        --><router-link class="menuBarItem" v-show="!isLoggedIn" :to="{ name: 'Registration' }"  exact> Register </router-link><!--
+        --><router-link class="menuBarItem" v-show="(isLoggedIn && isAdmin)" :to="{ name: 'AdminPanel' }"  exact> Admin </router-link>
+      </div>
+      <div class="menuBarRight"><!--
+        --><a v-if="username" @click="showModal" class="menuBarItem userMenuLink" v-show="isLoggedIn">
+          <img class="menuIcon" src="../assets/icons/Profile.svg"></img>
+          <span class="menuBarUsername"> {{ username }} </span>
+        </a>
+      </div>
       <modal :height="200" :width="300" :adaptive="true" name="userModal">
         <div class="modalContent">
-          <span class="username"> {{ username }} </span>
+          <span class="userMenuUsername"> {{ username }} </span>
           <ul class="userMenuList">
             <li class="userMenuListItem"> <router-link :to="{ name: 'UserProfile', params: { username }}"> <a  @click="closeModal"> My Profile </a> </router-link> </li>
             <li class="userMenuListItem"> <a @click="logout"> Sign Out </a> </li>
@@ -81,46 +83,69 @@ export default {
 <style scoped>
 
   #menuBar {
+    display: flex;
     position: fixed;
     width: 100%;
     background: #aa4439;
-    line-height: 50px;
-    height: 50px;
     z-index: 5;
+    height: 3em;
+  }
+
+  .menuBarLeft {
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+
+  .menuBarRight {
+    display: flex;
+    flex: 1;
+    padding-right: 1em;
+    justify-content: flex-end;
+    align-items: center;    
+  }
+
+  .menuBarItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    height: 2.0em;
+    margin-left: 1em;
   }
 
   a {
+    display: block;
     text-decoration: none;
     color: #FFF;
-    padding: 0 0.5em;
-    margin: 0;
     opacity: 0.5;
     transition: color 0.25s;
-    cursor: pointer; 
+    cursor: pointer;
   }
 
   a:hover {
     opacity: 1;
   }
 
-  .userMenuLink {
-    float: right;
-    font-weight: bold;
-    display: inline-block;
+  .menuIcon {
+    height: 1.5em;
+    width: 1.5em;
+    transition: opacity 0.25s;
+  }
+
+  .menuIcon:hover {
     opacity: 1;
     color: white;
   }
 
   .homeLink {
     position: relative;
-    display: inline-block;
-    height: 24px;
   }
 
   .newPostNotifier {
     position: absolute;
-    right: -5px;
-    top: 5px;
+    left: 2.5em;
+    bottom: 1.25em;
+    box-shadow: 2px 2px 2px #222;
     background-color: white;
     border: 1px solid #666;
     color: black;
@@ -138,16 +163,26 @@ export default {
     color: white;
   }
 
+  .userMenuLink {
+    font-weight: bold;
+    opacity: 1;
+    color: white;
+  }
+
+  .menuBarUsername {
+    padding: 0.25em;
+  }
+
   .usersIcon {
     position: relative;
   }
 
   .onlineUsers {
     position: absolute;
-    left: 32px;
-    bottom: -8px;
+    left: 1.8em;
+    bottom: 1.5em;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 0.8em;
   }
 
   .onlineUsersLink {
@@ -159,12 +194,14 @@ export default {
     box-sizing: border-box;
   }
 
-  .username {
+  .userMenuUsername {
     display: block;
     margin: 0;
-    font-size: 1.2em;
+    font-size: 20px;
+    line-height: 50px;
     background-color: #aa4439;
     color: white;
+    height: 50px;
     padding: 0;
     width: 100%;
   }
@@ -173,10 +210,10 @@ export default {
     display: block;
     color: black;
     text-align: left;
-    background-color: transparent;
-    margin: 0;
-    padding: 0 1em;
+    height: 50px;
     line-height: 50px;
+    padding-left: 1em;
+    background-color: transparent;
   }
 
   .userMenuList {
@@ -199,15 +236,6 @@ export default {
     opacity: 1;
   }
 
-  .menuIcon {
-    line-height: 50px;
-    margin-bottom: -5px;
-    transition: opacity 0.25s;
-  }
 
-  .menuIcon:hover {
-    opacity: 1;
-    color: white;
-  }
 
 </style>

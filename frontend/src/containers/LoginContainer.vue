@@ -1,7 +1,9 @@
 <template>
     <div id="LoginContainer">
+      <div id="loginBox">
         <h2> Login </h2>
         <loginForm></loginForm>
+      </div>
     </div>
 </template>
 
@@ -19,8 +21,13 @@ export default {
 <style scoped>
 #LoginContainer {
   display: block;
-  border: 1px solid #AAA;
   width: 300px;
+  margin: 0 auto;
+  padding-top: 75px;
+}
+
+#loginBox {
+    border: 1px solid #AAA;
 }
 
 h2 {
@@ -33,6 +40,8 @@ h2 {
   padding: 5px 0;
   border-bottom: 1px solid #DDD;
   margin: 0;
+  height: 30px;
+  line-height: 30px;
   width: 100%;
 }
 

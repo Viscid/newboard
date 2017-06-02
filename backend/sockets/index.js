@@ -57,7 +57,7 @@ function updateOnlineUsers(io) {
       if (userSessions[socketId] && onlineUsers.indexOf(userSessions[socketId]) < 0) onlineUsers.push(userSessions[socketId])
     }
 
-    io.emit('onlineUsers', {list: onlineUsers, total: clients.length })
+    io.emit('onlineUsers', {list: onlineUsers, total: onlineUsers.length + (clients.length - Object.keys(userSessions).length) })
   })
 }
 

@@ -37,13 +37,6 @@ export default {
     margin: 0;
   }
 
-  li {
-    list-style: none;
-    margin: 0;
-    margin-bottom: 1.5em;
-    background-color: white;
-  }
-
   @media(max-width: 500px) {
     li {
       margin: 0 0 2em 5px;
@@ -53,6 +46,10 @@ export default {
   .threadListItem {
     border-left: 1px solid #FFF; 
     padding: 0 5px;
+    list-style: none;
+    margin: 0;
+    margin-bottom: 1.5em;
+    background-color: white;
   }
 
   .threadListItem:hover {

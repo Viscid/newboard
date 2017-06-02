@@ -8,7 +8,7 @@
     </li>
   </ul>
 
-  <span v-show="anonymousConnections"> ... and {{ anonymousConnections }} anonymous connection<span v-show="anonymousConnections > 1">s</span>. </span>
+  <span class="anonymousConnections" v-show="anonymousConnections"> ... and {{ anonymousConnections }} anonymous connection<span v-show="anonymousConnections > 1">s</span>. </span>
 
 </div>
 
@@ -30,3 +30,18 @@ export default {
 
 </script>
 
+<style scoped>
+  li {
+    margin-bottom: 1em;
+  }
+
+  ul {
+    margin-left: 1em;
+    list-style: none;
+  }
+
+  .anonymousConnections {
+    padding-left: 1.5em;
+  }
+
+</style>

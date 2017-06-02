@@ -40,6 +40,7 @@ export default {
     max-width: 100%;
     border: 0;
     border-top: 1px dashed #AAA;
+    margin-top: 1em;
     margin-bottom: 2em;
     padding: 0.5em 1em;
     outline: none;

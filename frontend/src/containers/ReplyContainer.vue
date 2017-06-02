@@ -35,3 +35,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  #replyContainer {
+    padding: 50px 1em 1em 0.5em;
+    padding-top: calc(50px + 1em)
+  }
+</style>
