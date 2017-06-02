@@ -54,7 +54,7 @@ input { /* iOS rounded input button fix */
 }
 
 .activeView {
-  padding: 50px 10px 0 10px;
+  padding: 50px 7px 1em 7px;
 }
 
 .noselect {

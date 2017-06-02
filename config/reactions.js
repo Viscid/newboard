@@ -11,7 +11,7 @@ module.exports = [
   },
   {
     name: 'Spit',
-    describe: function(subject, object) { return subject + ' spat.' }
+    describe: function(subject, object) { return subject + ' spat at ' + object + '.' }
   },
   {
     name: 'Hiss',
@@ -23,32 +23,32 @@ module.exports = [
   },
   {
     name: 'Hat Tip',
-    describe: function(subject, object) { return subject + ' tips his hat to ' + object }
+    describe: function(subject, object) { return subject + ' tipped his hat to ' + object + '.' }
   },
-  { name: 'Nod',
-    describe: function(subject, object) { return subject + ' nodded.' }
+  { name: 'Slap',
+    describe: function(subject, object) { return subject + ' slaps ' + object + '.' }
   }, 
-  { name: 'Shrug',
-    describe: function(subject, object) { return subject + ' gave a shrug.' } 
+  { name: 'Hmph',
+    describe: function(subject, object) { return subject + ' hmph\'d.' } 
   },
   {
-    name: 'Chuckle',
-    describe: function(subject, object) { return subject + ' let out a chuckle.' }
+    name: 'Smoke',
+    describe: function(subject, object) { return subject + ' went out for a smoke.' }
   },
   {
-    name: 'Spit',
-    describe: function(subject, object) { return subject + ' spat.' }
+    name: 'Silent',
+    describe: function(subject, object) { return subject + ' was notably silent.' }
   },
   {
-    name: 'Hiss',
-    describe: function(subject, object) { return subject + ' hissed.' }
+    name: 'Snap',
+    describe: function(subject, object) { return subject + ' snapped his lobster claws at ' + object + '.' }
   },
   {
-    name: 'Roll',
-    describe: function(subject, object) { return subject + ' rolled around on the ground.' }
+    name: 'Curtsy',
+    describe: function(subject, object) { return subject + ' dropped a curtsy to ' + object + '.' }
   },
   {
-    name: 'Hat Tip',
-    describe: function(subject, object) { return subject + ' tips his hat to ' + object }
+    name: 'Amen',
+    describe: function(subject, object) { return subject + ' gives a hearty "Amen!"' }
   }  
 ]
