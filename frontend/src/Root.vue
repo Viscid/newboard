@@ -48,6 +48,10 @@ body {
   box-sizing: border-box;
 }
 
+ul {
+  list-style: none;
+}
+
 input { /* iOS rounded input button fix */
   -webkit-border-radius: 0; 
   border-radius: 0;
