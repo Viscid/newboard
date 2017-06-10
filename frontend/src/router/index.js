@@ -12,6 +12,7 @@ import SearchContainer from '@/containers/SearchContainer'
 import SettingsContainer from '@/containers/SettingsContainer'
 import AdminContainer from '@/containers/AdminContainer'
 import AdminUsersContainer from '@/containers/AdminUsersContainer'
+import MessagesContainer from '@/containers/MessagesContainer'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/compose',
       name: 'Compose',
       component: ComposerContainer
+    },
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: MessagesContainer
     },
     {
       path: '/reply/:slug',

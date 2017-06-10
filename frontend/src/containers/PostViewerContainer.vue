@@ -33,7 +33,6 @@ export default {
 
 <style>
   #postViewerContainer {
-    padding: 50px 1em 1em 0.5em;
-    padding-top: calc(50px + 2em)
+    padding: 4em 1em 1em 0.5em;
   }
 </style>

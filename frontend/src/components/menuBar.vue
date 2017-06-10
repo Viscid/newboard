@@ -14,6 +14,9 @@
           <img class="menuIcon usersIcon" src="../assets/icons/Users.svg"> </img>
           <div class="onlineUsers"> {{ onlineUsers }} </div>
         </router-link><!--
+        --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Messages' }" exact>
+          <img class="menuIcon" alt="Messages" src="../assets/icons/Messages.svg" />
+        </router-link><!--        
         --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Search' }" exact>
           <img class="menuIcon" alt="Search" src="../assets/icons/Search.svg" />
         </router-link><!--
