@@ -210,7 +210,7 @@ export default {
 
     findUser (context, username) {
       return new Promise((resolve, reject) => {
-        axios.post(API_URL + '/user/find', { withCredentials: true }).then((res) => {
+        axios.post(API_URL + '/user/find', {username}, { withCredentials: true }).then((res) => {
           resolve(res.data)
         }).catch((err) => {
           reject(err)

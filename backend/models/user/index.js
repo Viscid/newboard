@@ -14,6 +14,25 @@ var Promise = require('bluebird')
 
 var jwt = require('jsonwebtoken')
 
+var checkAccess = require('../helpers/checkAccess.js')
+var checkFields = require('../helpers/checkFields.js')
+
+router.post('/find', checkAccess('user'), function(req, res) {
+  if (!checkFields(req, ['username'])) {
+    res.sendStatus(500)
+    return
+  }
+  var username = req.body.username.trim()
+  if (!username.length) {
+    res.sendStatus(200)
+    return
+  }
+  User.find({username: { $regex: username, $options: 'ig' } }, { username: 1 },  function(err, users) {
+    if (err) res.sendStatus(500)
+    else res.json(users)
+  })
+})
+
 router.post('/register', validateRegistrationFields, function(req, res) {
   var user = req.body.user
 
@@ -76,9 +95,14 @@ router.put('/login', function(req, res) {
   User.findOne({username: user.username.trim()}, function (err, foundUser) {
     if (err) res.status(404).send({error: 'Error finding user.'})
     else if (!foundUser) res.status(404).send(errors.loginCredentialsInvalid) 
-    else {  
-      bcrypt.compare(user.password, foundUser.hash).then(function(succ) {
+    else {
+      var hash = foundUser.hash,
+        password = user.password
+      if (!hash || !password) res.status(404).send(errors.loginCredentialsInvalid)
+      bcrypt.compare(password, hash).then(function(succ) {
+        console.log('1')
         if (succ === true) {
+          console.log('2')
           foundUser = foundUser.toObject()
           req.session.user = foundUser
           foundUser.token = jwt.sign({username: foundUser.username}, config.jwtKey)
