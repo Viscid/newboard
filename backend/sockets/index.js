@@ -28,6 +28,7 @@ module.exports = function(io) {
           console.log(err)
           return
         }
+        socket.join(decoded.username)
         userSessions[socket.id] = decoded.username
         socket.username = decoded.username
         updateOnlineUsers(io)
@@ -36,7 +37,7 @@ module.exports = function(io) {
   }
 }
 
-function userSockets(username) {
+function userSockets (username) {
   var sockets = []
   for (var key in userSessions) {
     if (userSessions[key] === username) sockets.push(key)

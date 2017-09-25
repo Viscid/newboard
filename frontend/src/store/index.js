@@ -14,6 +14,7 @@ export default {
     },
     postMessage: undefined,
     searchResults: [],
+    privateMessages: [],
     selectedReply: '',
     events: [],
     activeThread: [],
@@ -94,6 +95,12 @@ export default {
     },
     addVote (state, vote) {
       state.events.push(vote)
+    },
+    addPrivateMessage (state, message) {
+      state.privateMessages.push(message)
+    },
+    addPrivateMessages (state, messages) {
+      state.privateMessages = messages
     },
     clearReactions (state) {
       state.reactions = []
@@ -348,6 +355,10 @@ export default {
       context.commit('setOnlineUsers', users)
     },
 
+    socket_privateMessage (context, message) {
+      context.commit('addPrivateMessage', message)
+    },
+
     changeSetting (context, setting) {
       return new Promise((resolve) => {
         context.commit('changeSetting', setting)
@@ -361,6 +372,27 @@ export default {
           Object.keys(res.data).forEach((key) => {
             localStorage.setItem(key, res.data[key])
           })
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    sendPrivateMessage (context, message) {
+      return new Promise((resolve, reject) => {
+        axios.post(API_URL + '/messages', message, { withCredentials: true }).then((res) => {
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    getPrivateMessages (context, user) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/messages/' + user, { withCredentials: true }).then((res) => {
+          context.commit('addPrivateMessages', res.data)
           resolve()
         }).catch((err) => {
           reject(err)

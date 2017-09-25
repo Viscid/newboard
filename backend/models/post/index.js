@@ -79,10 +79,10 @@ router.get('/:slug', function(req, res) { // Returns a post as found by its slug
 
     function sendThread(thread, activePost) {
       Post.find({ root: thread._id})
-      .exec(function(err, queriedReplies) {
-        var threadWithReplies = attachRepliesToThreads([thread], queriedReplies)
-        res.json({ thread: threadWithReplies[0], activePost: activePost })
-      })       
+        .exec(function(err, queriedReplies) {
+          var threadWithReplies = attachRepliesToThreads([thread], queriedReplies)
+          res.json({ thread: threadWithReplies[0], activePost: activePost })
+        })       
     }
   })
 })
@@ -90,11 +90,11 @@ router.get('/:slug', function(req, res) { // Returns a post as found by its slug
 router.post('/find/', checkAccess('user'), function(req, res) { // Searches for a text-indexed posts
   var query = req.body.query
   Post.find({$text: {$search: query}})
-  .select('-formattedMessage')
-  .exec(function(err, results) {
-    if(err) res.status(500).json(err)
-    res.json(results)
-  })
+    .select('-formattedMessage')
+    .exec(function(err, results) {
+      if(err) res.status(500).json(err)
+      res.json(results)
+    })
 })
 
 router.post('/reaction', checkAccess('user'), function(req, res) {
@@ -105,14 +105,14 @@ router.post('/reaction', checkAccess('user'), function(req, res) {
     var reactionValue = { name: reaction.name, username: req.session.user.username }
 
     getPost(postId)
-    .then(function(post) { return addReaction(post, reactionValue) })
-    .then(function (post) {
-      req.io.emit('reaction', { postId: post._id, reaction: reactionValue })
-      res.json(post) })
-    .catch(function(err) {
-      if (err === 'ALREADY_REACTED') res.sendStatus(204)
-      else res.status(500).send(err) 
-    })
+      .then(function(post) { return addReaction(post, reactionValue) })
+      .then(function (post) {
+        req.io.emit('reaction', { postId: post._id, reaction: reactionValue })
+        res.json(post) })
+      .catch(function(err) {
+        if (err === 'ALREADY_REACTED') res.sendStatus(204)
+        else res.status(500).send(err) 
+      })
   }
 })
 
@@ -124,14 +124,14 @@ router.post ('/vote', checkAccess('user'), function(req, res) {
       direction = req.body.direction
 
     getPost(postId)
-    .then(function(post) { return addVote(post, username, direction) })
-    .then(function(post) {
-      req.io.emit('vote', { postId: post._id, username: username, direction: direction})
-      res.json(post) })
-    .catch(function(err) {
-      if (err === 'ALREADY_VOTED') res.sendStatus(204)
-      else res.status(500).send(err)
-    })
+      .then(function(post) { return addVote(post, username, direction) })
+      .then(function(post) {
+        req.io.emit('vote', { postId: post._id, username: username, direction: direction})
+        res.json(post) })
+      .catch(function(err) {
+        if (err === 'ALREADY_VOTED') res.sendStatus(204)
+        else res.status(500).send(err)
+      })
   } else res.sendStatus(500)
 })
 
@@ -150,12 +150,12 @@ function addVote(post, username, direction) {
   return new Promise(function(resolve, reject) {
     if (!hasActed('votes', post, username)) {
       Post.findOneAndUpdate({_id: post._id},
-      { $push: { votes: vote } },
-      { upsert: true, new: true },
-      function (err, post) {
-        if (err) reject(err)
-        else resolve(post)
-      })
+        { $push: { votes: vote } },
+        { upsert: true, new: true },
+        function (err, post) {
+          if (err) reject(err)
+          else resolve(post)
+        })
     } else {
       reject ('ALREADY_VOTED')
     }
@@ -166,12 +166,12 @@ function addReaction(post, value) {
   return new Promise(function(resolve, reject) {
     if (!hasActed('reactions', post, value.username)) {
       Post.findOneAndUpdate({_id: post._id},
-      { $push: { reactions: value } },
-      { upsert: true, new: true },
-      function (err, post) {
-        if (err) reject(err)
-        else resolve(post)
-      })
+        { $push: { reactions: value } },
+        { upsert: true, new: true },
+        function (err, post) {
+          if (err) reject(err)
+          else resolve(post)
+        })
     } else {
       reject ('ALREADY_REACTED')
     }
