@@ -1,8 +1,8 @@
 <template>
   <div>
     <div id="messengerContainer">
-      <userSearch @selected="selectUser" @clear="clearUser"> </userSearch>
-      <conversationsList v-if="!targetUser" :conversations="conversations"></conversationsList>
+      <userSearch @selected="selectUser" @clear="clearUser" :enabled="(targetUser === undefined)"> </userSearch>
+      <conversationsList v-if="!targetUser"></conversationsList>
       <conversation v-if="targetUser" :user="targetUser"> </conversation>
     </div>
   </div>
@@ -17,7 +17,6 @@ import userSearch from '@/components/userSearch'
 export default {
   data () {
     return {
-      conversations: [],
       targetUser: undefined
     }
   },

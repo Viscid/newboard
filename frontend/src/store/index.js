@@ -398,6 +398,17 @@ export default {
           reject(err)
         })
       })
+    },
+
+    getConversations (context) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/messages/', { withCredentials: true }).then((res) => {
+          context.commit('addPrivateMessages', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
     }
 
   }

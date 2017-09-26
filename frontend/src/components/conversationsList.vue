@@ -10,7 +10,14 @@
 
 <script>
 export default {
-  props: ['conversations']
+  data () {
+    return {
+      conversations: []
+    }
+  },
+  mounted () {
+    this.$store.dispatch('getConversations')
+  }
 }
 
 </script>

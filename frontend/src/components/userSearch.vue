@@ -7,13 +7,12 @@
       @keydown.up="peekPrev" 
       class="userSearchInput" 
       @keyup="inputChange"
-      @blur="inputBlur"
       v-model="inputValue" 
       name="userSearchInput" 
       ref="userSearchInput" 
       size="20">
       <a class="userSearchInputClear noselect" @click="reset"> (clear) </a>
-      <ul class="userSearchResults" v-if="typeof(foundUsers) === 'object'">
+      <ul class="userSearchResults" v-if="(typeof(foundUsers) === 'object') && enabled">
         <li class="userResult" @click="selectUser(index)"
           :class="{ selected: (currentIndex === index)}"
           @mouseover="peekUser(index)" 
@@ -34,6 +33,7 @@ export default {
       currentIndex: -1
     }
   },
+  props: ['enabled'],
   mounted () {
     this.$refs.userSearchInput.focus()
   },
@@ -56,6 +56,7 @@ export default {
     },
     peekUser (index) {
       this.currentIndex = index
+      this.inputValue = this.foundUsers[this.currentIndex].username
     },
     peekNext () {
       this.currentIndex++
@@ -67,11 +68,11 @@ export default {
     },
     selectUser (index) {
       let username = (this.foundUsers[index] && 'username' in this.foundUsers[index]) ? this.foundUsers[index].username : this.inputValue
+      this.$emit('selected', username)
       this.$refs.userSearchInput.blur()
       this.inputValue = username
       this.foundUsers = []
       this.currentIndex = -1
-      this.$emit('selected', username)
     }
   }
 }
