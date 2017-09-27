@@ -15,6 +15,7 @@ export default {
     postMessage: undefined,
     searchResults: [],
     privateMessages: [],
+    conversations: [],
     selectedReply: '',
     events: [],
     activeThread: [],
@@ -33,6 +34,32 @@ export default {
       message: undefined
     },
     page: 1
+  },
+  getters: {
+    lastConversationMessages: (state) => {
+      let conversations = state.conversations.slice()
+      let myUsername = state.user.username
+      let returnedConversations = []
+      let names = []
+
+      conversations.sort((a, b) => new Date(b.date_sent) - new Date(a.date_sent))
+
+      conversations.forEach((conversation) => {
+        if (myUsername === conversation.author) {
+          if (names.indexOf(conversation.recipient) === -1) {
+            names.push(conversation.recipient)
+            returnedConversations.push(conversation)
+          }
+        } else if (myUsername === conversation.recipient) {
+          if (names.indexOf(conversation.author) === -1) {
+            names.push(conversation.author)
+            returnedConversations.push(conversation)
+          }
+        }
+      })
+
+      return returnedConversations
+    }
   },
   mutations: {
     setAdminUserList (state, list) {
@@ -101,6 +128,9 @@ export default {
     },
     addPrivateMessages (state, messages) {
       state.privateMessages = messages
+    },
+    addConversations (state, messages) {
+      state.conversations = messages
     },
     clearReactions (state) {
       state.reactions = []
@@ -403,7 +433,7 @@ export default {
     getConversations (context) {
       return new Promise((resolve, reject) => {
         axios.get(API_URL + '/messages/', { withCredentials: true }).then((res) => {
-          context.commit('addPrivateMessages', res.data)
+          context.commit('addConversations', res.data)
           resolve()
         }).catch((err) => {
           reject(err)

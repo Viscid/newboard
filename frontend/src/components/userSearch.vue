@@ -12,7 +12,7 @@
       ref="userSearchInput" 
       size="20">
       <a class="userSearchInputClear noselect" @click="reset"> (clear) </a>
-      <ul class="userSearchResults" v-if="(typeof(foundUsers) === 'object') && enabled">
+      <ul class="userSearchResults" v-if="foundUsers.length && enabled">
         <li class="userResult" @click="selectUser(index)"
           :class="{ selected: (currentIndex === index)}"
           @mouseover="peekUser(index)" 

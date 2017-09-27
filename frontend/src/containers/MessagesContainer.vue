@@ -2,7 +2,7 @@
   <div>
     <div id="messengerContainer">
       <userSearch @selected="selectUser" @clear="clearUser" :enabled="(targetUser === undefined)"> </userSearch>
-      <conversationsList v-if="!targetUser"></conversationsList>
+      <conversationsList @selected="selectUser" v-if="!targetUser"></conversationsList>
       <conversation v-if="targetUser" :user="targetUser"> </conversation>
     </div>
   </div>

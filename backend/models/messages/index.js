@@ -31,22 +31,57 @@ router.post('/', checkAccess('user'), function(req, res) {
 
 router.get('/', checkAccess('user'), function(req, res) {
   var username = req.session.user.username
-  Message
-    .find( { $or: [ { 'author':username }, { 'recipient':username } ] } )
-    .sort( { date: - 1} )
-    .exec(function(err, response) {
-      if (err) console.log(err)
 
-      var sortedMessages = {}
+  var conversationMessages = []
 
-      response.forEach(function(message) {
-        (username === message.author) ? sortedMessages[message.recipient] = message : sortedMessages[message.author] = message
-      })
+  var groupA = { _id: '$author',
+    'id': { '$last': '$_id'},
+    'author': { '$last': '$author'},
+    'recipient': { '$last': '$recipient'},
+    'seen': { '$last': '$seen'},
+    'date_seen': { '$last': '$date_seen'},
+    'body': { '$last': '$body'},
+    'message': { '$last': '$body' },
+    'date_sent': { '$last': '$date_sent' }}
 
-      console.log(sortedMessages)
-    
-      res.send(response)
+  var groupB = { _id: '$recipient',
+    'id': { '$last': '$_id'},
+    'author': { '$last': '$author'},
+    'recipient': { '$last': '$recipient'},
+    'seen': { '$last': '$seen'},
+    'date_seen': { '$last': '$date_seen'},
+    'body': { '$last': '$body'},
+    'message': { '$last': '$body' },
+    'date_sent': { '$last': '$date_sent' }}
+
+  Message.aggregate([
+    { $match: { recipient: username } },
+    { $sort: { date: -1 }},
+    { $group: groupA }
+  ], function (err, results) {
+    if (err) res.status(500).send(err)
+    results.forEach(function(result) {
+      delete result._id
+      result._id = result.id
+      delete result.id
+      conversationMessages.push(result)
     })
+    Message.aggregate([
+      { $match: { author: username } },
+      { $sort: { date: -1 }},
+      { $group: groupB }
+    ], function(err, results) {
+      if (err) res.status(500).send(err)
+      results.forEach(function(result) {
+        delete result._id
+        result._id = result.id
+        delete result.id
+        conversationMessages.push(result)
+      })
+      res.send(conversationMessages)
+    })
+
+  })
 })
 
 router.get('/:user', checkAccess('user'), function(req, res) {

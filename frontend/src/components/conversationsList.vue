@@ -1,7 +1,12 @@
 <template>
   <div>
     <ul v-if="conversations.length">
-
+      <li @click="selectConversation(index)" class="conversation" :key="conversation._id" v-for="(conversation, index) in conversations">
+        <span class="username" v-if="conversation.author === username"> {{ conversation.recipient }} <br /> </span>
+        <span class="username" v-else> {{ conversation.author }} <br /> </span>  
+        <span class="lastSpeaker"> {{ conversation.author }}: </span>
+        <span class="message"> {{ conversation.message }} </span>  
+      </li>
     </ul>
     <h3 v-else> You have no prior conversations. </h3>
   </div>
@@ -10,9 +15,21 @@
 
 <script>
 export default {
-  data () {
-    return {
-      conversations: []
+  computed: {
+    conversations () {
+      return this.$store.getters.lastConversationMessages
+    },
+    username () {
+      return this.$store.state.user.username
+    }
+  },
+  methods: {
+    selectConversation (index) {
+      let conversation = this.conversations[index];
+
+      (conversation.author === this.username)
+        ? this.$emit('selected', conversation.recipient)
+        : this.$emit('selected', conversation.author)
     }
   },
   mounted () {
@@ -28,6 +45,22 @@ h3 {
   font-size: 1em;
   font-weight: normal;
   font-style: italic;
+}
+
+.username {
+  font-weight: bold;
+  color: #aa4439;
+}
+
+.conversation {
+  height: 2em;
+  margin-top: 0.25em;
+  padding: 0.5em;
+}
+
+.conversation:hover {
+  background-color: #EEE;
+  cursor: pointer;
 }
 
 </style>

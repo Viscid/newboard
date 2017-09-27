@@ -20,7 +20,6 @@
     name="conversationInput" 
     ref="conversationInput"
     v-model="body"> </textarea>
-    <button class="conversationSendButton"> Send </button>
 
   </div>
 </template>
@@ -29,8 +28,7 @@
 export default {
   data () {
     return {
-      body: undefined,
-      author: this.$store.state.user.username
+      body: undefined
     }
   },
   mounted () {
@@ -59,6 +57,9 @@ export default {
         return ((message.author === this.author) && (message.recipient === this.user)) ||
          ((message.author === this.user) && (message.recipient === this.author))
       })
+    },
+    author () {
+      return this.$store.state.user.username
     }
   }
 
@@ -99,17 +100,6 @@ export default {
     font-size: 1.1em;
     width: 100%;
   }
-
-  .conversationSendButton {
-    display: block;
-    height: 30px;
-    width: 100%;
-    color: white;
-    background-color: #aa4439;
-    border: 1px solid #aa4439;
-  }
-
-
 
   .conversationInput {
     box-sizing: border-box;
