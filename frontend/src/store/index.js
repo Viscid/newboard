@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '../../../config'
+
 const API_URL = config.API_URL
 
 export default {
@@ -15,6 +16,7 @@ export default {
     postMessage: undefined,
     searchResults: [],
     privateMessages: [],
+    incomingMessages: [],
     conversations: [],
     selectedReply: '',
     events: [],
@@ -59,6 +61,11 @@ export default {
       })
 
       return returnedConversations
+    },
+    unreadMessages: (state) => {
+      return state.incomingMessages.filter((message) => {
+        return (message.seen === false && message.recipient === state.user.username)
+      }).length
     }
   },
   mutations: {
@@ -101,6 +108,9 @@ export default {
     clearActiveProfile (state) {
       state.activeProfile = {}
     },
+    clearIncomingMessages (state) {
+      state.incomingMessages = []
+    },
     stashPostMessage (state, post) {
       state.postMessage = post.message
     },
@@ -123,7 +133,8 @@ export default {
     addVote (state, vote) {
       state.events.push(vote)
     },
-    addPrivateMessage (state, message) {
+    addIncomingMessage (state, message) {
+      state.incomingMessages.push(message)
       state.privateMessages.push(message)
     },
     addPrivateMessages (state, messages) {
@@ -345,6 +356,10 @@ export default {
       context.commit('clearActiveThread')
     },
 
+    clearIncomingMessages (context) {
+      context.commit('clearIncomingMessages')
+    },
+
     stashPostMessage ({dispatch, commit}, message) {
       commit('stashPostMessage', message)
     },
@@ -386,7 +401,7 @@ export default {
     },
 
     socket_privateMessage (context, message) {
-      context.commit('addPrivateMessage', message)
+      context.commit('addIncomingMessage', message)
     },
 
     changeSetting (context, setting) {

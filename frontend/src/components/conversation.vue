@@ -7,9 +7,15 @@
 
       <ul>
         <li :key="message._id" v-for="message in messages">
-          <div v-if="messageType(message.author)" :class="{ messageBody: true, mine: true}"> <span class="messageUsername"> {{message.author}} </span> : {{ message.body }} </div>
-          <div v-else :class="{ messageBody: true }">  {{ message.body }} : <span class="messageUsername"> {{message.author}} </span> </div> 
-
+          <div v-if="messageType(message.author)" :class="{ messageBody: true, mine: true}">
+            <span class="messageUsername"> {{message.author}} </span> : {{ message.body }} 
+            <div class="date dateMine"> {{ getDate(message.date_sent, 'DD/MM/YY h:mma') }} </div>
+          </div>
+          <div v-else :class="{ messageBody: true }">
+              {{ message.body }} : <span class="messageUsername"> {{message.author}} </span>
+              <div class="date"> {{ getDate(message.date_sent, 'DD/MM/YY h:mma') }} </div>
+          </div> 
+          
         </li>
       </ul>
     </div>
@@ -25,6 +31,8 @@
 </template>
 
 <script>
+import fecha from 'fecha'
+
 export default {
   data () {
     return {
@@ -49,6 +57,9 @@ export default {
     },
     messageType (author) {
       return (author === this.author)
+    },
+    getDate (date, style) {
+      return fecha.format(new Date(date), style)
     }
   },
   computed: {
@@ -67,27 +78,41 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
   .messageBody {
-    border: 1px solid grey;
+    position: relative;
+    border: 2px solid grey;
     width: 70%;
     margin: 1em;
-    padding: 1em;
+    padding: 0.5em 0.5em 0 0.5em;
     border-radius: 10px;
+    background-color: #FFF;
     float: right;
     text-align: right;
-    background-color: #DDEEEE;
   }
 
   .messageUsername {
     font-weight: bold;
+    color: #aa4439;
   }
 
   .mine {
     float: left;
     text-align: left;
-    background-color: #EEDDEE;
+    background-color: #F2F2F2;
+
+  }
+
+  .date {
+    color: #777;
+    font-size: 0.8em;
+    padding: 0.5em;
+    text-align: left;
+  }
+
+  .dateMine {
+    text-align: right;
   }
 
   .conversationHeader {
@@ -118,7 +143,8 @@ export default {
 
   .conversationHistory {
     box-sizing: border-box;
-    height: 500px;
+    max-height: 500px;
+    min-height: 300px;
     overflow-y: scroll;
     overflow-x: hidden;
     border: 1px solid #AAA;
@@ -126,7 +152,8 @@ export default {
   }
 
   .conversationContainer {
-    margin: 25px auto;
+    margin: 1em auto;
+    max-width: 800px;
   }
 
 </style>

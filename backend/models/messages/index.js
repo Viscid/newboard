@@ -15,7 +15,7 @@ var Promise = require('bluebird')
 router.post('/', checkAccess('user'), function(req, res) {
   if (!checkFields(req, ['recipient', 'body'])) return res.sendStatus(500)
 
-  var message = { author: req.session.user.username, recipient: req.body.recipient, body: req.body.body, date_sent: new Date(), seen: true }
+  var message = { author: req.session.user.username, recipient: req.body.recipient, body: req.body.body, date_sent: new Date() }
 
   var messageHistory = new Message(message)
 
@@ -94,6 +94,8 @@ router.get('/:user', checkAccess('user'), function(req, res) {
     function(err, messages) {
       res.send(messages)
     })
+
+  Message.update({ author: user, recipient: req.session.user.username }, { $set: { seen: true }})
 
 })
 

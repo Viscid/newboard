@@ -12,7 +12,7 @@
       ref="userSearchInput" 
       size="20">
       <a class="userSearchInputClear noselect" @click="reset"> (clear) </a>
-      <ul class="userSearchResults" v-if="foundUsers.length && enabled">
+      <ul class="userSearchResults" v-show="inputValue.length > 0">
         <li class="userResult" @click="selectUser(index)"
           :class="{ selected: (currentIndex === index)}"
           @mouseover="peekUser(index)" 
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import debounce from 'debounce'
+
 export default {
   data () {
     return {
@@ -34,6 +36,9 @@ export default {
     }
   },
   props: ['enabled'],
+  created () {
+    this.inputChange = debounce(this.inputChange, 200)
+  },
   mounted () {
     this.$refs.userSearchInput.focus()
   },
@@ -48,7 +53,8 @@ export default {
     inputChange (e) {
       this.$emit('clear')
       this.$store.dispatch('findUser', this.inputValue).then((users) => {
-        this.foundUsers = users
+        if (typeof (users) === 'object') this.foundUsers = users
+        else this.foundUsers = []
       })
     },
     inputBlur () {
@@ -56,7 +62,6 @@ export default {
     },
     peekUser (index) {
       this.currentIndex = index
-      this.inputValue = this.foundUsers[this.currentIndex].username
     },
     peekNext () {
       this.currentIndex++
@@ -82,7 +87,7 @@ export default {
 <style scoped>
 
   .selected {
-        background-color: #EEEEFF;
+     font-weight: bold;
   }
 
   .userSearchResults {
@@ -121,5 +126,6 @@ export default {
 
   .userResult {
     padding: 0.1em;
+    cursor: pointer;
   }
 </style>

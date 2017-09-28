@@ -3,7 +3,6 @@
     <div id="messengerContainer">
       <userSearch @selected="selectUser" @clear="clearUser" :enabled="(targetUser === undefined)"> </userSearch>
       <conversationsList @selected="selectUser" v-if="!targetUser"></conversationsList>
-      <conversation v-if="targetUser" :user="targetUser"> </conversation>
     </div>
   </div>
 
@@ -20,9 +19,12 @@ export default {
       targetUser: undefined
     }
   },
+  mounted () {
+    this.$store.dispatch('clearIncomingMessages')
+  },
   methods: {
     selectUser (username) {
-      this.targetUser = username
+      this.$router.push('/messages/' + username)
     },
     clearUser () {
       this.targetUser = undefined

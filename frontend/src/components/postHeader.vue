@@ -19,7 +19,7 @@
     <transition name="reactionTransition">
       <div v-if="reactionVisible" :style="{right: reactionPos.x + 'px', top: reactionPos.y + 'px'}" class="headerReactions">
         <ul v-click-away="hideReactions"class="headerReactionList"> 
-          <li v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.username, post.username) }} </li>
+          <li :key="reaction._id" v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.username, post.username) }} </li>
         </ul>
       </div>
     </transition>    

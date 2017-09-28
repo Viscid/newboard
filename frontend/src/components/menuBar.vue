@@ -14,8 +14,9 @@
           <img class="menuIcon usersIcon" src="../assets/icons/Users.svg"> </img>
           <div class="onlineUsers"> {{ onlineUsers }} </div>
         </router-link><!--
-        --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Messages' }" exact>
+        --><router-link class="menuBarItem messagesLink" v-show="isLoggedIn" :to="{ name: 'Messages' }" exact>
           <img class="menuIcon" alt="Messages" src="../assets/icons/Messages.svg" />
+          <div v-if="(Number(unreadMessages) >= 1)" class="newPostNotifier"> {{ unreadMessages }} </div>
         </router-link><!--        
         --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Search' }" exact>
           <img class="menuIcon" alt="Search" src="../assets/icons/Search.svg" />
@@ -61,6 +62,9 @@ export default {
     },
     onlineUsers () {
       return (this.$store.state.onlineUserCount)
+    },
+    unreadMessages () {
+      return (this.$store.getters.unreadMessages)
     }
   },
   methods: {
@@ -176,6 +180,10 @@ export default {
 
   .menuBarUsername {
     padding: 0.25em;
+  }
+
+  .messagesLink {
+    position: relative;
   }
 
   .usersIcon {
