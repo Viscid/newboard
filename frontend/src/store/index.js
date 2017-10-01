@@ -108,6 +108,9 @@ export default {
     clearActiveProfile (state) {
       state.activeProfile = {}
     },
+    setIncomingMessages (state, messages) {
+      state.incomingMessages = messages
+    },
     clearIncomingMessages (state) {
       state.incomingMessages = []
     },
@@ -134,11 +137,20 @@ export default {
       state.events.push(vote)
     },
     addIncomingMessage (state, message) {
-      state.incomingMessages.push(message)
+      console.log(state.route.params['username'], message.author, state.route.name)
+      if (state.route.name !== 'Conversation') {
+        console.log('once')
+        state.incomingMessages.push(message)
+      }
       state.privateMessages.push(message)
     },
     addPrivateMessages (state, messages) {
       state.privateMessages = messages
+    },
+    clearUnseenMessages (state, username) {
+      state.incomingMessages = state.incomingMessages.filter((message) => {
+        return (message.author !== username)
+      })
     },
     addConversations (state, messages) {
       state.conversations = messages
@@ -216,6 +228,12 @@ export default {
       return new Promise((resolve, reject) => {
         axios.put(API_URL + '/user/login', {user}, {withCredentials: true}).then((res) => {
           commit('setUser', res.data)
+          axios.get(API_URL + '/messages', { withCredentials: true }).then((res) => {
+            commit('setIncomingMessages', res.data)
+            resolve()
+          }).catch((err) => {
+            reject(err)
+          })
           resolve(res.data)
         }).catch((err) => {
           reject(err)
@@ -445,9 +463,25 @@ export default {
       })
     },
 
+    getUnseenMessages (context) {
+      return new Promise((resolve, reject) => {
+        axios.get(API_URL + '/messages', { withCredentials: true }).then((res) => {
+          context.commit('setIncomingMessages', res.data)
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    },
+
+    clearUnseenMessages (context, username) {
+      context.commit('clearUnseenMessages', username)
+      axios.post(API_URL + '/messages/seen', {username}, { withCredentials: true })
+    },
+
     getConversations (context) {
       return new Promise((resolve, reject) => {
-        axios.get(API_URL + '/messages/', { withCredentials: true }).then((res) => {
+        axios.get(API_URL + '/messages/conversations', { withCredentials: true }).then((res) => {
           context.commit('addConversations', res.data)
           resolve()
         }).catch((err) => {

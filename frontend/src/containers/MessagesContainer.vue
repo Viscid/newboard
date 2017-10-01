@@ -19,9 +19,6 @@ export default {
       targetUser: undefined
     }
   },
-  mounted () {
-    this.$store.dispatch('clearIncomingMessages')
-  },
   methods: {
     selectUser (username) {
       this.$router.push('/messages/' + username)

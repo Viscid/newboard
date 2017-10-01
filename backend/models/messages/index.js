@@ -29,7 +29,15 @@ router.post('/', checkAccess('user'), function(req, res) {
   })
 })
 
-router.get('/', checkAccess('user'), function(req, res) {
+router.post('/seen', checkAccess('user'), function(req, res) {
+  if (!checkFields(req, ['username'])) return res.sendStatus(500)
+  Message.update({ author: req.body.username, recipient: req.session.user.username }, { seen: true }, { multi: true })
+    .exec()
+
+  res.sendStatus(200)
+})
+
+router.get('/conversations', checkAccess('user'), function(req, res) {
   var username = req.session.user.username
 
   var conversationMessages = []
@@ -88,6 +96,9 @@ router.get('/:user', checkAccess('user'), function(req, res) {
   var author = req.session.user.username
   var user = req.params.user
 
+  Message.update({ author: user, recipient: req.session.user.username }, { seen: true }, { multi: true })
+    .exec()
+
   Message.find( { $or:[ {$and:[{'author':author }, {'recipient':user}]}, {$and:[{ 'author':user }, { 'recipient':author }] }]},
     null,
     {sort: {date: -1}},
@@ -95,8 +106,22 @@ router.get('/:user', checkAccess('user'), function(req, res) {
       res.send(messages)
     })
 
-  Message.update({ author: user, recipient: req.session.user.username }, { $set: { seen: true }})
+  
 
 })
+
+router.get('/', checkAccess('user'), function(req, res) {
+  var user = req.session.user.username
+
+  Message.find( { recipient: user, seen: false },
+    null,
+    {sort: {date: -1}},
+    function(err, messages) {
+      if (err) res.sendStatus(500)
+      else res.send(messages)
+    })
+})
+
+
 
 module.exports = router

@@ -41,10 +41,18 @@ export default {
   },
   mounted () {
     this.$refs.conversationInput.focus()
-    this.$store.dispatch('getPrivateMessages', this.user)
+    this.$store.dispatch('getPrivateMessages', this.user).then(() => {
+      this.$store.dispatch('clearUnseenMessages', this.user)
+    })
+    this.unwatch = this.$store.watch((state) => state.privateMessages, () => {
+      this.$store.dispatch('clearUnseenMessages', this.user)
+    })
   },
   updated () {
     this.$refs.conversationHistory.scrollTop = this.$refs.conversationHistory.scrollHeight
+  },
+  destroyed () {
+    this.unwatch()
   },
   props: ['user'],
   methods: {

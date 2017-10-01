@@ -16,7 +16,7 @@
         </router-link><!--
         --><router-link class="menuBarItem messagesLink" v-show="isLoggedIn" :to="{ name: 'Messages' }" exact>
           <img class="menuIcon" alt="Messages" src="../assets/icons/Messages.svg" />
-          <div v-if="(Number(unreadMessages) >= 1)" class="newPostNotifier"> {{ unreadMessages }} </div>
+          <div v-if="(Number(unreadMessages) >= 1)" class="messageNotifier"> {{ unreadMessages }} </div>
         </router-link><!--        
         --><router-link class="menuBarItem" v-show="isLoggedIn" :to="{ name: 'Search' }" exact>
           <img class="menuIcon" alt="Search" src="../assets/icons/Search.svg" />
@@ -41,6 +41,7 @@
           </ul>
         </div>
       </modal>
+      <audio ref="messageAudio" src="/static/incoming_message.wav" preload="auto"> </audio>
     </div>
 </template>
 
@@ -64,8 +65,17 @@ export default {
       return (this.$store.state.onlineUserCount)
     },
     unreadMessages () {
-      return (this.$store.getters.unreadMessages)
+      return this.$store.getters.unreadMessages
     }
+  },
+  mounted () {
+    this.unwatch = this.$store.watch((state) => state.incomingMessages, (state, newstate) => {
+      console.log(state.length, newstate.length)
+      if (state.length > 0) this.$refs.messageAudio.play()
+    })
+  },
+  destroyed () {
+    this.unwatch()
   },
   methods: {
     closeModal () {
@@ -154,10 +164,10 @@ export default {
     position: absolute;
     left: 1.2em;
     bottom: 1.25em;
-    box-shadow: 2px 2px 2px #222;
-    background-color: white;
-    border: 1px solid #666;
-    color: black;
+    opacity: 1;
+    background-color: #F55;
+    color: white;
+    font-weight: bold;
     height: 18px;
     width: 18px;
     font-size: 12px;
@@ -166,6 +176,23 @@ export default {
     line-height: 18px;
     border-radius: 4px;
   }
+
+  .messageNotifier {
+    position: absolute;
+    left: 1.2em;
+    bottom: 1.25em;
+    opacity: 1;
+    background-color: #F55;
+    color: white;
+    font-weight: bold;
+    height: 18px;
+    width: 18px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 18px;
+    border-radius: 4px;
+  }  
 
   .newPost {
     font-weight: bold;

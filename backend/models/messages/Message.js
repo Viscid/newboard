@@ -12,4 +12,4 @@ var messageSchema = mongoose.Schema({
 
 messageSchema.index({body: 'text', username: 'text'})
 
-module.exports = mongoose.model('Messsage', messageSchema)
+module.exports = mongoose.model('Message', messageSchema)

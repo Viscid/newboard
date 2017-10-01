@@ -2,10 +2,12 @@
   <div>
     <ul v-if="conversations.length">
       <li @click="selectConversation(index)" class="conversation" :key="conversation._id" v-for="(conversation, index) in conversations">
-        <span class="username" v-if="conversation.author === username"> {{ conversation.recipient }} <br /> </span>
-        <span class="username" v-else> {{ conversation.author }} <br /> </span>  
-        <span class="lastSpeaker"> {{ conversation.author }}: </span>
-        <span class="message"> {{ conversation.message }} </span>
+        <span :class="{unseen: ((conversation.author !== username) && !conversation.seen)}">
+          <span class="username" v-if="conversation.author === username"> {{ conversation.recipient }} <br /> </span>
+          <span class="username" v-else> {{ conversation.author }} <br /> </span>  
+          <span class="lastSpeaker"> {{ conversation.author }}: </span>
+          <span class="messages"> {{ conversation.message }} </span>
+        </span>
         <div class="date"> {{ getDate(conversation.date_sent, 'DD/MM/YY h:mma') }} </div>
       </li>
     </ul>
@@ -16,15 +18,14 @@
 
 <script>
 import fecha from 'fecha'
+import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    conversations () {
-      return this.$store.getters.lastConversationMessages
-    },
     username () {
       return this.$store.state.user.username
-    }
+    },
+    ...mapGetters({ conversations: 'lastConversationMessages' })
   },
   methods: {
     selectConversation (index) {
@@ -40,6 +41,12 @@ export default {
   },
   mounted () {
     this.$store.dispatch('getConversations')
+    this.unwatch = this.$store.watch((state) => state.incomingMessages, () => {
+      this.$store.dispatch('getConversations')
+    })
+  },
+  destroyed () {
+    this.unwatch()
   }
 }
 
@@ -74,6 +81,10 @@ h3 {
 .conversation:hover {
   background-color: #EEE;
   cursor: pointer;
+}
+
+.unseen {
+  font-weight: bold;
 }
 
 </style>

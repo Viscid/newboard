@@ -10,6 +10,7 @@ import socketio from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
 import config from '../../config'
 import vmodal from 'vue-js-modal'
+import { sync } from 'vuex-router-sync'
 
 export const SocketInstance = socketio(config.SOCKETIO_URL)
 
@@ -20,6 +21,7 @@ Vue.use(vmodal)
 Vue.use(VeeValidate, { classNames: { invalid: 'invalid' } })
 
 const appStore = new Vuex.Store(store)
+sync(appStore, router)
 
 Vue.use(VueSocketIO, SocketInstance, appStore)
 
