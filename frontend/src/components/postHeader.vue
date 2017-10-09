@@ -31,10 +31,7 @@ export default {
     if (this.$props.settings['dateTimeFormat'] === 'relative') this.interval = setInterval(() => { this.timeNow = Date.now() }, 10000)
 
     this.unsubscribe = this.$store.subscribe((mutation) => {
-      if (mutation.type === 'addReaction') {
-        let reaction = mutation.payload
-        if (reaction.postId === this.post._id) this.reactions.push(reaction.reaction)
-      } else if (mutation.type === 'addVote') {
+      if (mutation.type === 'addVote') {
         let vote = mutation.payload
         if (vote.postId === this.post._id) this.votes.push(vote)
       }

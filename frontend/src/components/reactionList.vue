@@ -23,6 +23,17 @@ export default {
     post: function () {
       this.reactions = this.post.reactions || []
     }
+  },
+  mounted () {
+    this.unsubscribe = this.$store.subscribe((mutation) => {
+      if (mutation.type === 'addReaction') {
+        let reaction = mutation.payload
+        if (reaction.postId === this.post._id) this.reactions.push(reaction.reaction)
+      }
+    })
+  },
+  beforeDestroy () {
+    this.unsubscribe()
   }
 }
 </script>
