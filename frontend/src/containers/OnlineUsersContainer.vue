@@ -3,7 +3,7 @@
   <h1> Online Users </h1>
 
   <ul>
-    <li v-for="user in userList">
+    <li :key="user._id" v-for="user in userList">
       {{ user }}
     </li>
   </ul>

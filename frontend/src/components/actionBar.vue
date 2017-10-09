@@ -11,9 +11,9 @@
     <a class="adminPostAction adminBan" @click="banUser(post)"> Ban User </a>
   </span>
   <transition name="reactionTransition">
-    <div v-if="reacting" class="reactions">
-      <ul v-click-away="hideActionBar" class="reactionList"> 
-        <li v-for="reaction in reactions" @click="react(reaction, post)" class="reactionItem"> {{ reaction.name }} </li>
+    <div v-if="reacting" class="actionBarReactions">
+      <ul v-click-away="hideActionBar" class="actionBarReactionList"> 
+        <li :key="index" v-for="(reaction, index) in reactions" @click="react(reaction, post)" class="actionBarReactionItem"> {{ reaction.name }} </li>
       </ul>
     </div>
   </transition>
@@ -79,7 +79,7 @@ export default {
     color: #5f7ec6;
   }
 
-  .reactions {
+  .actionBarReactions {
     color: #555;
 
     background-color: white;
@@ -91,7 +91,7 @@ export default {
     box-shadow: 2px 2px 5px #DDD;
   }
 
-  .reactionList {
+  .actionBarReactionList {
     display: flex;
     margin: 0;
     padding: 0;
@@ -100,12 +100,12 @@ export default {
     flex-wrap: wrap;
   }
 
-  .reactionItem:hover {
+  .actionBarReactionItem:hover {
     background-color: #EEE;
     color: #000;
   }
 
-  .reactionItem {
+  .actionBarReactionItem {
     padding: 10px 0;
     width: 50px;
     text-align: center;

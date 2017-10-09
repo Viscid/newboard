@@ -19,11 +19,6 @@ export default {
     profileInfoBox,
     profileUserPosts
   },
-  data () {
-    return {
-      username: this.$route.params.username
-    }
-  },
   created () {
     this.$store.dispatch('fetchProfile', this.username)
   },
@@ -47,6 +42,11 @@ export default {
     },
     hasProfile () {
       return ('registered' in this.$store.state.activeProfile)
+    },
+    username () {
+      let username = this.$route.params.username
+      this.$store.dispatch('fetchProfile', username)
+      return username
     }
   }
 }

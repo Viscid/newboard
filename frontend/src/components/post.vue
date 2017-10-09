@@ -4,6 +4,7 @@
     <div class="postBody">
       <formattedMessage :message="post.message" :formattedMessage="post.formattedMessage" :settings="settings"> </formattedMessage>
     </div>
+    <reactionList :post="post"> </reactionList>
     <actionBar v-show="loggedIn" :isAdmin="isAdmin" :post="post"></actionBar>
   </div>
 </template>
@@ -13,11 +14,12 @@
 import postHeader from './postHeader'
 import formattedMessage from './formattedMessage'
 import actionBar from './actionBar'
+import reactionList from './reactionList'
 
 export default {
   name: 'Post',
   props: ['post', 'isAdmin', 'loggedIn', 'settings'],
-  components: { postHeader, formattedMessage, actionBar }
+  components: { postHeader, formattedMessage, reactionList, actionBar }
 }
 
 </script>

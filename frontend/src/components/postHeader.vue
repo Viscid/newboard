@@ -6,40 +6,25 @@
       <router-link class="postDatetime" :to="{ name: 'PostViewer', params: { slug: post.slug } }">  {{ date }} </router-link>
     </div>
     <div class="headerBottom">
-      <div v-show="reactions.length" @mouseover="showReactions" @mouseout="hideReactions" @click="showReactions" class="headerReactionCount noselect">
-        {{ reactions.length + ' reaction' + (reactions.length > 1 ? 's' : '') }}
-      </div>
-      <span class="headerVoteSeparator" v-show="votes.length && reactions.length"> &vert; </span>
       <span v-show="votes.length" class="headerScore"> Score: </span> 
       <span v-show="votes.length"
         :class="{positivePostScore: (postScore > 1), negativePostScore: (postScore < -1), headerPostScore: true, noselect: true}">
         {{ (postScore >= 0 ? '+' : '') }}{{ postScore }}
       </span>
     </div>
-    <transition name="reactionTransition">
-      <div v-if="reactionVisible" :style="{right: reactionPos.x + 'px', top: reactionPos.y + 'px'}" class="headerReactions">
-        <ul v-click-away="hideReactions"class="headerReactionList"> 
-          <li :key="reaction._id" v-for="reaction in reactions" class="headerReactionItem"> {{ getReactionText(reaction.name, reaction.username, post.username) }} </li>
-        </ul>
-      </div>
-    </transition>    
   </div>
 </template>
 
 <script>
 import fecha from 'fecha'
 import RelativeTime from '../helpers/RelativeTime'
-import reactions from '../../../config/reactions.js'
 
 export default {
   props: ['post', 'settings'],
   data () {
     return {
       timeNow: Date.now(),
-      reactions: ('reactions' in this.post) ? this.post.reactions : [],
-      votes: ('votes' in this.post) ? this.post.votes : [],
-      reactionVisible: false,
-      reactionPos: {x: 50, y: 50}
+      votes: ('votes' in this.post) ? this.post.votes : []
     }
   },
   mounted () {
@@ -68,16 +53,6 @@ export default {
     },
     isOnline (username) {
       return (this.$store.state.onlineUsers.indexOf(username) >= 0)
-    },
-    showReactions (e) {
-      this.reactionPos = {x: window.innerWidth - e.pageX - 15, y: 50}
-      this.reactionVisible = true
-    },
-    hideReactions () {
-      this.reactionVisible = false
-    },
-    getReactionText (name, subject, object) {
-      return reactions.find(reaction => reaction.name === name).describe(subject, object)
     }
   },
   computed: {
@@ -92,11 +67,6 @@ export default {
         if (vote.direction === 'up') return acc + 1
         else return acc - 1
       }, 0)
-    }
-  },
-  watch: {
-    post: function () {
-      this.reactions = this.post.reactions || []
     }
   }
 }
@@ -134,19 +104,6 @@ export default {
 
   .negativePostScore {
     color: #ad3e3e
-  }
-
-  .headerReactions {
-    font-size: 14px;
-    position: absolute;
-    font-weight: normal;
-    top: 30px;
-    padding: 10px;
-    border: 1px solid #777;
-    border-radius: 3px;
-    background-color: white;;
-    z-index: 222;
-    box-shadow: 2px 2px 5px #DDD;
   }
 
   .headerScore {
