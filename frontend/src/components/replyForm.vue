@@ -1,6 +1,10 @@
 <template>
     <form @submit.prevent="submitReply">
-      <textarea ref="replyTextarea" @keydown.ctrl.enter="submitReply" v-model="replyMessage"> </textarea>
+      <textarea 
+        ref="replyTextarea"
+        @keydown.ctrl.enter="submitReply"
+        v-model="replyMessage"
+        placeholder="yeah bro"> </textarea>
       <input class="replyFormSubmit" type="submit" value="Reply" />
     </form>
 </template>
