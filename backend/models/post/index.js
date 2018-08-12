@@ -65,8 +65,8 @@ router.get('/:slug', function(req, res) { // Returns a post as found by its slug
 
   Post.findOne({ slug: slug }, function(err, queriedPost) {
     var activePost = queriedPost
-    if (!queriedPost) res.sendStatus(404);
-    if (queriedPost && queriedPost.get('root')) {
+    if (!queriedPost) res.sendStatus(404)
+    else if (queriedPost.get('root')) {
       Post.findOne({ _id: queriedPost.root }, function(err, queriedThread) {
         var thread = queriedThread ? queriedThread.toObject() : undefined
         if (thread) sendThread(thread, activePost)
